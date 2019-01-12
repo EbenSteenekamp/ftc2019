@@ -1,4 +1,4 @@
-# ftc2019
+﻿# ftc2019
 ftc 2019 robot controller repository
 
 ## Contributing
@@ -26,4 +26,10 @@ Look for a project's contribution instructions. If there are any, follow them.
 - Once the pull request is approved and merged you can pull the changes from `upstream` to your local repo and delete
 your extra branch(es).
 
-And last but not least: Always write your commit messages in the present tense. Your commit message should describe what the commit, when applied, does to the code – not what you did to the code.
+And last but not least: Always write your commit messages in the present tense. Your commit message should describewhat the commit, when applied, does to the code – not what you did to the code.
+
+### Installing drivers for Samsung cellphone
+
+The Samsung cellphone curently set up as the Robot Controller is not automatically suported by Windows and Android studios. To fix this problem a driver can be installed from https://developer.samsung.com/galaxy/others/android-usb-driver-for-windows . This driver allows Android studios to debug the android device and should be installed before comunicating with the Samsung cellphone.
+
+
