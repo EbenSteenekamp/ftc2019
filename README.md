@@ -32,6 +32,11 @@ And last but not least: Always write your commit messages in the present tense. 
 
 The Samsung cellphone curently set up as the Robot Controller is not automatically suported by Windows and Android studios. To fix this problem a driver can be installed from https://developer.samsung.com/galaxy/others/android-usb-driver-for-windows . This driver allows Android studios to debug the android device and should be installed before comunicating with the Samsung cellphone.
 
+##How to get the Controllers to do some stuff
+
+Follow this link to write your first code to control the motors (For us it will be the ```Toets1.java and Toets2.java``` Classes in the ```package org.firstinspires.ftc.teamcode;``` source directory)
+Check in the ```TeamCode``` source under ```./src``` Follow this [Link]https://github.com/ftctechnh/ftc_app/wiki/Creating-and-Running-an-Op-Mode-(Android-Studio)
+
 ## Welcome!
 This GitHub repository contains the source code that is used to build an Android app to control a *FIRST* Tech Challenge competition robot.  To use this SDK, download/clone the entire project to your local computer.
 
