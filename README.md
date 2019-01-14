@@ -42,6 +42,8 @@ The Samsung cellphone curently set up as the Robot Controller is not automatical
 
 ### How to get the Controllers to do some stuff
 
+First Read this document !!! http://hollybots.com/wp-content/uploads/2017/09/creating-op-mode-1.pdf (Info on how to get the controllers initialized)
+
 Follow this link to write your first code to control the motors (For us it will be the ```Toets1.java and Toets2.java``` Classes in the ```package org.firstinspires.ftc.teamcode;``` source directory)
 Check in the ```TeamCode``` source under ```./src``` Follow this [Link](https://github.com/ftctechnh/ftc_app/wiki/Creating-and-Running-an-Op-Mode-(Android-Studio))
 
