@@ -1,6 +1,14 @@
 # ftc2019
 ftc 2019 robot controller repository
 
+### Important Steps after Android Studio installation and Cloning of the Project
+
+1. In /File/Setting/Editor/General set tha AutoImport settings
+2. In /File/Settings/Build, Execution, Deployment, Disable Instant Run
+3. In /File/Settings/Build, Execution, Deployment, Set Gradle Home directory
+4. Install Android SDK 2.3
+5. Run ```Gradle``` Task to Build, FtcController (importing libs) nad Team Code
+
 ## Contributing
 
 If you want to contribute to a project and make it better, your help is very welcome. Contributing is also a great way to learn more about social coding on Github, new technologies and and their ecosystems and how to make constructive, helpful bug reports, feature requests and the noblest of all contributions: a good, clean pull request.
@@ -31,6 +39,11 @@ And last but not least: Always write your commit messages in the present tense. 
 ### Installing drivers for Samsung cellphone
 
 The Samsung cellphone curently set up as the Robot Controller is not automatically suported by Windows and Android studios. To fix this problem a driver can be installed from https://developer.samsung.com/galaxy/others/android-usb-driver-for-windows . This driver allows Android studios to debug the android device and should be installed before comunicating with the Samsung cellphone.
+
+### How to get the Controllers to do some stuff
+
+Follow this link to write your first code to control the motors (For us it will be the ```Toets1.java and Toets2.java``` Classes in the ```package org.firstinspires.ftc.teamcode;``` source directory)
+Check in the ```TeamCode``` source under ```./src``` Follow this [Link](https://github.com/ftctechnh/ftc_app/wiki/Creating-and-Running-an-Op-Mode-(Android-Studio))
 
 ## Welcome!
 This GitHub repository contains the source code that is used to build an Android app to control a *FIRST* Tech Challenge competition robot.  To use this SDK, download/clone the entire project to your local computer.
