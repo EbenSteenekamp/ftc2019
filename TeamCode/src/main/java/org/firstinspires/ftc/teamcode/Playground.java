@@ -64,10 +64,13 @@ public class Playground extends LinearOpMode {
 
             telemetry.addData("LF Target Power", tgtPower1);
             telemetry.addData("LF Motor Power", motorLeftFront.getPower());
+
             telemetry.addData("LR Target Power", tgtPower2);
             telemetry.addData("LR Motor Power", motorLeftRear.getPower());
+
             telemetry.addData("RF Target Power", tgtPower3);
             telemetry.addData("RF Motor Power", motorRightFront.getPower());
+
             telemetry.addData("RR Target Power", tgtPower4);
             telemetry.addData("RR Motor Power", motorRightRear.getPower());
 
