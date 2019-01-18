@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @TeleOp(name="PlaygroundDrive", group="Linear Opmode")
 
@@ -11,6 +12,7 @@ public class Playground extends LinearOpMode {
     DcMotor motorLeftRear;
     DcMotor motorRightFront;
     DcMotor motorRightRear;
+
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -18,12 +20,13 @@ public class Playground extends LinearOpMode {
         motorLeftRear = hardwareMap.get(DcMotor.class, "motorLeftRear");
         motorRightFront = hardwareMap.get(DcMotor.class, "motorRightFront");
         motorRightRear = hardwareMap.get(DcMotor.class, "motorRightRear");
-
+        motorLeftFront.setDirection(DcMotor.Direction.REVERSE);
+        motorLeftRear.setDirection(DcMotor.Direction.REVERSE);
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
         waitForStart();
-
+        double SpeedControl = 0.5;
         double tgtPower1 = 0;
         double tgtPower2 = 0;
         double tgtPower3 = 0;
@@ -33,34 +36,35 @@ public class Playground extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            tgtPower1 = -this.gamepad1.left_stick_y;
-            tgtPower2 = -this.gamepad1.left_stick_y;
-            tgtPower3 = -this.gamepad1.right_stick_y;
-            tgtPower4 = -this.gamepad1.right_stick_y;
+            if (gamepad1.right_bumper) {
+                SpeedControl = 1;
+            }
+            if (gamepad1.left_bumper) {
+                SpeedControl = 0.50;
+            }
 
-            tgtPowerML = this.gamepad1.dpad_left;
-            tgtPowerMR = this.gamepad1.dpad_right;
+            if ((gamepad1.dpad_right && gamepad1.dpad_left) == false) {
 
-            if(this.gamepad1.dpad_left == true)
-            {
+                motorLeftFront.setPower(gamepad1.right_stick_y*SpeedControl);
+                motorLeftRear.setPower(gamepad1.right_stick_y*SpeedControl);
+                motorRightFront.setPower(gamepad1.left_stick_y*SpeedControl);
+                motorRightRear.setPower(gamepad1.left_stick_y*SpeedControl);
+
+
+            }
+            while (gamepad1.dpad_right) {
+
                 motorLeftFront.setPower(-1);
                 motorLeftRear.setPower(+1);
                 motorRightFront.setPower(+1);
                 motorRightRear.setPower(-1);
             }
-
-            if(this.gamepad1.dpad_right == true)
-            {
+            while (gamepad1.dpad_left) {
                 motorLeftFront.setPower(+1);
                 motorLeftRear.setPower(-1);
                 motorRightFront.setPower(-1);
                 motorRightRear.setPower(+1);
             }
-
-            motorLeftFront.setPower(tgtPower1);
-            motorLeftRear.setPower(tgtPower2);
-            motorRightFront.setPower(tgtPower3);
-            motorRightRear.setPower(tgtPower4);
 
             telemetry.addData("LF Target Power", tgtPower1);
             telemetry.addData("LF Motor Power", motorLeftFront.getPower());
@@ -79,4 +83,5 @@ public class Playground extends LinearOpMode {
 
         }
     }
+
 }
