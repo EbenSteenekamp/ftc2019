@@ -52,14 +52,14 @@ public class Playground extends LinearOpMode {
 
 
             }
-            while (gamepad1.dpad_right) {
+            while (gamepad1.dpad_left) {
 
                 motorLeftFront.setPower(-1);
                 motorLeftRear.setPower(+1);
                 motorRightFront.setPower(+1);
                 motorRightRear.setPower(-1);
             }
-            while (gamepad1.dpad_left) {
+            while (gamepad1.dpad_right) {
                 motorLeftFront.setPower(+1);
                 motorLeftRear.setPower(-1);
                 motorRightFront.setPower(-1);
