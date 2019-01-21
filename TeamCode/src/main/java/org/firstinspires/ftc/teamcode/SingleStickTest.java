@@ -88,20 +88,20 @@ public class SingleStickTest extends LinearOpMode {
 
                     }
 
-                    if (gamepad1.right_stick_x >= 0) {
-
-                        motorLeftFront.setPower(-1);
-                        motorLeftRear.setPower(+1);
-                        motorRightFront.setPower(+1);
-                        motorRightRear.setPower(-1);
-                    }
-
-                    if (gamepad1.right_stick_x <= 0) {
+                    if (gamepad1.right_stick_x >= 0.5) {
 
                         motorLeftFront.setPower(+1);
                         motorLeftRear.setPower(-1);
                         motorRightFront.setPower(-1);
                         motorRightRear.setPower(+1);
+                    }
+
+                    if (gamepad1.right_stick_x <= -0.5) {
+
+                        motorLeftFront.setPower(-1);
+                        motorLeftRear.setPower(+1);
+                        motorRightFront.setPower(+1);
+                        motorRightRear.setPower(-1);
                     }
 
                 }
@@ -119,16 +119,16 @@ public class SingleStickTest extends LinearOpMode {
 
             while (gamepad1.dpad_right) {
 
-                motorLeftFront.setPower(-1);
-                motorLeftRear.setPower(+1);
-                motorRightFront.setPower(+1);
-                motorRightRear.setPower(-1);
-            }
-            while (gamepad1.dpad_left) {
                 motorLeftFront.setPower(+1);
                 motorLeftRear.setPower(-1);
                 motorRightFront.setPower(-1);
                 motorRightRear.setPower(+1);
+            }
+            while (gamepad1.dpad_left) {
+                motorLeftFront.setPower(-1);
+                motorLeftRear.setPower(+1);
+                motorRightFront.setPower(+1);
+                motorRightRear.setPower(-1);
             }
 
             telemetry.addData("LF Target Power", tgtPower1);
