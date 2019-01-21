@@ -45,7 +45,7 @@ public class SingleStickTest extends LinearOpMode {
 
             if ((gamepad1.dpad_right && gamepad1.dpad_left) == false) {
 
-                if (gamepad1.left_trigger >= 0) {
+                if (gamepad1.left_trigger == 0) {
 
                     if (gamepad1.left_stick_x == 0) {
 
@@ -72,16 +72,13 @@ public class SingleStickTest extends LinearOpMode {
                     }
                 }
 
-                if (gamepad1.left_trigger == 0) {
+                if (gamepad1.left_trigger == 1) {
 
-                    if ((gamepad1.dpad_right && gamepad1.dpad_left) == false) {
+                    motorLeftFront.setPower(gamepad1.right_stick_y * SpeedControl);
+                    motorLeftRear.setPower(gamepad1.right_stick_y * SpeedControl);
+                    motorRightFront.setPower(gamepad1.left_stick_y * SpeedControl);
+                    motorRightRear.setPower(gamepad1.left_stick_y * SpeedControl);
 
-                        motorLeftFront.setPower(gamepad1.right_stick_y * SpeedControl);
-                        motorLeftRear.setPower(gamepad1.right_stick_y * SpeedControl);
-                        motorRightFront.setPower(gamepad1.left_stick_y * SpeedControl);
-                        motorRightRear.setPower(gamepad1.left_stick_y * SpeedControl);
-
-                    }
                 }
             }
 
