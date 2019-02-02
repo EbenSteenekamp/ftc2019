@@ -13,7 +13,7 @@ public class ServoMotor extends  LinearOpMode {
     static final int    CYCLE_MS    =   50;
 
     CRServo servo1;
-    com.qualcomm.robotcore.hardware.Servo servo2;
+    Servo servo2;
     public final static double servoPower = 0.5;
     public final static double position = 0.0;
     public final static double servo_min = 0.0;
@@ -34,18 +34,18 @@ public class ServoMotor extends  LinearOpMode {
 
         while(opModeIsActive()){
             if (gamepad2.a){
-                servo2.setPosition(servo_min);
+                servo2.setPosition(0);
             }
             if (gamepad2.b){
-                servo2.setPosition(servo_max);
+                servo2.setPosition(1);
             }
-            while (gamepad2.left_stick_y >= 0 ) {
-                servo1.setPower(gamepad2.left_stick_y + servoPower);
+            while (gamepad2.dpad_up) {
+                servo1.setPower(servoPower + 6);
                 telemetry.addData("Push Up", "%5.2f", position);
                 telemetry.update();
             }
-            while (gamepad2.left_stick_y <= 0 ){
-                servo1.setPower(gamepad2.left_stick_y - servoPower );
+            while (gamepad2.dpad_down){
+                servo1.setPower(servoPower - 6);
                 telemetry.addData("Push Down", "%5.2f", position);
                 telemetry.update();
             }
