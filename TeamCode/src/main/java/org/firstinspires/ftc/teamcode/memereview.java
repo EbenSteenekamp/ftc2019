@@ -46,7 +46,7 @@ public class memereview extends LinearOpMode {
         double tgtPower2 = 0;
         double tgtPower3 = 0;
         double tgtPower4 = 0;
-        Boolean tgtPower5 = false;
+        double tgtPower5 = 0;
         Boolean tgtPowerML = false;
         Boolean tgtPowerMR = false;
 
@@ -59,21 +59,16 @@ public class memereview extends LinearOpMode {
                 position += INCREMENT ;
                 if (position >= MAX_POS ) {
                     position = MAX_POS;
-
                 }
             }
-
             if (gamepad2.a ){
                 telemetry.addData("Push Down", "%5.2f", position);
                 telemetry.update();
                 position -= INCREMENT ;
                 if (position <= MIN_POS ) {
                     position = MIN_POS;
-
                 }
             }
-
-
             if(gamepad2.left_bumper ) {
                 motorCollect.setPower(+1);
             }
