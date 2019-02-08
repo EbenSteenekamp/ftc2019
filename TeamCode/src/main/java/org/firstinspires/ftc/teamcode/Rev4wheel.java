@@ -48,16 +48,8 @@ public class Rev4wheel extends LinearOpMode {
 
             runServo1();
 
-            if(gamepad2.a)
-            {
-                motorCollect.setPower(1);
-                telemetry.addData("Collection Motor On", motorCollect.getPower());
-            }
-            else
-            {
-                motorCollect.setPower(0);
-                telemetry.addData("Collection Motor Off", motorCollect.getPower());
-            }
+            runCollector();
+
 
 //            if (gamepad2.dpad_right && !gamepad2.dpad_left) {
 //
@@ -160,7 +152,7 @@ public class Rev4wheel extends LinearOpMode {
 
     private void runServo1()
     {
-        if(this.getRuntime()- servostarted > 10)
+        if(this.getRuntime()- servostarted >= 10)
         {
             servo1.setPower(0);
         }
@@ -186,6 +178,19 @@ public class Rev4wheel extends LinearOpMode {
                 servo1.setPower(0);
                 telemetry.addData("Button Center", servo1.getPower());
             }
+        }
+    }
+
+    private void runCollector(){
+        if(gamepad2.a)
+        {
+            motorCollect.setPower(1);
+            telemetry.addData("Collection Motor On", motorCollect.getPower());
+        }
+        else
+        {
+            motorCollect.setPower(0);
+            telemetry.addData("Collection Motor Off", motorCollect.getPower());
         }
     }
 
