@@ -48,8 +48,8 @@ public class Vuforia extends LinearOpMode {
         target = visionTargets.get(0);
         target.setName("BluePerimeter");
     }
-    public OpenGLMatrix createMatrix(float x, float y, float z, float u, float v, float w){
-
-        return OpenGLMatrix.translation(x, y, z).multiplied(Orientation.getRotationMatrix(AxesReference.EXTRINSIC))
-    }
+//    public OpenGLMatrix createMatrix(float x, float y, float z, float u, float v, float w){
+//
+//        return OpenGLMatrix.translation(x, y, z).multiplied(Orientation.getRotationMatrix(AxesReference.EXTRINSIC));
+//    }
 }
