@@ -48,25 +48,29 @@ public class Rev4wheel extends LinearOpMode {
 //            servoClass runServo1 = new servoClass();
 //            servoClass runCollector = new servoClass();
 
-            runCollector();
-
-            if (gamepad2.dpad_right && !gamepad2.dpad_left) {
+            if (gamepad2.dpad_right && !gamepad2.dpad_left && gamepad2.left_bumper) {
                 servo1.setPower(1);
                 telemetry.addData("Left Button", servo1.getPower());
                 sleep(1800);
             }
-            if (gamepad2.dpad_left && !gamepad2.dpad_right) {
+            if (gamepad2.dpad_left && !gamepad2.dpad_right && gamepad2.left_bumper) {
                 servo1.setPower(-1);
                 telemetry.addData("Right Button", servo1.getPower());
                 sleep(1900);
             }
-            if(gamepad2.dpad_right == false && gamepad2.dpad_left == false)
-            {
+            if (gamepad2.dpad_right == false && gamepad2.dpad_left == false) {
                 //Reset the Clock
                 servo1.setPower(0);
                 telemetry.addData("Button Center", servo1.getPower());
             }
             telemetry.update();
+            if (gamepad2.a) {
+                motorCollect.setPower(1);
+                telemetry.addData("Collection Motor On", motorCollect.getPower());
+            } else {
+                motorCollect.setPower(0);
+                telemetry.addData("Collection Motor Off", motorCollect.getPower());
+            }
 
             //*************************************************************************************
             //                                  GamePad 1 Settings
@@ -77,104 +81,146 @@ public class Rev4wheel extends LinearOpMode {
             if (gamepad1.left_bumper) {
                 SpeedControl = 0.50;
             }
-
+            //Stick control
             if ((gamepad1.dpad_right && gamepad1.dpad_left) == false) {
+                //Single stick control
+                if (gamepad1.left_trigger == 0) {
+                    if (gamepad1.left_stick_x == 0) {
+                        motorLeftFront.setPower(gamepad1.left_stick_y * SpeedControl);
+                        motorLeftRear.setPower(gamepad1.left_stick_y * SpeedControl);
+                        motorRightFront.setPower(gamepad1.left_stick_y * SpeedControl);
+                        motorRightRear.setPower(gamepad1.left_stick_y * SpeedControl);
+                    }
+                    if (gamepad1.left_stick_x >= 0 && gamepad1.left_stick_y >= 0) {
+                        motorRightFront.setPower((gamepad1.left_stick_y + gamepad1.left_stick_x) * SpeedControl);
+                        motorRightRear.setPower((gamepad1.left_stick_y + gamepad1.left_stick_x) * SpeedControl);
+                        motorLeftFront.setPower((gamepad1.left_stick_y - gamepad1.left_stick_x) * SpeedControl);
+                        motorLeftRear.setPower((gamepad1.left_stick_y - gamepad1.left_stick_x) * SpeedControl);
+                    }
+                    if (gamepad1.left_stick_x >= 0 && gamepad1.left_stick_y <= 0) {
+                        motorRightFront.setPower((gamepad1.left_stick_y + (gamepad1.left_stick_x * -1)) * SpeedControl);
+                        motorRightRear.setPower((gamepad1.left_stick_y + (gamepad1.left_stick_x * -1)) * SpeedControl);
+                        motorLeftFront.setPower((gamepad1.left_stick_y - (gamepad1.left_stick_x * -1)) * SpeedControl);
+                        motorLeftRear.setPower((gamepad1.left_stick_y - (gamepad1.left_stick_x * -1)) * SpeedControl);
+                    }
+                    if (gamepad1.left_stick_x <= 0 && gamepad1.left_stick_y >= 0) {
+                        motorRightFront.setPower((gamepad1.left_stick_y - (gamepad1.left_stick_x * -1)) * SpeedControl);
+                        motorRightRear.setPower((gamepad1.left_stick_y - (gamepad1.left_stick_x * -1)) * SpeedControl);
+                        motorLeftFront.setPower((gamepad1.left_stick_y + (gamepad1.left_stick_x * -1)) * SpeedControl);
+                        motorLeftRear.setPower((gamepad1.left_stick_y + (gamepad1.left_stick_x * -1)) * SpeedControl);
+                    }
+                    if (gamepad1.left_stick_x <= 0 && gamepad1.left_stick_y <= 0) {
+                        motorRightFront.setPower((gamepad1.left_stick_y - gamepad1.left_stick_x) * SpeedControl);
+                        motorRightRear.setPower((gamepad1.left_stick_y - gamepad1.left_stick_x) * SpeedControl);
+                        motorLeftFront.setPower((gamepad1.left_stick_y + gamepad1.left_stick_x) * SpeedControl);
+                        motorLeftRear.setPower((gamepad1.left_stick_y + gamepad1.left_stick_x) * SpeedControl);
+                    }
+                    //Strafe Stick
+                    if (gamepad1.right_stick_x >= 0.5) {
+                        motorLeftFront.setPower(+1);
+                        motorLeftRear.setPower(-1);
+                        motorRightFront.setPower(-1);
+                        motorRightRear.setPower(+1);
+                    }
+                    if (gamepad1.right_stick_x <= -0.5) {
+                        motorLeftFront.setPower(-1);
+                        motorLeftRear.setPower(+1);
+                        motorRightFront.setPower(+1);
+                        motorRightRear.setPower(-1);
+                    }
+                }
 
-                motorLeftFront.setPower(gamepad1.right_stick_y * SpeedControl);
-                motorLeftRear.setPower(gamepad1.right_stick_y * SpeedControl);
-                motorRightFront.setPower(gamepad1.left_stick_y * SpeedControl);
-                motorRightRear.setPower(gamepad1.left_stick_y * SpeedControl);
-                telemetry.addData("LF Target Power", tgtPower1);
-                telemetry.addData("LF Motor Power", motorLeftFront.getPower());
+                if ((gamepad1.dpad_right && gamepad1.dpad_left) == false) {
 
-                telemetry.addData("LR Target Power", tgtPower2);
-                telemetry.addData("LR Motor Power", motorLeftRear.getPower());
+                    motorLeftFront.setPower(gamepad1.right_stick_y * SpeedControl);
+                    motorLeftRear.setPower(gamepad1.right_stick_y * SpeedControl);
+                    motorRightFront.setPower(gamepad1.left_stick_y * SpeedControl);
+                    motorRightRear.setPower(gamepad1.left_stick_y * SpeedControl);
+                    telemetry.addData("LF Target Power", tgtPower1);
+                    telemetry.addData("LF Motor Power", motorLeftFront.getPower());
 
-                telemetry.addData("RF Target Power", tgtPower3);
-                telemetry.addData("RF Motor Power", motorRightFront.getPower());
+                    telemetry.addData("LR Target Power", tgtPower2);
+                    telemetry.addData("LR Motor Power", motorLeftRear.getPower());
 
-                telemetry.addData("RR Target Power", tgtPower4);
-                telemetry.addData("RR Motor Power", motorRightRear.getPower());
+                    telemetry.addData("RF Target Power", tgtPower3);
+                    telemetry.addData("RF Motor Power", motorRightFront.getPower());
 
-                telemetry.addData("Status", "Running");
+                    telemetry.addData("RR Target Power", tgtPower4);
+                    telemetry.addData("RR Motor Power", motorRightRear.getPower());
+
+                    telemetry.addData("Status", "Running");
 //                telemetry.update();
 
-            }
-            while (gamepad1.dpad_left) {
+                }
 
-                motorLeftFront.setPower(-1);
-                motorLeftRear.setPower(+1);
-                motorRightFront.setPower(+1);
-                motorRightRear.setPower(-1);
-                telemetry.addData("LF Target Power", tgtPower1);
-                telemetry.addData("LF Motor Power", motorLeftFront.getPower());
+                while (gamepad1.dpad_left) {
 
-                telemetry.addData("LR Target Power", tgtPower2);
-                telemetry.addData("LR Motor Power", motorLeftRear.getPower());
+                    motorLeftFront.setPower(-1);
+                    motorLeftRear.setPower(+1);
+                    motorRightFront.setPower(+1);
+                    motorRightRear.setPower(-1);
+                    telemetry.addData("LF Target Power", tgtPower1);
+                    telemetry.addData("LF Motor Power", motorLeftFront.getPower());
 
-                telemetry.addData("RF Target Power", tgtPower3);
-                telemetry.addData("RF Motor Power", motorRightFront.getPower());
+                    telemetry.addData("LR Target Power", tgtPower2);
+                    telemetry.addData("LR Motor Power", motorLeftRear.getPower());
 
-                telemetry.addData("RR Target Power", tgtPower4);
-                telemetry.addData("RR Motor Power", motorRightRear.getPower());
+                    telemetry.addData("RF Target Power", tgtPower3);
+                    telemetry.addData("RF Motor Power", motorRightFront.getPower());
 
-                telemetry.addData("Status", "Running");
-                //telemetry.update();
-            }
-            while (gamepad1.dpad_right) {
-                motorLeftFront.setPower(+1);
-                motorLeftRear.setPower(-1);
-                motorRightFront.setPower(-1);
-                motorRightRear.setPower(+1);
-                telemetry.addData("LF Target Power", tgtPower1);
-                telemetry.addData("LF Motor Power", motorLeftFront.getPower());
+                    telemetry.addData("RR Target Power", tgtPower4);
+                    telemetry.addData("RR Motor Power", motorRightRear.getPower());
 
-                telemetry.addData("LR Target Power", tgtPower2);
-                telemetry.addData("LR Motor Power", motorLeftRear.getPower());
+                    telemetry.addData("Status", "Running");
+                    //telemetry.update();
+                }
 
-                telemetry.addData("RF Target Power", tgtPower3);
-                telemetry.addData("RF Motor Power", motorRightFront.getPower());
+                while (gamepad1.dpad_right) {
+                    motorLeftFront.setPower(+1);
+                    motorLeftRear.setPower(-1);
+                    motorRightFront.setPower(-1);
+                    motorRightRear.setPower(+1);
+                    telemetry.addData("LF Target Power", tgtPower1);
+                    telemetry.addData("LF Motor Power", motorLeftFront.getPower());
 
-                telemetry.addData("RR Target Power", tgtPower4);
-                telemetry.addData("RR Motor Power", motorRightRear.getPower());
+                    telemetry.addData("LR Target Power", tgtPower2);
+                    telemetry.addData("LR Motor Power", motorLeftRear.getPower());
 
-                telemetry.addData("Status", "Running");
-                //telemetry.update();
-            }
-            telemetry.update();
-        }
-    }
+                    telemetry.addData("RF Target Power", tgtPower3);
+                    telemetry.addData("RF Motor Power", motorRightFront.getPower());
 
-    /**private void runServo1(){
-        while (this.getRuntime() - servostarted >= 1.8) {
-            if (gamepad2.dpad_right && !gamepad2.dpad_left) {
-                servostarted = servostarted + getRuntime();
-                servo1.setPower(1);
+                    telemetry.addData("RR Target Power", tgtPower4);
+                    telemetry.addData("RR Motor Power", motorRightRear.getPower());
 
-                telemetry.addData("Left Button", servo1.getPower());
-            }
-            if (gamepad2.dpad_right == false && gamepad2.dpad_left == false) {
-                //Reset the Clock
-                servostarted = 0;
-                servo1.setPower(0);
-                telemetry.addData("Button Center", servo1.getPower());
-            }
-            if (gamepad2.dpad_left && !gamepad2.dpad_right) {
-                servostarted = servostarted + getRuntime();
-                servo1.setPower(-1);
-                telemetry.addData("Right Button", servo1.getPower());
+                    telemetry.addData("Status", "Running");
+                    //telemetry.update();
+                }
+                telemetry.update();
             }
         }
-    }*/
 
-    private void runCollector() {
-        if (gamepad2.a) {
-            motorCollect.setPower(1);
-            telemetry.addData("Collection Motor On", motorCollect.getPower());
-        } else {
-            motorCollect.setPower(0);
-            telemetry.addData("Collection Motor Off", motorCollect.getPower());
-        }
+        /**private void runServo1(){
+         while (this.getRuntime() - servostarted >= 1.8) {
+         if (gamepad2.dpad_right && !gamepad2.dpad_left) {
+         servostarted = servostarted + getRuntime();
+         servo1.setPower(1);
+
+         telemetry.addData("Left Button", servo1.getPower());
+         }
+         if (gamepad2.dpad_right == false && gamepad2.dpad_left == false) {
+         //Reset the Clock
+         servostarted = 0;
+         servo1.setPower(0);
+         telemetry.addData("Button Center", servo1.getPower());
+         }
+         if (gamepad2.dpad_left && !gamepad2.dpad_right) {
+         servostarted = servostarted + getRuntime();
+         servo1.setPower(-1);
+         telemetry.addData("Right Button", servo1.getPower());
+         }
+         }
+         }*/
+
     }
 }
 
