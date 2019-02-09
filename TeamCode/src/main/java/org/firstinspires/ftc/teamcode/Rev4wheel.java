@@ -15,8 +15,6 @@ public class Rev4wheel extends LinearOpMode {
     CRServo servo1;
     DcMotor motorCollect;
 
-    double servostarted = 0;
-    boolean servoclockstarted =false;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -46,31 +44,28 @@ public class Rev4wheel extends LinearOpMode {
 
             //Check if we should stop a Servo that has started, assum only one Servo
 
-            runServo1();
+            //runServo1();
+//            servoClass runServo1 = new servoClass();
+//            servoClass runCollector = new servoClass();
 
             runCollector();
 
-
-//            if (gamepad2.dpad_right && !gamepad2.dpad_left) {
-//
-//                servoclockstarted = true;
-//                servo1.setPower(1);
-//
-//                telemetry.addData("Left Button", servo1.getPower());
-//            }
-//            if (gamepad2.dpad_left && !gamepad2.dpad_right) {
-//
-//                servoclockstarted = true;
-//                servo1.setPower(-1);
-//                telemetry.addData("Right Button", servo1.getPower());
-//            }
-//            if(gamepad2.dpad_right == false && gamepad2.dpad_left == false)
-//            {
-//                //Reset the Clock
-//                servoclockstarted = false;
-//                servo1.setPower(0);
-//                telemetry.addData("Button Center", servo1.getPower());
-//            }
+            if (gamepad2.dpad_right && !gamepad2.dpad_left) {
+                servo1.setPower(1);
+                telemetry.addData("Left Button", servo1.getPower());
+                sleep(1800);
+            }
+            if (gamepad2.dpad_left && !gamepad2.dpad_right) {
+                servo1.setPower(-1);
+                telemetry.addData("Right Button", servo1.getPower());
+                sleep(1900);
+            }
+            if(gamepad2.dpad_right == false && gamepad2.dpad_left == false)
+            {
+                //Reset the Clock
+                servo1.setPower(0);
+                telemetry.addData("Button Center", servo1.getPower());
+            }
             telemetry.update();
 
             //*************************************************************************************
@@ -85,10 +80,10 @@ public class Rev4wheel extends LinearOpMode {
 
             if ((gamepad1.dpad_right && gamepad1.dpad_left) == false) {
 
-                motorLeftFront.setPower(gamepad1.right_stick_y*SpeedControl);
-                motorLeftRear.setPower(gamepad1.right_stick_y*SpeedControl);
-                motorRightFront.setPower(gamepad1.left_stick_y*SpeedControl);
-                motorRightRear.setPower(gamepad1.left_stick_y*SpeedControl);
+                motorLeftFront.setPower(gamepad1.right_stick_y * SpeedControl);
+                motorLeftRear.setPower(gamepad1.right_stick_y * SpeedControl);
+                motorRightFront.setPower(gamepad1.left_stick_y * SpeedControl);
+                motorRightRear.setPower(gamepad1.left_stick_y * SpeedControl);
                 telemetry.addData("LF Target Power", tgtPower1);
                 telemetry.addData("LF Motor Power", motorLeftFront.getPower());
 
@@ -150,48 +145,36 @@ public class Rev4wheel extends LinearOpMode {
         }
     }
 
-    private void runServo1()
-    {
-        if(this.getRuntime()- servostarted >= 10)
-        {
-            servo1.setPower(0);
-        }
-        else
-        {
+    /**private void runServo1(){
+        while (this.getRuntime() - servostarted >= 1.8) {
             if (gamepad2.dpad_right && !gamepad2.dpad_left) {
-
                 servostarted = servostarted + getRuntime();
                 servo1.setPower(1);
 
                 telemetry.addData("Left Button", servo1.getPower());
             }
-            if (gamepad2.dpad_left && !gamepad2.dpad_right) {
-
-                servostarted = servostarted + getRuntime();
-                servo1.setPower(-1);
-                telemetry.addData("Right Button", servo1.getPower());
-            }
-            if(gamepad2.dpad_right == false && gamepad2.dpad_left == false)
-            {
+            if (gamepad2.dpad_right == false && gamepad2.dpad_left == false) {
                 //Reset the Clock
                 servostarted = 0;
                 servo1.setPower(0);
                 telemetry.addData("Button Center", servo1.getPower());
             }
+            if (gamepad2.dpad_left && !gamepad2.dpad_right) {
+                servostarted = servostarted + getRuntime();
+                servo1.setPower(-1);
+                telemetry.addData("Right Button", servo1.getPower());
+            }
         }
-    }
+    }*/
 
-    private void runCollector(){
-        if(gamepad2.a)
-        {
+    private void runCollector() {
+        if (gamepad2.a) {
             motorCollect.setPower(1);
             telemetry.addData("Collection Motor On", motorCollect.getPower());
-        }
-        else
-        {
+        } else {
             motorCollect.setPower(0);
             telemetry.addData("Collection Motor Off", motorCollect.getPower());
         }
     }
-
 }
+
