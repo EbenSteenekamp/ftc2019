@@ -13,23 +13,11 @@ public class ContiniousServo extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         servo1 = hardwareMap.crservo.get("servo1");
         waitForStart();
-        while (opModeIsActive()) {
-            if (gamepad2.dpad_right && !gamepad2.dpad_left) {
-                servo1.setPower(1);
-                telemetry.addData("Left Button", servo1.getPower());
-            }
-            if (gamepad2.dpad_left && !gamepad2.dpad_right) {
-                servo1.setPower(-1);
-                telemetry.addData("Right Button", servo1.getPower());
-            }
-            if(gamepad2.dpad_right == false && gamepad2.dpad_left == false)
-            {
-                servo1.setPower(0);
-                telemetry.addData("Button Center", servo1.getPower());
-            }
-            telemetry.update();
+        servo1.setPower(1);
+        sleep(10000);
+
+
         }
     }
-}
 
 
