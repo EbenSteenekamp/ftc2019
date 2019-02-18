@@ -2,9 +2,12 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.vuforia.HINT;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
@@ -18,7 +21,10 @@ public class Vuforia extends LinearOpMode {
     VuforiaLocalizer vuforiaLocalizer;
     VuforiaLocalizer.Parameters parameters;
     VuforiaTrackables visionTargets;
-    VuforiaTrackable target;
+    VuforiaTrackable target1;
+    VuforiaTrackable target2;
+    VuforiaTrackable target3;
+    VuforiaTrackable target4;
     VuforiaTrackableDefaultListener listener;
 
     OpenGLMatrix lastKnownLocation;
@@ -28,9 +34,29 @@ public class Vuforia extends LinearOpMode {
 
     public void runOpMode() throws InterruptedException{
 
+        setupVuforia();
+        lastKnownLocation = createMatrix(0, 225, 0, 90, 0, 0);
+
         waitForStart();
+        visionTargets.activate();
 
         while (opModeIsActive()){
+
+            OpenGLMatrix latestLocation = listener.getUpdatedRobotLocation();
+            if(latestLocation != null) {
+                lastKnownLocation = latestLocation;
+                telemetry.addData("Tracking" + target1.getName(), listener.isVisible());
+                telemetry.addData("Tracking" + target2.getName(), listener.isVisible());
+                telemetry.addData("Tracking" + target3.getName(), listener.isVisible());
+                telemetry.addData("Tracking" + target4.getName(), listener.isVisible());
+                telemetry.addData("Last known location", formatMatrix(latestLocation));
+            }
+            else {
+                telemetry.addData("Tracking" + target1.getName(), listener.isVisible());
+                telemetry.addData("Tracking" + target2.getName(), listener.isVisible());
+                telemetry.addData("Tracking" + target3.getName(), listener.isVisible());
+                telemetry.addData("Tracking" + target4.getName(), listener.isVisible());
+            }
 
             telemetry.update();
             idle();
@@ -41,15 +67,39 @@ public class Vuforia extends LinearOpMode {
         parameters = new VuforiaLocalizer.Parameters(R.id. cameraMonitorViewId);
         parameters.vuforiaLicenseKey = VUFORIA_Key;
         parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
+        parameters.useExtendedTracking = false;
         vuforiaLocalizer = ClassFactory.createVuforiaLocalizer(parameters);
 
         visionTargets = vuforiaLocalizer.loadTrackablesFromAsset("RoverRuckus");
+        Vuforia.setHint (HINT.HINT_MAX_SIMULTANEOUS_IMAGE_TARGETS, 4);
 
-        target = visionTargets.get(0);
-        target.setName("BluePerimeter");
+
+        target1 = visionTargets.get(0);
+        target2 = visionTargets.get(0);
+        target3 = visionTargets.get(0);
+        target4 = visionTargets.get(0);
+        target1.setName("BluePerimeter");
+        target2.setName("RedPerimeter");
+        target3.setName("FrontPerimeter");
+        target4.setName("BackPerimeter");
+        target1.setLocation(createMatrix(0, 500, 0, 90, 0, 90));
+        target2.setLocation(createMatrix(0, 500, 0, 90, 0, 180));
+        target3.setLocation(createMatrix(0, 500, 0, 90, 0, 270));
+        target4.setLocation(createMatrix(0, 500, 0, 90, 0, 360));
+        phoneLocation = createMatrix(0, 225, 0, 90, 0, 0);
+        listener = (VuforiaTrackableDefaultListener) target1.getListener();
+        listener.setPhoneInformation(phoneLocation, parameters.cameraDirection);
     }
-//    public OpenGLMatrix createMatrix(float x, float y, float z, float u, float v, float w){
-//
-//        return OpenGLMatrix.translation(x, y, z).multiplied(Orientation.getRotationMatrix(AxesReference.EXTRINSIC));
-//    }
+
+    private static void setHint(int hintMaxSimultaneousImageTargets, int i) {
+    }
+
+    public OpenGLMatrix createMatrix(float x, float y, float z, float u, float v, float w){
+
+        return OpenGLMatrix.translation(x, y, z).multiplied(Orientation.getRotationMatrix(AxesReference.EXTRINSIC,
+                AxesOrder.XYZ, AngleUnit.DEGREES, u, v, w ));
+    }
+     public String formatMatrix(OpenGLMatrix matrix){
+        return matrix.formatAsTransform();
+    }
 }
