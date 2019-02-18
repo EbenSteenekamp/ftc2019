@@ -14,12 +14,16 @@ public class Rev4wheel extends LinearOpMode {
     DcMotor motorRightRear;
     CRServo servo1;
     DcMotor motorCollect;
+    DcMotor motorLift;
+    DcMotor motorExtend;
 
 
     @Override
     public void runOpMode() throws InterruptedException {
 
         servo1 = hardwareMap.crservo.get("servo1");
+        motorExtend = hardwareMap.get(DcMotor.class, "motorExtend");
+        motorLift = hardwareMap.get(DcMotor.class, "motorLift");
         motorLeftFront = hardwareMap.get(DcMotor.class, "motorLeftFront");
         motorLeftRear = hardwareMap.get(DcMotor.class, "motorLeftRear");
         motorRightFront = hardwareMap.get(DcMotor.class, "motorRightFront");
@@ -62,6 +66,30 @@ public class Rev4wheel extends LinearOpMode {
                 //Reset the Clock
                 servo1.setPower(0);
                 telemetry.addData("Button Center", servo1.getPower());
+            }
+            if (gamepad2.right_stick_y > 0){
+                motorLift.setPower(0.2 * gamepad2.right_stick_y);
+                telemetry.addData("Lifting Motor On", motorLift.getPower());
+            }
+            if (gamepad2.right_stick_y < 0){
+                motorLift.setPower(0.2 * gamepad2.right_stick_y);
+                telemetry.addData("Lifting Motor On", motorLift.getPower());
+            }
+            if (gamepad2.right_stick_y == 0){
+                motorLift.setPower(0);
+                telemetry.addData("Lifting Motor On", motorLift.getPower());
+            }
+            if (gamepad2.left_stick_y > 0){
+                motorExtend.setPower(0.2 * gamepad2.right_stick_y);
+                telemetry.addData("Extending Motor On", motorExtend.getPower());
+            }
+            if (gamepad2.left_stick_y < 0){
+                motorExtend.setPower(0.2 * gamepad2.right_stick_y);
+                telemetry.addData("Extending Motor On", motorExtend.getPower());
+            }
+            if (gamepad2.left_stick_y == 0){
+                motorExtend.setPower(0);
+                telemetry.addData("Extending Motor On", motorExtend.getPower());
             }
             telemetry.update();
             if (gamepad2.a) {
@@ -198,28 +226,5 @@ public class Rev4wheel extends LinearOpMode {
                 telemetry.update();
             }
         }
-
-        /**private void runServo1(){
-         while (this.getRuntime() - servostarted >= 1.8) {
-         if (gamepad2.dpad_right && !gamepad2.dpad_left) {
-         servostarted = servostarted + getRuntime();
-         servo1.setPower(1);
-
-         telemetry.addData("Left Button", servo1.getPower());
-         }
-         if (gamepad2.dpad_right == false && gamepad2.dpad_left == false) {
-         //Reset the Clock
-         servostarted = 0;
-         servo1.setPower(0);
-         telemetry.addData("Button Center", servo1.getPower());
-         }
-         if (gamepad2.dpad_left && !gamepad2.dpad_right) {
-         servostarted = servostarted + getRuntime();
-         servo1.setPower(-1);
-         telemetry.addData("Right Button", servo1.getPower());
-         }
-         }
-         }*/
-
     }
 }
