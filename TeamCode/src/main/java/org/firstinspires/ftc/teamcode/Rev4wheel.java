@@ -40,6 +40,7 @@ public class Rev4wheel extends LinearOpMode {
         double tgtPower2 = 0;
         double tgtPower3 = 0;
         double tgtPower4 = 0;
+        boolean Colect = false;
 
         while (opModeIsActive()) {
 
@@ -92,7 +93,13 @@ public class Rev4wheel extends LinearOpMode {
                 telemetry.addData("Extending Motor On", motorExtend.getPower());
             }
             telemetry.update();
-            if (gamepad2.a) {
+            if (gamepad2.a && Colect == false){
+                Colect = true;
+            }
+            if (gamepad2.a && Colect == true){
+                Colect = false;
+            }
+            if (Colect) {
                 motorCollect.setPower(1);
                 telemetry.addData("Collection Motor On", motorCollect.getPower());
             } else {
