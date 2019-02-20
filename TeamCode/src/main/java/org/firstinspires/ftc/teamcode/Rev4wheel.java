@@ -68,24 +68,24 @@ public class Rev4wheel extends LinearOpMode {
                 servo1.setPower(0);
                 telemetry.addData("Button Center", servo1.getPower());
             }
-            if (gamepad2.right_stick_y > 0){
-                motorLift.setPower(0.2 * gamepad2.right_stick_y);
-                telemetry.addData("Lifting Motor On", motorLift.getPower());
+            if (gamepad2.dpad_up){
+                motorLift.setPower(1);//0.7 * gamepad2.right_stick_y);
+                telemetry.addData("Lifting Motor Up", motorLift.getPower());
             }
-            if (gamepad2.right_stick_y < 0){
-                motorLift.setPower(0.2 * gamepad2.right_stick_y);
-                telemetry.addData("Lifting Motor On", motorLift.getPower());
+            if (gamepad2.dpad_down){
+                motorLift.setPower(-1);//0.7 * gamepad2.right_stick_y);
+                telemetry.addData("Lifting Motor Down", motorLift.getPower());
             }
-            if (gamepad2.right_stick_y == 0){
+            if (gamepad2.dpad_up ==false && gamepad2.dpad_down ==false){
                 motorLift.setPower(0);
-                telemetry.addData("Lifting Motor On", motorLift.getPower());
+                telemetry.addData("Lifting Motor Off", motorLift.getPower());
             }
             if (gamepad2.left_stick_y > 0){
-                motorExtend.setPower(0.2 * gamepad2.right_stick_y);
+                motorExtend.setPower(0.5 * gamepad2.left_stick_y);
                 telemetry.addData("Extending Motor On", motorExtend.getPower());
             }
             if (gamepad2.left_stick_y < 0){
-                motorExtend.setPower(0.2 * gamepad2.right_stick_y);
+                motorExtend.setPower(0.5 * gamepad2.left_stick_y);
                 telemetry.addData("Extending Motor On", motorExtend.getPower());
             }
             if (gamepad2.left_stick_y == 0){
