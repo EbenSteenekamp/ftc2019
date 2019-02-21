@@ -17,6 +17,11 @@ public class Rev4wheel extends LinearOpMode {
     DcMotor motorLift;
     DcMotor motorExtend;
 
+    //Declare values/constants for Static Power settings, Change for Tuning default Values
+    double liftmotorUpPowerSetting = 1; //We need all the Power to Lift
+    double liftmotorDownPowerSetting = -0.7; //We can make the motot slower when the are goes down
+    double collectorMotorPowerSetting = 0.7 ; //We don't need full Power at the Collector, Run one direction
+    double extendingArmPowerSetting = 0.5; //We only need half power, retracting and extending use same value, only sign change for motor direction
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -35,12 +40,13 @@ public class Rev4wheel extends LinearOpMode {
         telemetry.update();
 
         waitForStart();
-        double SpeedControl = 0.5;
-        double tgtPower1 = 0;
-        double tgtPower2 = 0;
-        double tgtPower3 = 0;
-        double tgtPower4 = 0;
-        boolean Colect = false;
+        double speedControlPowerSetting = 0.5;
+        double leftFrontPowerSetting = 0;
+        double leftRearPowerSetting = 0;
+        double rightFrontPowerSetting = 0;
+        double rightRearPowerSetting = 0;
+        boolean collecting = false;
+
 
         while (opModeIsActive()) {
 
@@ -68,38 +74,38 @@ public class Rev4wheel extends LinearOpMode {
                 servo1.setPower(0);
                 telemetry.addData("Button Center", servo1.getPower());
             }
-            if (gamepad2.right_stick_y > 0){
-                motorLift.setPower(0.2 * gamepad2.right_stick_y);
-                telemetry.addData("Lifting Motor On", motorLift.getPower());
+            if (gamepad2.dpad_up){
+                motorLift.setPower(liftmotorUpPowerSetting);//0.7 * gamepad2.right_stick_y);
+                telemetry.addData("Lifting Motor Up", motorLift.getPower());
             }
-            if (gamepad2.right_stick_y < 0){
-                motorLift.setPower(0.2 * gamepad2.right_stick_y);
-                telemetry.addData("Lifting Motor On", motorLift.getPower());
+            if (gamepad2.dpad_down){
+                motorLift.setPower(liftmotorDownPowerSetting);//0.7 * gamepad2.right_stick_y);
+                telemetry.addData("Lifting Motor Down", motorLift.getPower());
             }
-            if (gamepad2.right_stick_y == 0){
+            if (gamepad2.dpad_up ==false && gamepad2.dpad_down ==false){
                 motorLift.setPower(0);
-                telemetry.addData("Lifting Motor On", motorLift.getPower());
+                telemetry.addData("Lifting Motor Off", motorLift.getPower());
             }
             if (gamepad2.left_stick_y > 0){
-                motorExtend.setPower(0.2 * gamepad2.right_stick_y);
-                telemetry.addData("Extending Motor On", motorExtend.getPower());
+                motorExtend.setPower(extendingArmPowerSetting * gamepad2.left_stick_y);
+                telemetry.addData("Extending Motor, extending Arm", motorExtend.getPower());
             }
             if (gamepad2.left_stick_y < 0){
-                motorExtend.setPower(0.2 * gamepad2.right_stick_y);
-                telemetry.addData("Extending Motor On", motorExtend.getPower());
+                motorExtend.setPower(-extendingArmPowerSetting * gamepad2.left_stick_y);
+                telemetry.addData("Extending Motor, retracting Arm", motorExtend.getPower());
             }
             if (gamepad2.left_stick_y == 0){
                 motorExtend.setPower(0);
                 telemetry.addData("Extending Motor On", motorExtend.getPower());
             }
             telemetry.update();
-            if (gamepad2.a && Colect == false){
-                Colect = true;
+            if (gamepad2.a && collecting == false){
+                collecting = true;
             }
-            if (gamepad2.a && Colect == true){
-                Colect = false;
+            if (gamepad2.a && collecting == true){
+                collecting = false;
             }
-            if (Colect) {
+            if (collecting) {
                 motorCollect.setPower(1);
                 telemetry.addData("Collection Motor On", motorCollect.getPower());
             } else {
@@ -111,44 +117,44 @@ public class Rev4wheel extends LinearOpMode {
             //                                  GamePad 1 Settings
 
             if (gamepad1.right_bumper) {
-                SpeedControl = 1;
+                speedControl = 1;
             }
             if (gamepad1.left_bumper) {
-                SpeedControl = 0.50;
+                speedControl = 0.50;
             }
             //Stick control
             if ((gamepad1.dpad_right && gamepad1.dpad_left) == false) {
                 //Single stick control
                 if (gamepad1.left_trigger == 0) {
                     if (gamepad1.left_stick_x == 0) {
-                        motorLeftFront.setPower(gamepad1.left_stick_y * SpeedControl);
-                        motorLeftRear.setPower(gamepad1.left_stick_y * SpeedControl);
-                        motorRightFront.setPower(gamepad1.left_stick_y * SpeedControl);
-                        motorRightRear.setPower(gamepad1.left_stick_y * SpeedControl);
+                        motorLeftFront.setPower(gamepad1.left_stick_y * speedControlPowerSetting);
+                        motorLeftRear.setPower(gamepad1.left_stick_y * speedControlPowerSetting);
+                        motorRightFront.setPower(gamepad1.left_stick_y * speedControlPowerSetting);
+                        motorRightRear.setPower(gamepad1.left_stick_y * speedControlPowerSetting);
                     }
                     if (gamepad1.left_stick_x >= 0 && gamepad1.left_stick_y >= 0) {
-                        motorRightFront.setPower((gamepad1.left_stick_y + gamepad1.left_stick_x) * SpeedControl);
-                        motorRightRear.setPower((gamepad1.left_stick_y + gamepad1.left_stick_x) * SpeedControl);
-                        motorLeftFront.setPower((gamepad1.left_stick_y - gamepad1.left_stick_x) * SpeedControl);
-                        motorLeftRear.setPower((gamepad1.left_stick_y - gamepad1.left_stick_x) * SpeedControl);
+                        motorRightFront.setPower((gamepad1.left_stick_y + gamepad1.left_stick_x) * speedControlPowerSetting);
+                        motorRightRear.setPower((gamepad1.left_stick_y + gamepad1.left_stick_x) * speedControlPowerSetting);
+                        motorLeftFront.setPower((gamepad1.left_stick_y - gamepad1.left_stick_x) * speedControlPowerSetting);
+                        motorLeftRear.setPower((gamepad1.left_stick_y - gamepad1.left_stick_x) * speedControlPowerSetting);
                     }
                     if (gamepad1.left_stick_x >= 0 && gamepad1.left_stick_y <= 0) {
-                        motorRightFront.setPower((gamepad1.left_stick_y + (gamepad1.left_stick_x * -1)) * SpeedControl);
-                        motorRightRear.setPower((gamepad1.left_stick_y + (gamepad1.left_stick_x * -1)) * SpeedControl);
-                        motorLeftFront.setPower((gamepad1.left_stick_y - (gamepad1.left_stick_x * -1)) * SpeedControl);
-                        motorLeftRear.setPower((gamepad1.left_stick_y - (gamepad1.left_stick_x * -1)) * SpeedControl);
+                        motorRightFront.setPower((gamepad1.left_stick_y + (gamepad1.left_stick_x * -1)) * speedControlPowerSetting);
+                        motorRightRear.setPower((gamepad1.left_stick_y + (gamepad1.left_stick_x * -1)) * speedControlPowerSetting);
+                        motorLeftFront.setPower((gamepad1.left_stick_y - (gamepad1.left_stick_x * -1)) * speedControlPowerSetting);
+                        motorLeftRear.setPower((gamepad1.left_stick_y - (gamepad1.left_stick_x * -1)) * speedControlPowerSetting);
                     }
                     if (gamepad1.left_stick_x <= 0 && gamepad1.left_stick_y >= 0) {
-                        motorRightFront.setPower((gamepad1.left_stick_y - (gamepad1.left_stick_x * -1)) * SpeedControl);
-                        motorRightRear.setPower((gamepad1.left_stick_y - (gamepad1.left_stick_x * -1)) * SpeedControl);
-                        motorLeftFront.setPower((gamepad1.left_stick_y + (gamepad1.left_stick_x * -1)) * SpeedControl);
-                        motorLeftRear.setPower((gamepad1.left_stick_y + (gamepad1.left_stick_x * -1)) * SpeedControl);
+                        motorRightFront.setPower((gamepad1.left_stick_y - (gamepad1.left_stick_x * -1)) * speedControlPowerSetting);
+                        motorRightRear.setPower((gamepad1.left_stick_y - (gamepad1.left_stick_x * -1)) * speedControlPowerSetting);
+                        motorLeftFront.setPower((gamepad1.left_stick_y + (gamepad1.left_stick_x * -1)) * speedControlPowerSetting);
+                        motorLeftRear.setPower((gamepad1.left_stick_y + (gamepad1.left_stick_x * -1)) * speedControlPowerSetting);
                     }
                     if (gamepad1.left_stick_x <= 0 && gamepad1.left_stick_y <= 0) {
-                        motorRightFront.setPower((gamepad1.left_stick_y - gamepad1.left_stick_x) * SpeedControl);
-                        motorRightRear.setPower((gamepad1.left_stick_y - gamepad1.left_stick_x) * SpeedControl);
-                        motorLeftFront.setPower((gamepad1.left_stick_y + gamepad1.left_stick_x) * SpeedControl);
-                        motorLeftRear.setPower((gamepad1.left_stick_y + gamepad1.left_stick_x) * SpeedControl);
+                        motorRightFront.setPower((gamepad1.left_stick_y - gamepad1.left_stick_x) * speedControlPowerSetting);
+                        motorRightRear.setPower((gamepad1.left_stick_y - gamepad1.left_stick_x) * speedControlPowerSetting);
+                        motorLeftFront.setPower((gamepad1.left_stick_y + gamepad1.left_stick_x) * speedControlPowerSetting);
+                        motorLeftRear.setPower((gamepad1.left_stick_y + gamepad1.left_stick_x) * speedControlPowerSetting);
                     }
                     //Strafe Stick
                     if (gamepad1.right_stick_x >= 0.5) {
@@ -167,21 +173,22 @@ public class Rev4wheel extends LinearOpMode {
 
                 if ((gamepad1.dpad_right && gamepad1.dpad_left) == false) {
 
-                    motorLeftFront.setPower(gamepad1.right_stick_y * SpeedControl);
-                    motorLeftRear.setPower(gamepad1.right_stick_y * SpeedControl);
-                    motorRightFront.setPower(gamepad1.left_stick_y * SpeedControl);
-                    motorRightRear.setPower(gamepad1.left_stick_y * SpeedControl);
-                    telemetry.addData("LF Target Power", tgtPower1);
+                    motorLeftFront.setPower(gamepad1.right_stick_y * speedControlPowerSetting);
+                    motorLeftRear.setPower(gamepad1.right_stick_y * speedControlPowerSetting);
+                    motorRightFront.setPower(gamepad1.left_stick_y * speedControlPowerSetting);
+                    motorRightRear.setPower(gamepad1.left_stick_y * speedControlPowerSetting);
+                    telemetry.addData("LF Target Power", leftFrontPowerSetting);
                     telemetry.addData("LF Motor Power", motorLeftFront.getPower());
 
-                    telemetry.addData("LR Target Power", tgtPower2);
+                    telemetry.addData("LR Target Power", leftRearPowerSetting);
                     telemetry.addData("LR Motor Power", motorLeftRear.getPower());
 
-                    telemetry.addData("RF Target Power", tgtPower3);
+                    telemetry.addData("RF Target Power", rightFrontPowerSetting);
                     telemetry.addData("RF Motor Power", motorRightFront.getPower());
 
-                    telemetry.addData("RR Target Power", tgtPower4);
+                    telemetry.addData("RR Target Power", rightRearPowerSetting);
                     telemetry.addData("RR Motor Power", motorRightRear.getPower());
+
 
                     telemetry.addData("Status", "Running");
 //                telemetry.update();
@@ -194,17 +201,19 @@ public class Rev4wheel extends LinearOpMode {
                     motorLeftRear.setPower(+1);
                     motorRightFront.setPower(+1);
                     motorRightRear.setPower(-1);
-                    telemetry.addData("LF Target Power", tgtPower1);
+
+                    telemetry.addData("LF Target Power", leftFrontPowerSetting);
                     telemetry.addData("LF Motor Power", motorLeftFront.getPower());
 
-                    telemetry.addData("LR Target Power", tgtPower2);
+                    telemetry.addData("LR Target Power", leftRearPowerSetting);
                     telemetry.addData("LR Motor Power", motorLeftRear.getPower());
 
-                    telemetry.addData("RF Target Power", tgtPower3);
+                    telemetry.addData("RF Target Power", rightFrontPowerSetting);
                     telemetry.addData("RF Motor Power", motorRightFront.getPower());
 
-                    telemetry.addData("RR Target Power", tgtPower4);
+                    telemetry.addData("RR Target Power", rightRearPowerSetting);
                     telemetry.addData("RR Motor Power", motorRightRear.getPower());
+
 
                     telemetry.addData("Status", "Running");
                     //telemetry.update();
@@ -215,17 +224,19 @@ public class Rev4wheel extends LinearOpMode {
                     motorLeftRear.setPower(-1);
                     motorRightFront.setPower(-1);
                     motorRightRear.setPower(+1);
-                    telemetry.addData("LF Target Power", tgtPower1);
+
+                    telemetry.addData("LF Target Power", leftFrontPowerSetting);
                     telemetry.addData("LF Motor Power", motorLeftFront.getPower());
 
-                    telemetry.addData("LR Target Power", tgtPower2);
+                    telemetry.addData("LR Target Power", leftRearPowerSetting);
                     telemetry.addData("LR Motor Power", motorLeftRear.getPower());
 
-                    telemetry.addData("RF Target Power", tgtPower3);
+                    telemetry.addData("RF Target Power", rightFrontPowerSetting);
                     telemetry.addData("RF Motor Power", motorRightFront.getPower());
 
-                    telemetry.addData("RR Target Power", tgtPower4);
+                    telemetry.addData("RR Target Power", rightRearPowerSetting);
                     telemetry.addData("RR Motor Power", motorRightRear.getPower());
+
 
                     telemetry.addData("Status", "Running");
                     //telemetry.update();
