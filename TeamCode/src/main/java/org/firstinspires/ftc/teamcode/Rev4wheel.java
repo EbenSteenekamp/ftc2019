@@ -48,6 +48,7 @@ public class Rev4wheel extends LinearOpMode {
         double leftRearPowerSetting = 0;
         double rightFrontPowerSetting = 0;
         double rightRearPowerSetting = 0;
+        double speedControl = 1;
         boolean collecting = false;
 
 
