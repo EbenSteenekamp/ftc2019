@@ -117,10 +117,10 @@ public class Rev4wheel extends LinearOpMode {
             //                                  GamePad 1 Settings
 
             if (gamepad1.right_bumper) {
-                speedControl = 1;
+                speedControlPowerSetting = 1;
             }
             if (gamepad1.left_bumper) {
-                speedControl = 0.50;
+                speedControlPowerSetting = 0.50;
             }
             //Stick control
             if ((gamepad1.dpad_right && gamepad1.dpad_left) == false) {
