@@ -22,13 +22,12 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
 import java.util.ArrayList;
 import java.util.List;
 
+@Autonomous(name = "GBtest", group = "Blue")
+public class GoldBlock extends LinearOpMode{
 
-
-@Autonomous(name = "Blue2", group = "Blue")
-public class TestA extends LinearOpMode {
     AutoOpRobot robot = new AutoOpRobot();
-  
-            private static final String VUFORIA_KEY = "Adt99vT/////AAABmQfaL1Gc6k6YpSV4p0gyJUg3w2FZlS8RqVrXnweJXsLcl6JrGb5Age+Cv4I9IS+9XG2ZMhWR19WkeOkWkrTXMzKjblOZGI0FC/WUj9CXpGB7wTS8qQuNHut0NT3aZzPjx3aNnjfUCmBvwrCcVHgvLBLU460n9TE9Yug17HApyE+ix9xcJ2J5QtVejR9PNm8SNmpFAEyGmSasukJHF0Em7cNrHAsR5MxPSCBAnQA3B2pL5onCRotpWAu0rcOCYfXWrHeVtYAEHzm3GdFRj73cQ3eGFgOCHJSyMC0AhHH0M8cFlltdKc0f08FHioKrXu8OpvLGCTtYMSZ6Jq2we4+keaVEPBZY6U4YBffLK7jQnP1p";
+
+    private static final String VUFORIA_KEY = "Adt99vT/////AAABmQfaL1Gc6k6YpSV4p0gyJUg3w2FZlS8RqVrXnweJXsLcl6JrGb5Age+Cv4I9IS+9XG2ZMhWR19WkeOkWkrTXMzKjblOZGI0FC/WUj9CXpGB7wTS8qQuNHut0NT3aZzPjx3aNnjfUCmBvwrCcVHgvLBLU460n9TE9Yug17HApyE+ix9xcJ2J5QtVejR9PNm8SNmpFAEyGmSasukJHF0Em7cNrHAsR5MxPSCBAnQA3B2pL5onCRotpWAu0rcOCYfXWrHeVtYAEHzm3GdFRj73cQ3eGFgOCHJSyMC0AhHH0M8cFlltdKc0f08FHioKrXu8OpvLGCTtYMSZ6Jq2we4+keaVEPBZY6U4YBffLK7jQnP1p";
 
     // Since ImageTarget trackables use mm to specifiy their dimensions, we must use mm for all the physical dimension.
     // We will define some constants and conversions here
@@ -45,7 +44,7 @@ public class TestA extends LinearOpMode {
     boolean FindTarget = false;
 
     VuforiaLocalizer vuforia;
-    
+
     @Override
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
@@ -59,81 +58,17 @@ public class TestA extends LinearOpMode {
 
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
 
-        VuforiaTrackables targetsRoverRuckus = this.vuforia.loadTrackablesFromAsset("RoverRuckus");
-        VuforiaTrackable blueRover = targetsRoverRuckus.get(0);
-        blueRover.setName("Blue-Rover");
-        VuforiaTrackable redFootprint = targetsRoverRuckus.get(1);
-        redFootprint.setName("Red-Footprint");
-        VuforiaTrackable frontCraters = targetsRoverRuckus.get(2);
-        frontCraters.setName("Front-Craters");
-        VuforiaTrackable backSpace = targetsRoverRuckus.get(3);
-        backSpace.setName("Back-Space");
+        VuforiaTrackables targetsGoldBlock = this.vuforia.loadTrackablesFromAsset("GoldBlock_OT");
+        VuforiaTrackable goldBlock = targetsGoldBlock.get(0);
+        goldBlock.setName("GoldBlock");
 
         List<VuforiaTrackable> allTrackables = new ArrayList<VuforiaTrackable>();
-        allTrackables.addAll(targetsRoverRuckus);
+        allTrackables.addAll(targetsGoldBlock);
 
-        /**
-         * If you are standing in the Red Alliance Station looking towards the center of the field,
-         *     - The X axis runs from your left to the right. (positive from the center to the right)
-         *     - The Y axis runs from the Red Alliance Station towards the other side of the field
-         *       where the Blue Alliance Station is. (Positive is from the center, towards the BlueAlliance station)
-         *     - The Z axis runs from the floor, upwards towards the ceiling.  (Positive is above the floor)
-         */
-
-        /**
-         * To place the BlueRover target in the middle of the blue perimeter wall:
-         * - First we rotate it 90 around the field's X axis to flip it upright.
-         * - Then, we translate it along the Y axis to the blue perimeter wall.
-         */
-        OpenGLMatrix blueRoverLocationOnField = OpenGLMatrix
+        OpenGLMatrix goldBlockLocationOnField = OpenGLMatrix
                 .translation(0, mmFTCFieldWidth, mmTargetHeight)
                 .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0, 0));
-        blueRover.setLocation(blueRoverLocationOnField);
-
-        /**
-         * To place the RedFootprint target in the middle of the red perimeter wall:
-         * - First we rotate it 90 around the field's X axis to flip it upright.
-         * - Second, we rotate it 180 around the field's Z axis so the image is flat against the red perimeter wall
-         *   and facing inwards to the center of the field.
-         * - Then, we translate it along the negative Y axis to the red perimeter wall.
-         */
-        OpenGLMatrix redFootprintLocationOnField = OpenGLMatrix
-                .translation(0, -mmFTCFieldWidth, mmTargetHeight)
-                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0, 180));
-        redFootprint.setLocation(redFootprintLocationOnField);
-
-        /**
-         * To place the FrontCraters target in the middle of the front perimeter wall:
-         * - First we rotate it 90 around the field's X axis to flip it upright.
-         * - Second, we rotate it 90 around the field's Z axis so the image is flat against the front wall
-         *   and facing inwards to the center of the field.
-         * - Then, we translate it along the negative X axis to the front perimeter wall.
-         */
-        OpenGLMatrix frontCratersLocationOnField = OpenGLMatrix
-                .translation(-mmFTCFieldWidth, 0, mmTargetHeight)
-                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0 , 90));
-        frontCraters.setLocation(frontCratersLocationOnField);
-
-        /**
-         * To place the BackSpace target in the middle of the back perimeter wall:
-         * - First we rotate it 90 around the field's X axis to flip it upright.
-         * - Second, we rotate it -90 around the field's Z axis so the image is flat against the back wall
-         *   and facing inwards to the center of the field.
-         * - Then, we translate it along the X axis to the back perimeter wall.
-         */
-        OpenGLMatrix backSpaceLocationOnField = OpenGLMatrix
-                .translation(mmFTCFieldWidth, 0, mmTargetHeight)
-                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0, -90));
-        backSpace.setLocation(backSpaceLocationOnField);
-
-        /**
-         * If using the rear (High Res) camera:
-         * We need to rotate the camera around it's long axis to bring the rear camera forward.
-         * This requires a negative 90 degree rotation on the Y axis
-         *
-         * Next, translate the camera lens to where it is on the robot.
-         * In this example, it is centered (left to right), but 110 mm forward of the middle of the robot, and 200 mm above ground level.
-         */
+        goldBlock.setLocation(goldBlockLocationOnField);
 
         final int CAMERA_FORWARD_DISPLACEMENT  = 110;   // eg: Camera is 110 mm in front of robot center
         final int CAMERA_VERTICAL_DISPLACEMENT = 200;   // eg: Camera is 200 mm above ground
@@ -154,10 +89,10 @@ public class TestA extends LinearOpMode {
 
         waitForStart();
 
-        targetsRoverRuckus.activate();
-        
+        targetsGoldBlock.activate();
+
         while (opModeIsActive()) {
-			// check all the trackable target to see which one (if any) is visible.
+            // check all the trackable target to see which one (if any) is visible.
             targetVisible = false;
             for (VuforiaTrackable trackable : allTrackables) {
                 if (((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible()) {
@@ -197,4 +132,5 @@ public class TestA extends LinearOpMode {
             telemetry.update();
         }
     }
+
 }

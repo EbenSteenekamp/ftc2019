@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode;
         import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
         import com.qualcomm.robotcore.hardware.CRServo;
         import com.qualcomm.robotcore.hardware.DcMotor;
+        import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name="Rev4wheel", group="Linear Opmode")
 
@@ -13,6 +14,7 @@ public class Rev4wheel extends LinearOpMode {
     DcMotor motorRightFront;
     DcMotor motorRightRear;
     CRServo servo1;
+    Servo servoB;
     DcMotor motorCollect;
     DcMotor motorLift;
     DcMotor motorExtend;
@@ -21,6 +23,7 @@ public class Rev4wheel extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
+        servoB = hardwareMap.servo.get("servoB");
         servo1 = hardwareMap.crservo.get("servo1");
         motorExtend = hardwareMap.get(DcMotor.class, "motorExtend");
         motorLift = hardwareMap.get(DcMotor.class, "motorLift");
@@ -54,11 +57,13 @@ public class Rev4wheel extends LinearOpMode {
 //            servoClass runCollector = new servoClass();
 
             if (gamepad2.dpad_right && !gamepad2.dpad_left && gamepad2.left_bumper) {
+                servoB.setPosition(1);
                 servo1.setPower(1);
                 telemetry.addData("Left Button", servo1.getPower());
                 sleep(1800);
             }
             if (gamepad2.dpad_left && !gamepad2.dpad_right && gamepad2.left_bumper) {
+                servoB.setPosition(-1);
                 servo1.setPower(-1);
                 telemetry.addData("Right Button", servo1.getPower());
                 sleep(1900);
