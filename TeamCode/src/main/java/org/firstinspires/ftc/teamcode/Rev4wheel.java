@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode;
         import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
         import com.qualcomm.robotcore.hardware.CRServo;
         import com.qualcomm.robotcore.hardware.DcMotor;
+        import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name="Rev4wheel", group="Linear Opmode")
 
@@ -12,10 +13,11 @@ public class Rev4wheel extends LinearOpMode {
     DcMotor motorLeftRear;
     DcMotor motorRightFront;
     DcMotor motorRightRear;
-    CRServo servo1;
+    CRServo hitchServo;
     DcMotor motorCollect;
     DcMotor motorLift;
     DcMotor motorExtend;
+    Servo brakeServo;
 
     //Declare values/constants for Static Power settings, Change for Tuning default Values
     double liftmotorUpPowerSetting = 1; //We need all the Power to Lift
@@ -26,7 +28,7 @@ public class Rev4wheel extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        servo1 = hardwareMap.crservo.get("servo1");
+        hitchServo = hardwareMap.crservo.get("hitchServo");
         motorExtend = hardwareMap.get(DcMotor.class, "motorExtend");
         motorLift = hardwareMap.get(DcMotor.class, "motorLift");
         motorLeftFront = hardwareMap.get(DcMotor.class, "motorLeftFront");
@@ -35,6 +37,7 @@ public class Rev4wheel extends LinearOpMode {
         motorRightRear = hardwareMap.get(DcMotor.class, "motorRightRear");
         motorLeftFront.setDirection(DcMotor.Direction.REVERSE);
         motorLeftRear.setDirection(DcMotor.Direction.REVERSE);
+        brakeServo = hardwareMap.servo.get("brakeServo");
         motorCollect = hardwareMap.get(DcMotor.class, "motorCollect");
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -60,19 +63,19 @@ public class Rev4wheel extends LinearOpMode {
 //            servoClass runCollector = new servoClass();
 
             if (gamepad2.dpad_right && !gamepad2.dpad_left && gamepad2.left_bumper) {
-                servo1.setPower(1);
-                telemetry.addData("Left Button", servo1.getPower());
+                hitchServo.setPower(1);
+                telemetry.addData("Left Button", hitchServo.getPower());
                 sleep(1800);
             }
             if (gamepad2.dpad_left && !gamepad2.dpad_right && gamepad2.left_bumper) {
-                servo1.setPower(-1);
-                telemetry.addData("Right Button", servo1.getPower());
+                hitchServo.setPower(-1);
+                telemetry.addData("Right Button", hitchServo.getPower());
                 sleep(1900);
             }
             if (gamepad2.dpad_right == false && gamepad2.dpad_left == false) {
                 //Reset the Clock
-                servo1.setPower(0);
-                telemetry.addData("Button Center", servo1.getPower());
+                hitchServo.setPower(0);
+                telemetry.addData("Button Center", hitchServo.getPower());
             }
             if (gamepad2.dpad_up){
                 motorLift.setPower(liftmotorUpPowerSetting);//0.7 * gamepad2.right_stick_y);
@@ -124,6 +127,11 @@ public class Rev4wheel extends LinearOpMode {
             //*************************************************************************************
             //                                  GamePad 1 Settings
 
+            if(gamepad1.a ){
+                    brakeServo.setPosition(15);
+                    telemetry.addData("Brake Set On", brakeServo.getPosition());
+
+            }
             if (gamepad1.right_bumper) {
                 speedControlPowerSetting = 1;
             }
