@@ -86,11 +86,11 @@ public class Rev4wheel extends LinearOpMode {
                 motorLift.setPower(0);
                 telemetry.addData("Lifting Motor Off", motorLift.getPower());
             }
-            if (gamepad2.left_stick_y > 0){
+            if (gamepad2.left_stick_y < 0){
                 motorExtend.setPower(extendingArmPowerSetting * gamepad2.left_stick_y);
                 telemetry.addData("Extending Motor, extending Arm", motorExtend.getPower());
             }
-            if (gamepad2.left_stick_y < 0){
+            if (gamepad2.left_stick_y > 0){
                 motorExtend.setPower(-extendingArmPowerSetting * gamepad2.left_stick_y);
                 telemetry.addData("Extending Motor, retracting Arm", motorExtend.getPower());
             }
@@ -99,18 +99,26 @@ public class Rev4wheel extends LinearOpMode {
                 telemetry.addData("Extending Motor On", motorExtend.getPower());
             }
             telemetry.update();
-            if (gamepad2.a && collecting == false){
-                collecting = true;
-            }
-            if (gamepad2.a && collecting == true){
-                collecting = false;
-            }
-            if (collecting) {
+//            if (gamepad2.a && collecting == false){
+//                collecting = false;
+//            }
+//            if (gamepad2.a && collecting == true){
+//                collecting = true;
+//            }
+            //motorCollect.setPower(0);
+            if(gamepad2.a == true) {
                 motorCollect.setPower(1);
                 telemetry.addData("Collection Motor On", motorCollect.getPower());
-            } else {
+            }
+            if(gamepad2.b == true){
+                        motorCollect.setPower(-1);
+                        telemetry.addData("Collection Motor On", motorCollect.getPower());
+
+            }
+            if(gamepad2.b == false && gamepad2.a == false){
                 motorCollect.setPower(0);
-                telemetry.addData("Collection Motor Off", motorCollect.getPower());
+                telemetry.addData("Collection Motor On", motorCollect.getPower());
+
             }
 
             //*************************************************************************************
