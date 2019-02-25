@@ -13,7 +13,8 @@ public class Rev4wheel extends LinearOpMode {
     DcMotor motorLeftRear;
     DcMotor motorRightFront;
     DcMotor motorRightRear;
-    CRServo hitchServo;
+    CRServo servo1;
+    Servo servoB;
     DcMotor motorCollect;
     DcMotor motorLift;
     DcMotor motorExtend;
@@ -28,7 +29,9 @@ public class Rev4wheel extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        hitchServo = hardwareMap.crservo.get("hitchServo");
+        servoB = hardwareMap.servo.get("servoB");
+        servo1 = hardwareMap.crservo.get("servo1");
+
         motorExtend = hardwareMap.get(DcMotor.class, "motorExtend");
         motorLift = hardwareMap.get(DcMotor.class, "motorLift");
         motorLeftFront = hardwareMap.get(DcMotor.class, "motorLeftFront");
@@ -63,13 +66,16 @@ public class Rev4wheel extends LinearOpMode {
 //            servoClass runCollector = new servoClass();
 
             if (gamepad2.dpad_right && !gamepad2.dpad_left && gamepad2.left_bumper) {
-                hitchServo.setPower(1);
-                telemetry.addData("Left Button", hitchServo.getPower());
+
+                servoB.setPosition(1);
+                servo1.setPower(1);
+                telemetry.addData("Left Button", servo1.getPower());
                 sleep(1800);
             }
             if (gamepad2.dpad_left && !gamepad2.dpad_right && gamepad2.left_bumper) {
-                hitchServo.setPower(-1);
-                telemetry.addData("Right Button", hitchServo.getPower());
+                servoB.setPosition(-1);
+                servo1.setPower(-1);
+                telemetry.addData("Right Button", servo1.getPower());
                 sleep(1900);
             }
             if (gamepad2.dpad_right == false && gamepad2.dpad_left == false) {

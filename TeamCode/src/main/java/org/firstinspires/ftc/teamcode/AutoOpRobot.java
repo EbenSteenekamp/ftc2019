@@ -3,9 +3,13 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.sun.tools.javac.comp.Lower;
+
+import java.lang.annotation.Target;
 
 public class AutoOpRobot extends LinearOpMode{
 
@@ -13,10 +17,13 @@ public class AutoOpRobot extends LinearOpMode{
    public DcMotor motorLeftRear;
    public DcMotor motorRightFront;
    public DcMotor motorRightRear;
- //  public CRServo servo1;
- //  public DcMotor motorCollect;
- //  public DcMotor motorLift;
- //  public DcMotor motorExtend;
+   public DcMotor motorCollect;
+   public DcMotor motorLift;
+   public DcMotor motorExtend;
+   public CRServo servo1;
+   public Servo servoB;
+
+   boolean lower = false;
 
     HardwareMap masterConfig= null;
     private ElapsedTime period = new ElapsedTime();
@@ -31,16 +38,41 @@ public class AutoOpRobot extends LinearOpMode{
     public void init(HardwareMap amasterConfig){
        masterConfig = amasterConfig;
 
-      //  servo1 = masterConfig.crservo.get("servo1");
-      //  motorExtend = masterConfig.get(DcMotor.class, "motorExtend");
-      //  motorLift = masterConfig.get(DcMotor.class, "motorLift");
+        servoB = masterConfig.servo.get("servoB");
+        servo1 = masterConfig.crservo.get("servo1");
+        motorExtend = masterConfig.get(DcMotor.class, "motorExtend");
+        motorLift = masterConfig.get(DcMotor.class, "motorLift");
         motorLeftFront = masterConfig.get(DcMotor.class, "motorLeftFront");
         motorLeftRear = masterConfig.get(DcMotor.class, "motorLeftRear");
         motorRightFront = masterConfig.get(DcMotor.class, "motorRightFront");
         motorRightRear = masterConfig.get(DcMotor.class, "motorRightRear");
         motorLeftFront.setDirection(DcMotor.Direction.REVERSE);
         motorLeftRear.setDirection(DcMotor.Direction.REVERSE);
-      //  motorCollect = masterConfig.get(DcMotor.class, "motorCollect");
+        motorCollect = masterConfig.get(DcMotor.class, "motorCollect");
+    }
+    public void lower(){
+
+       if (lower == false) {
+
+           servoB.setPosition(1);
+
+           motorExtend.setPower(-1);
+           sleep(500);
+
+           motorLift.setPower(-1);
+           sleep(500);
+
+           servo1.setPower(-1);
+           telemetry.addData("Right Button", servo1.getPower());
+           sleep(1900);
+
+           motorRightFront.setPower(1);
+           motorRightRear.setPower(1);
+           motorLeftFront.setPower(1);
+           motorLeftRear.setPower(1);
+           sleep(100);
+       }
+        lower = true;
     }
     public void Stop(){
        motorLeftRear.setPower(0);
