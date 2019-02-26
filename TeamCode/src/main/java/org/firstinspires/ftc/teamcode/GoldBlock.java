@@ -120,7 +120,7 @@ public class GoldBlock extends LinearOpMode{
                 // express the rotation of the robot in degrees.
                 Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
                 telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
-                robot.Stop();
+                robot.stop();
                 FindTarget = true;
             }
             else {
