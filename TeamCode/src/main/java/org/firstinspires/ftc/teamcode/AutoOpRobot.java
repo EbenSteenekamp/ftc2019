@@ -27,10 +27,6 @@ import java.lang.annotation.Target;
 
 public class AutoOpRobot extends LinearOpMode {
 
-    public BNO055IMU imu;
-    public Orientation angles;
-    public Acceleration gravity;
-
     public DcMotor motorLeftFront;
     public DcMotor motorLeftRear;
     public DcMotor motorRightFront;
@@ -69,95 +65,14 @@ public class AutoOpRobot extends LinearOpMode {
         motorLeftFront.setDirection(DcMotor.Direction.REVERSE);
         motorLeftRear.setDirection(DcMotor.Direction.REVERSE);
         motorCollect = masterConfig.get(DcMotor.class, "motorCollect");
-       /* BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
-        parameters.loggingEnabled      = true;
-        parameters.loggingTag          = "IMU";
-        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-        imu = masterConfig.get(BNO055IMU.class, "imu");
-        imu.initialize(parameters);
-
-        composeTelemetry();
-        waitForStart();
-        imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
-        while (opModeIsActive()) {
-           telemetry.update();
-        }
-   */ }
-
-    void composeTelemetry() {
-        telemetry.addAction(new Runnable() { @Override public void run()
-        {
-            angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-            gravity  = imu.getGravity();
-        }
-        });
-
-        telemetry.addLine()
-                .addData("status", new Func<String>() {
-                    @Override public String value() {
-                        return imu.getSystemStatus().toShortString();
-                    }
-                })
-                .addData("calib", new Func<String>() {
-                    @Override public String value() {
-                        return imu.getCalibrationStatus().toString();
-                    }
-                });
-
-        telemetry.addLine()
-                .addData("heading", new Func<String>() {
-                    @Override public String value() {
-                        return formatAngle(angles.angleUnit, angles.firstAngle);
-                    }
-                })
-                .addData("roll", new Func<String>() {
-                    @Override public String value() {
-                        return formatAngle(angles.angleUnit, angles.secondAngle);
-                    }
-                })
-                .addData("pitch", new Func<String>() {
-                    @Override public String value() {
-                        return formatAngle(angles.angleUnit, angles.thirdAngle);
-                    }
-                });
-
-        telemetry.addLine()
-                .addData("grvty", new Func<String>() {
-                    @Override public String value() {
-                        return gravity.toString();
-                    }
-                })
-                .addData("mag", new Func<String>() {
-                    @Override public String value() {
-                        return String.format(Locale.getDefault(), "%.3f",
-                                Math.sqrt(gravity.xAccel*gravity.xAccel
-                                        + gravity.yAccel*gravity.yAccel
-                                        + gravity.zAccel*gravity.zAccel));
-                    }
-                });
-    }
-    String formatAngle(AngleUnit angleUnit, double angle) {
-        return formatDegrees(AngleUnit.DEGREES.fromUnit(angleUnit, angle));
-    }
-    String formatDegrees(double degrees){
-        return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));
     }
 
     public void lower() {
 
         if (lower == false) {
-
-          /*  angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-            float pitch = Float.parseFloat(formatAngle(angles.angleUnit, angles.thirdAngle));
-            while (pitch > 88){
-                motorLift.setPower(1);
-                }
-           */
-             motorLift.setPower(1);
-            motorLift.setPower(0);
+            motorLift.setPower(1);
+            motorLift.setPower(0.75);
+            sleep(1300);
 
             motorExtend.setPower(0.5);
             sleep(70);
@@ -221,14 +136,13 @@ public class AutoOpRobot extends LinearOpMode {
         motorRightRear.setPower(1);
         motorRightFront.setPower(1);
         sleep(1000);
-        angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        float heading1 = Float.parseFloat(formatAngle(angles.angleUnit, angles.firstAngle));
-        while (heading1 > 240){
-            motorRightFront.setPower(0.1);
-            motorRightRear.setPower(0.1);
-            motorLeftFront.setPower(-0.1);
-            motorLeftRear.setPower(-0.1);
-        }
+
+        motorRightFront.setPower(0.1);
+        motorRightRear.setPower(0.1);
+        motorLeftFront.setPower(-0.1);
+        motorLeftRear.setPower(-0.1);
+        sleep(700);
+
         motorLeftFront.setPower(1);
         motorLeftRear.setPower(1);
         motorRightRear.setPower(1);
@@ -236,14 +150,11 @@ public class AutoOpRobot extends LinearOpMode {
         sleep(2000);
 
         //drop beacon
-        angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        float heading2 = Float.parseFloat(formatAngle(angles.angleUnit, angles.firstAngle));
-        while (heading2 < 330) {
-            motorRightFront.setPower(0.5);
-            motorRightRear.setPower(0.5);
-            motorLeftFront.setPower(-0.5);
-            motorLeftRear.setPower(-0.5);
-        }
+        motorRightFront.setPower(0.5);
+        motorRightRear.setPower(0.5);
+        motorLeftFront.setPower(-0.5);
+        motorLeftRear.setPower(-0.5);
+
 
         motorLeftFront.setPower(1);
         motorLeftRear.setPower(1);
@@ -259,13 +170,10 @@ public class AutoOpRobot extends LinearOpMode {
         motorRightFront.setPower(1);
         sleep(1000);
 
-       /* angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        float heading1 = Float.parseFloat(formatAngle(angles.angleUnit, angles.firstAngle));
-        while (heading1 > 0){
-       */     motorRightFront.setPower(0.1);
-            motorRightRear.setPower(0.1);
-            motorLeftFront.setPower(-0.1);
-            motorLeftRear.setPower(-0.1);
+        motorRightFront.setPower(0.1);
+        motorRightRear.setPower(0.1);
+        motorLeftFront.setPower(-0.1);
+        motorLeftRear.setPower(-0.1);
 
         motorLeftFront.setPower(1);
         motorLeftRear.setPower(1);
