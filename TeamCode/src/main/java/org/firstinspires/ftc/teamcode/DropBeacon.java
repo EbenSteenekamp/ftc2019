@@ -13,7 +13,6 @@ public class DropBeacon extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-
         dropBeaconServo = hardwareMap.servo.get("DropBeaconServo");
 
         telemetry.addData("Status", "Initialized");
