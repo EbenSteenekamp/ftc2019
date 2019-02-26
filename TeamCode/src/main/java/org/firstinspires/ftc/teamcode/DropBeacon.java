@@ -28,7 +28,7 @@ public class DropBeacon extends LinearOpMode {
             while (opModeIsActive()) {
 
              if(gamepad2.left_bumper == true){
-                    dropBeaconServo.setPosition(0.68);
+                    dropBeaconServo.setPosition(0.90);
                     telemetry.addData("Drop the Beacon",dropBeaconServo.getPosition());
                 }
                 if(gamepad2.left_bumper == false) {
