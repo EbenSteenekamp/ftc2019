@@ -9,24 +9,34 @@ public class DropBeacon extends LinearOpMode {
 
     Servo dropBeaconServo;
 
-    double servoAngle = 70; // The Angle (To be tested to drop the beacon)
+    //double servoAngle = 0.12; // The Angle (To be tested to drop the beacon)
     @Override
     public void runOpMode() throws InterruptedException {
+
 
         dropBeaconServo = hardwareMap.servo.get("DropBeaconServo");
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
+        //dropBeaconServo.setPosition(0);
+        telemetry.addData("Reset the Becaon",dropBeaconServo.getPosition());
         waitForStart();
 
-        while (opModeIsActive()) {
+        dropBeaconServo.setDirection(Servo.Direction.REVERSE);
+            dropBeaconServo.setPosition(0.5);
 
-            if(gamepad2.left_bumper){
-                dropBeaconServo.setPosition(servoAngle);
-                telemetry.addData("Drop the Becaon",dropBeaconServo.getPosition());
-            }
+            while (opModeIsActive()) {
 
+             if(gamepad2.left_bumper == true){
+                    dropBeaconServo.setPosition(0.68);
+                    telemetry.addData("Drop the Beacon",dropBeaconServo.getPosition());
+                }
+                if(gamepad2.left_bumper == false) {
+                    dropBeaconServo.setPosition(0.5);
+                    telemetry.addData("Drop the Beacon",dropBeaconServo.getPosition());
+                }
+                    telemetry.update();
         }
     }
 }
