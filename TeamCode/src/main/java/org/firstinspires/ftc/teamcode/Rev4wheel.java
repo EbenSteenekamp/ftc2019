@@ -73,16 +73,15 @@ public class Rev4wheel extends LinearOpMode {
                 sleep(1900);
             }
             if (gamepad2.dpad_right == false && gamepad2.dpad_left == false) {
-                //Reset the Clock
                 hitchServo.setPower(0);
                 telemetry.addData("Button Center", hitchServo.getPower());
             }
             if (gamepad2.dpad_up){
-                motorLift.setPower(liftmotorUpPowerSetting);//0.7 * gamepad2.right_stick_y);
+                motorLift.setPower(liftmotorUpPowerSetting);
                 telemetry.addData("Lifting Motor Up", motorLift.getPower());
             }
             if (gamepad2.dpad_down){
-                motorLift.setPower(liftmotorDownPowerSetting);//0.7 * gamepad2.right_stick_y);
+                motorLift.setPower(liftmotorDownPowerSetting);
                 telemetry.addData("Lifting Motor Down", motorLift.getPower());
             }
             if (gamepad2.dpad_up ==false && gamepad2.dpad_down ==false){
@@ -94,7 +93,7 @@ public class Rev4wheel extends LinearOpMode {
                 telemetry.addData("Extending Motor, extending Arm", motorExtend.getPower());
             }
             if (gamepad2.left_stick_y > 0){
-                motorExtend.setPower(-extendingArmPowerSetting * gamepad2.left_stick_y);
+                motorExtend.setPower(extendingArmPowerSetting * gamepad2.left_stick_y);
                 telemetry.addData("Extending Motor, retracting Arm", motorExtend.getPower());
             }
             if (gamepad2.left_stick_y == 0){
@@ -127,11 +126,11 @@ public class Rev4wheel extends LinearOpMode {
             //*************************************************************************************
             //                                  GamePad 1 Settings
 
-            if(gamepad1.a ){
-                    brakeServo.setPosition(15);
-                    telemetry.addData("Brake Set On", brakeServo.getPosition());
-
-            }
+//            if(gamepad1.a ){
+//                    brakeServo.setPosition(15);
+//                    telemetry.addData("Brake Set On", brakeServo.getPosition());
+//
+//            }
             if (gamepad1.right_bumper) {
                 speedControlPowerSetting = 1;
             }
