@@ -1,10 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
-        import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-        import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-        import com.qualcomm.robotcore.hardware.CRServo;
-        import com.qualcomm.robotcore.hardware.DcMotor;
-        import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name="Rev4wheel", group="Linear Opmode")
 
@@ -115,8 +115,8 @@ public class Rev4wheel extends LinearOpMode {
                 telemetry.addData("Collection Motor On", motorCollect.getPower());
             }
             if(gamepad2.b == true){
-                        motorCollect.setPower(-0.6);
-                        telemetry.addData("Collection Motor On", motorCollect.getPower());
+                motorCollect.setPower(-0.6);
+                telemetry.addData("Collection Motor On", motorCollect.getPower());
 
             }
             if(gamepad2.b == false && gamepad2.a == false){
@@ -139,79 +139,79 @@ public class Rev4wheel extends LinearOpMode {
             if (gamepad1.left_bumper) {
                 speedControlPowerSetting = 0.50;
             }
-                if ((gamepad1.dpad_right == false && gamepad1.dpad_left == false)){
+            if ((gamepad1.dpad_right == false && gamepad1.dpad_left == false)){
 
-                    motorLeftFront.setPower(gamepad1.left_stick_y * speedControlPowerSetting);
-                    motorLeftRear.setPower(gamepad1.left_stick_y * speedControlPowerSetting);
-                    motorRightFront.setPower(gamepad1.right_stick_y * speedControlPowerSetting);
-                    motorRightRear.setPower(gamepad1.right_stick_y * speedControlPowerSetting);
-                    telemetry.addData("LF Target Power", leftFrontPowerSetting);
-                    telemetry.addData("LF Motor Power", motorLeftFront.getPower());
+                motorLeftFront.setPower(gamepad1.left_stick_y * speedControlPowerSetting);
+                motorLeftRear.setPower(gamepad1.left_stick_y * speedControlPowerSetting);
+                motorRightFront.setPower(gamepad1.right_stick_y * speedControlPowerSetting);
+                motorRightRear.setPower(gamepad1.right_stick_y * speedControlPowerSetting);
+                telemetry.addData("LF Target Power", leftFrontPowerSetting);
+                telemetry.addData("LF Motor Power", motorLeftFront.getPower());
 
-                    telemetry.addData("LR Target Power", leftRearPowerSetting);
-                    telemetry.addData("LR Motor Power", motorLeftRear.getPower());
+                telemetry.addData("LR Target Power", leftRearPowerSetting);
+                telemetry.addData("LR Motor Power", motorLeftRear.getPower());
 
-                    telemetry.addData("RF Target Power", rightFrontPowerSetting);
-                    telemetry.addData("RF Motor Power", motorRightFront.getPower());
+                telemetry.addData("RF Target Power", rightFrontPowerSetting);
+                telemetry.addData("RF Motor Power", motorRightFront.getPower());
 
-                    telemetry.addData("RR Target Power", rightRearPowerSetting);
-                    telemetry.addData("RR Motor Power", motorRightRear.getPower());
+                telemetry.addData("RR Target Power", rightRearPowerSetting);
+                telemetry.addData("RR Motor Power", motorRightRear.getPower());
 
 
-                    telemetry.addData("Status", "Running");
+                telemetry.addData("Status", "Running");
 //                telemetry.update();
 
-                }
-
-                while (gamepad1.dpad_right) {
-
-                    motorLeftFront.setPower(-1);
-                    motorLeftRear.setPower(+1);
-                    motorRightFront.setPower(-1);
-                    motorRightRear.setPower(+1);
-
-                    telemetry.addData("LF Target Power", leftFrontPowerSetting);
-                    telemetry.addData("LF Motor Power", motorLeftFront.getPower());
-
-                    telemetry.addData("LR Target Power", leftRearPowerSetting);
-                    telemetry.addData("LR Motor Power", motorLeftRear.getPower());
-
-                    telemetry.addData("RF Target Power", rightFrontPowerSetting);
-                    telemetry.addData("RF Motor Power", motorRightFront.getPower());
-
-                    telemetry.addData("RR Target Power", rightRearPowerSetting);
-                    telemetry.addData("RR Motor Power", motorRightRear.getPower());
-
-
-                    telemetry.addData("Status", "Running");
-                    //telemetry.update();
-                }
-
-                while (gamepad1.dpad_left) {
-                    motorLeftFront.setPower(+1);
-                    motorLeftRear.setPower(-1);
-                    motorRightFront.setPower(+1);
-                    motorRightRear.setPower(-1);
-
-                    telemetry.addData("LF Target Power", leftFrontPowerSetting);
-                    telemetry.addData("LF Motor Power", motorLeftFront.getPower());
-
-                    telemetry.addData("LR Target Power", leftRearPowerSetting);
-                    telemetry.addData("LR Motor Power", motorLeftRear.getPower());
-
-                    telemetry.addData("RF Target Power", rightFrontPowerSetting);
-                    telemetry.addData("RF Motor Power", motorRightFront.getPower());
-
-                    telemetry.addData("RR Target Power", rightRearPowerSetting);
-                    telemetry.addData("RR Motor Power", motorRightRear.getPower());
-
-
-                    telemetry.addData("Status", "Running");
-                    //telemetry.update();
-                }
-                telemetry.update();
             }
+
+            while (gamepad1.dpad_right) {
+
+                motorLeftFront.setPower(-1);
+                motorLeftRear.setPower(+1);
+                motorRightFront.setPower(-1);
+                motorRightRear.setPower(+1);
+
+                telemetry.addData("LF Target Power", leftFrontPowerSetting);
+                telemetry.addData("LF Motor Power", motorLeftFront.getPower());
+
+                telemetry.addData("LR Target Power", leftRearPowerSetting);
+                telemetry.addData("LR Motor Power", motorLeftRear.getPower());
+
+                telemetry.addData("RF Target Power", rightFrontPowerSetting);
+                telemetry.addData("RF Motor Power", motorRightFront.getPower());
+
+                telemetry.addData("RR Target Power", rightRearPowerSetting);
+                telemetry.addData("RR Motor Power", motorRightRear.getPower());
+
+
+                telemetry.addData("Status", "Running");
+                //telemetry.update();
+            }
+
+            while (gamepad1.dpad_left) {
+                motorLeftFront.setPower(+1);
+                motorLeftRear.setPower(-1);
+                motorRightFront.setPower(+1);
+                motorRightRear.setPower(-1);
+
+                telemetry.addData("LF Target Power", leftFrontPowerSetting);
+                telemetry.addData("LF Motor Power", motorLeftFront.getPower());
+
+                telemetry.addData("LR Target Power", leftRearPowerSetting);
+                telemetry.addData("LR Motor Power", motorLeftRear.getPower());
+
+                telemetry.addData("RF Target Power", rightFrontPowerSetting);
+                telemetry.addData("RF Motor Power", motorRightFront.getPower());
+
+                telemetry.addData("RR Target Power", rightRearPowerSetting);
+                telemetry.addData("RR Motor Power", motorRightRear.getPower());
+
+
+                telemetry.addData("Status", "Running");
+                //telemetry.update();
+            }
+            telemetry.update();
         }
     }
+}
 
 
