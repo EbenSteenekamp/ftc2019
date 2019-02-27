@@ -17,7 +17,7 @@ public class Rev4wheel extends LinearOpMode {
     DcMotor motorCollect;
     DcMotor motorLift;
     DcMotor motorExtend;
-    Servo brakeServo;
+    Servo dropBeaconServo;
 
     //Declare values/constants for Static Power settings, Change for Tuning default Values
     double liftmotorUpPowerSetting = 1; //We need all the Power to Lift
@@ -25,11 +25,15 @@ public class Rev4wheel extends LinearOpMode {
     double collectorMotorPowerSetting = 0.7 ; //We don't need full Power at the Collector, Run one direction
     double extendingArmPowerSetting = 0.5; //We only need half power, retracting and extending use same value, only sign change for motor direction
 
+    boolean moveServoOpen = false;
+    boolean moveServoClose = false;
+
     @Override
     public void runOpMode() throws InterruptedException {
 
         hitchServo = hardwareMap.crservo.get("hitchServo");
         motorExtend = hardwareMap.get(DcMotor.class, "motorExtend");
+        dropBeaconServo = hardwareMap.servo.get("DropBeaconServo");
         motorLift = hardwareMap.get(DcMotor.class, "motorLift");
         motorLeftFront = hardwareMap.get(DcMotor.class, "motorLeftFront");
         motorLeftRear = hardwareMap.get(DcMotor.class, "motorLeftRear");
@@ -39,12 +43,13 @@ public class Rev4wheel extends LinearOpMode {
         motorLeftRear.setDirection(DcMotor.Direction.REVERSE);
         motorRightRear.setDirection(DcMotor.Direction.REVERSE);
         motorRightFront.setDirection(DcMotor.Direction.REVERSE);
-        brakeServo = hardwareMap.servo.get("brakeServo");
+        dropBeaconServo.setDirection(Servo.Direction.REVERSE);
         motorCollect = hardwareMap.get(DcMotor.class, "motorCollect");
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
         waitForStart();
+        dropBeaconServo.setPosition(0.5);
         double speedControlPowerSetting = 0.5;
         double leftFrontPowerSetting = 0;
         double leftRearPowerSetting = 0;
@@ -63,16 +68,28 @@ public class Rev4wheel extends LinearOpMode {
             //runServo1();
 //            servoClass runServo1 = new servoClass();
 //            servoClass runCollector = new servoClass();
+            if(gamepad2.left_trigger >0){
+                dropBeaconServo.setPosition(0.90);
+                telemetry.addData("Drop the Beacon",dropBeaconServo.getPosition());
+            }
+            if(gamepad2.left_trigger >0) {
+                dropBeaconServo.setPosition(0.5);
+                telemetry.addData("Drop the Beacon",dropBeaconServo.getPosition());
+            }
 
-            if (gamepad2.dpad_right && !gamepad2.dpad_left && gamepad2.left_bumper) {
+            if (gamepad2.dpad_right && !gamepad2.dpad_left && gamepad2.left_bumper && moveServoClose == false) {
                 hitchServo.setPower(1);
                 telemetry.addData("Left Button", hitchServo.getPower());
-                sleep(1800);
+                sleep(2100);
+                moveServoClose = true;
+                moveServoOpen = false;
             }
-            if (gamepad2.dpad_left && !gamepad2.dpad_right && gamepad2.left_bumper) {
+            if (gamepad2.dpad_left && !gamepad2.dpad_right && gamepad2.left_bumper && moveServoOpen == false) {
                 hitchServo.setPower(-1);
                 telemetry.addData("Right Button", hitchServo.getPower());
-                sleep(1900);
+                sleep(2100);
+                moveServoClose = false;
+                moveServoOpen = true;
             }
             if (gamepad2.dpad_right == false && gamepad2.dpad_left == false) {
                 hitchServo.setPower(0);
@@ -163,7 +180,7 @@ public class Rev4wheel extends LinearOpMode {
 
             }
 
-            while (gamepad1.dpad_right) {
+            while (gamepad1.right_trigger >0) {
 
                 motorLeftFront.setPower(-1);
                 motorLeftRear.setPower(+1);
@@ -187,7 +204,7 @@ public class Rev4wheel extends LinearOpMode {
                 //telemetry.update();
             }
 
-            while (gamepad1.dpad_left) {
+            while (gamepad1.left_trigger >0) {
                 motorLeftFront.setPower(+1);
                 motorLeftRear.setPower(-1);
                 motorRightFront.setPower(+1);

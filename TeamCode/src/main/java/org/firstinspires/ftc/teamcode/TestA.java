@@ -23,6 +23,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.FRONT;
 
+import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class TestA extends LinearOpMode {
     private static final String LABEL_SILVER_MINERAL = "Silver Mineral";
 
     boolean FindTarget = false;
-    boolean blockMove = false;
+    boolean blockMove = true;
     boolean BlueRoverV = false;
     boolean RedFootprintV = false;
     boolean FrontCratersV = false;
@@ -61,10 +62,8 @@ public class TestA extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        robot.init(hardwareMap);
 
         if (blockMove == false) {
-
             initVuforia();
 
             if (ClassFactory.getInstance().canCreateTFObjectDetector()) {
@@ -78,9 +77,13 @@ public class TestA extends LinearOpMode {
             telemetry.update();
             waitForStart();
 
-            if (opModeIsActive()) {
+            robot.init(hardwareMap);
+
+            while (opModeIsActive()) {
 
                 robot.lower();
+                telemetry.addLine("Lower");
+                telemetry.update();
 
                 /** Activate Tensor Flow Object Detection. */
                 if (tfod != null) {
@@ -112,15 +115,18 @@ public class TestA extends LinearOpMode {
                                         telemetry.addData("Gold Mineral Position", "Left");
                                         robot.MoveL();
                                         robot.Sample();
+                                        robot.ResetLeft();
                                         blockMove = true;
                                     } else if (goldMineralX > silverMineral1X && goldMineralX > silverMineral2X) {
                                         telemetry.addData("Gold Mineral Position", "Right");
                                         robot.MoveR();
                                         robot.Sample();
+                                        robot.ResetRight();
                                         blockMove = true;
                                     } else {
                                         telemetry.addData("Gold Mineral Position", "Center");
                                         robot.Sample();
+                                        robot.ResetMid();
                                         blockMove = true;
                                     }
                                 }
@@ -131,7 +137,6 @@ public class TestA extends LinearOpMode {
                 }
             }
         }
-
         if (blockMove == true && FindTarget == false) {
             int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
             VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
@@ -234,13 +239,18 @@ public class TestA extends LinearOpMode {
             telemetry.update();
 
             waitForStart();
+            robot.init(hardwareMap);
 
             targetsRoverRuckus.activate();
-
             while (opModeIsActive()) {
                 // check all the trackable target to see which one (if any) is visible.
 
-                if (targetFound = false) {
+                telemetry.addData(">", "Tracking");
+                telemetry.update();
+
+
+                if (!targetFound) {
+                    telemetry.addLine("Target not Found");
                     targetVisible = false;
                     for (VuforiaTrackable trackable : allTrackables) {
                         if (((VuforiaTrackableDefaultListener) trackable.getListener()).isVisible()) {
@@ -278,26 +288,38 @@ public class TestA extends LinearOpMode {
                         // express the rotation of the robot in degrees.
                         Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
                         telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
-                       // robot.Stop();
+
                         FindTarget = true;
+                        robot.stopRobot();
+                        telemetry.addLine("Stop Target is visible");
+                        telemetry.update();
                     } else {
                         telemetry.addData("Visible Target", "none");
-                        if (FindTarget == false) {
+                        //if (FindTarget == false) {
                             robot.turnAroundUntilFound();
-                        }
+                            telemetry.addLine("Turn around");
+                            telemetry.update();
+                        //}
+                    }
+                }
+                if (FindTarget){
+                    if (BlueRoverV || RedFootprintV ){
+                        robot.stopRobot();
+                        telemetry.addLine("Stop Blue or Red");
+                        telemetry.update();
+                        //robot.MoveFromCrator();
+                    }
+                    if (BackSpaceV|| FrontCratersV){
+                        robot.stopRobot();
+                        telemetry.addLine("Stop Back Space or Front Crater");
+                        telemetry.update();
+                        //robot.MoveFromCorner();
                     }
                 }
                 telemetry.update();
             }
         }
-        if (FindTarget == true){
-            if (BlueRoverV == true || RedFootprintV == true ){
-            robot.MoveFromCrator();
-            }
-            if (BackSpaceV == true || FrontCratersV == true){
-                robot.MoveFromCorner();
-            }
-        }
+
     }
 
     /**
@@ -322,10 +344,12 @@ public class TestA extends LinearOpMode {
      * Initialize the Tensor Flow Object Detection engine.
      */
     private void initTfod () {
+        telemetry.addLine("Tensorflow init");
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
                 "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_GOLD_MINERAL, LABEL_SILVER_MINERAL);
+        telemetry.update();
     }
 }
