@@ -50,6 +50,7 @@ public class AutoOpRobot extends LinearOpMode {
         motorLeftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorLeftRear = masterConfig.get(DcMotor.class, "motorLeftRear");
         motorLeftRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         motorRightFront = masterConfig.get(DcMotor.class, "motorRightFront");
         motorRightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorRightRear = masterConfig.get(DcMotor.class, "motorRightRear");
