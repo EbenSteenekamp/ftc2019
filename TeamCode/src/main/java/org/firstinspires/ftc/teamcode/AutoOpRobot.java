@@ -47,15 +47,22 @@ public class AutoOpRobot extends LinearOpMode {
         //motorExtend = masterConfig.get(DcMotor.class, "motorExtend");
         //motorLift = masterConfig.get(DcMotor.class, "motorLift");
         motorLeftFront = masterConfig.get(DcMotor.class, "motorLeftFront");
-        motorLeftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorLeftRear = masterConfig.get(DcMotor.class, "motorLeftRear");
-        motorLeftRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
         motorRightFront = masterConfig.get(DcMotor.class, "motorRightFront");
-        motorRightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorRightRear = masterConfig.get(DcMotor.class, "motorRightRear");
-        motorRightRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         //motorCollect = masterConfig.get(DcMotor.class, "motorCollect");
+
+        motorLeftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorLeftRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorRightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorRightRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        motorLeftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorLeftRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorRightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorRightRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         dropBeaconServo = masterConfig.servo.get("DropBeaconServo");
         dropBeaconServo.setPosition(0.5);
     }
