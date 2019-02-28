@@ -63,12 +63,12 @@ public class TestA extends LinearOpMode {
     private VuforiaLocalizer vuforia;
     private TFObjectDetector tfod;
 
-    static final double     COUNTS_PER_MOTOR_REV    = 3200 ;    // eg: TETRIX Motor Encoder
-    static final double     DRIVE_GEAR_REDUCTION    = 40.0 ;     // This is < 1.0 if geared UP
+    static final double     COUNTS_PER_MOTOR_REV    = 6400 ;    // eg: TETRIX Motor Encoder
+    static final double     DRIVE_GEAR_REDUCTION    = 0.025 ;     // This is < 1.0 if geared UP 40:1 reduce to 160 rpm
     static final double     WHEEL_DIAMETER_MM   = 100 ;     // For figuring circumference
     static final double     COUNTS_PER_MM         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_MM * 3.1415);
-    static final double     DRIVE_SPEED             = 0.6;
+    static final double     DRIVE_SPEED             = 0.5;
     static final double     TURN_SPEED              = 0.5;
 
     //TODO
@@ -79,6 +79,7 @@ public class TestA extends LinearOpMode {
     @Override
     public void runOpMode() {
 
+        boolean isStarted =false;
         /*
          * Initialize the drive system variables.
          * The init() method of the hardware class does all the work here
@@ -101,24 +102,40 @@ public class TestA extends LinearOpMode {
         robot.motorRightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.motorRightRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        // Send telemetry message to indicate successful Encoder reset
-        telemetry.addData("Path0, before",  "Starting at %7d :%7d",
-                robot.motorLeftFront.getCurrentPosition(),
-                robot.motorRightFront.getCurrentPosition());
-//        telemetry.addData("Path0, before",  "Starting at %7d :%7d: %7d :%7d",
-//                robot.motorLeftFront.getCurrentPosition(),robot.motorLeftRear.getCurrentPosition(),
-//                robot.motorRightFront.getCurrentPosition(),robot.motorRightRear.getCurrentPosition());
+//        // Send telemetry message to indicate successful Encoder reset
+//        telemetry.addData("Path0, before",  "Starting at %7d :%7d",
+//                robot.motorLeftFront.getCurrentPosition(),
+//                robot.motorRightFront.getCurrentPosition());
+        telemetry.addData("Path0, before",  "Starting at %7d :%7d: %7d :%7d",
+                robot.motorLeftFront.getCurrentPosition(),robot.motorLeftRear.getCurrentPosition(),
+                robot.motorRightFront.getCurrentPosition(),robot.motorRightRear.getCurrentPosition());
         telemetry.update();
 
         // Wait for the game to start (driver presses PLAY)
-        waitForStart();
+  //      waitForStart();
+
+        //NOTE From https://ftcforum.usfirst.org/forum/ftc-technology/android-studio/66556-encoders-not-reading-correctly
+        //Add the following line to Test the encoders, getting values from them
+        //*****************************************************************************************************************
+        //1:40 motor should do 28*40 = 1120 for full Rotation
+        while(!isStarted){
+            telemetry.addData("Test Counts for debugging",  "Running at %7d :%7d :%7d :%7d",
+                    robot.motorLeftFront.getCurrentPosition(),robot.motorRightFront.getCurrentPosition(),
+                    robot.motorLeftRear.getCurrentPosition(),robot.motorRightRear.getCurrentPosition());
+            telemetry.update();
+        }
+        //*****************************************************************************************************************
+
 
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        encoderDrive(DRIVE_SPEED,  100,  100, 2.0);  // S1: Forward 200 mm with 5 Sec timeout
-        //encoderDrive(TURN_SPEED,   100, -100, 2.0);  // S2: Turn Right 100 mm with 4 Sec timeout
-        //encoderDrive(DRIVE_SPEED, -100, -100, 2.0);  // S3: Reverse 100 mm with 4 Sec timeout
+//        encoderDrive(DRIVE_SPEED,  500,  400, 5.0);  // S1: Forward 200 mm with 5 Sec timeout
+        //encoderDrive(TURN_SPEED,   100, -100, 4.0);  // S2: Turn Right 100 mm with 4 Sec timeout
+//        encoderDrive(DRIVE_SPEED, -300, -300, 4.0);  // S3: Reverse 100 mm with 4 Sec timeout
 
+        //encoderDriveForwardorBackwards(DRIVE_SPEED,500,5);
+        //encoderDriveForwardorBackwards(DRIVE_SPEED,-500,5);
+//        driveForwardorBackwards(0.5,500,5);
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
@@ -440,8 +457,8 @@ public class TestA extends LinearOpMode {
      *  2) Move runs out of time
      *  3) Driver stops the opmode running.
      */
-    public void encoderDrive(double speed,
-                             double leftMMs, double rightMMs,
+    public void encoderDriveForwardorBackwards(double speed,
+                             double distanceMM,
                              double timeoutS) {
         int newLeftFrontTarget;
         int newLeftRearTarget;
@@ -452,10 +469,10 @@ public class TestA extends LinearOpMode {
         if (opModeIsActive()) {
             //We use Tank Drive in all 4 wheels, so make sure we sent the correct signals to both Left and Right wheels
             // Determine new target position, and pass to motor controller
-            newLeftFrontTarget = robot.motorLeftFront.getCurrentPosition() + (int)(leftMMs * COUNTS_PER_MM);
-            newLeftRearTarget = robot.motorLeftRear.getCurrentPosition() + (int)(leftMMs * COUNTS_PER_MM);
-            newRightFrontTarget = robot.motorRightFront.getCurrentPosition() + (int)(rightMMs * COUNTS_PER_MM);
-            newRightRearTarget = robot.motorRightRear.getCurrentPosition() + (int)(rightMMs * COUNTS_PER_MM);
+            newLeftFrontTarget = robot.motorLeftFront.getCurrentPosition() + (int)(distanceMM * COUNTS_PER_MM);
+            newLeftRearTarget = robot.motorLeftRear.getCurrentPosition() + (int)(distanceMM * COUNTS_PER_MM);
+            newRightFrontTarget = robot.motorRightFront.getCurrentPosition() + (int)(distanceMM * COUNTS_PER_MM);
+            newRightRearTarget = robot.motorRightRear.getCurrentPosition() + (int)(distanceMM * COUNTS_PER_MM);
 
             robot.motorLeftFront.setTargetPosition(newLeftFrontTarget);
             robot.motorLeftRear.setTargetPosition(newLeftRearTarget);
@@ -486,21 +503,86 @@ public class TestA extends LinearOpMode {
 //            while (opModeIsActive() &&
 //                    (runtime.seconds() < timeoutS) &&
 //                    (robot.motorLeftFront.isBusy() && robot.motorRightFront.isBusy()))
-//            while (opModeIsActive() &&
-//                    (runtime.seconds() < timeoutS) &&
-//                    (robot.motorLeftFront.isBusy() && robot.motorLeftRear.isBusy() && robot.motorRightFront.isBusy() && robot.motorRightRear.isBusy()))
+
+            //Only monitor the Back wheels
             while (opModeIsActive() &&
                     (runtime.seconds() < timeoutS) &&
-                    (robot.motorLeftRear.isBusy() && robot.motorRightRear.isBusy()))
+                    (robot.motorLeftRear.isBusy() &&  robot.motorRightRear.isBusy()))
+//            while (opModeIsActive() &&
+//                    (runtime.seconds() < timeoutS) &&
+//                    (robot.motorLeftRear.isBusy() && robot.motorRightRear.isBusy()))
             {
 
                 // Display it for the Debugging.
-                telemetry.addData("Path1",  "Running to Target LF,LR, RF, RR %7d :%7d", newLeftFrontTarget,  newRightFrontTarget);
-                telemetry.addData("Path2",  "Running at %7d :%7d",robot.motorLeftFront.getCurrentPosition(),robot.motorRightFront.getCurrentPosition());
+                //telemetry.addData("Path1",  "Running to Target LF,LR, RF, RR %7d :%7d", newLeftFrontTarget,  newRightFrontTarget);
+                //telemetry.addData("Path2",  "Running at %7d :%7d",robot.motorLeftFront.getCurrentPosition(),robot.motorRightFront.getCurrentPosition());
 //                telemetry.addData("Path1",  "Running to Target LF,LR, RF, RR %7d :%7d :%7d :%7d", newLeftFrontTarget,  newLeftRearTarget, newRightFrontTarget,newRightRearTarget);
 //                telemetry.addData("Path2",  "Running at %7d :%7d :%7d :%7d",
-//                        robot.motorLeftFront.getCurrentPosition(),robot.motorLeftRear.getCurrentPosition(),
-//                        robot.motorRightFront.getCurrentPosition(),robot.motorRightRear.getCurrentPosition());
+                telemetry.addData("Path1",  "Running to Target LR, RR %7d :%7d", newLeftRearTarget, newRightRearTarget);
+                telemetry.addData("Path2",  "Running at %7d :%7d",
+                        robot.motorLeftRear.getCurrentPosition(),robot.motorRightRear.getCurrentPosition());
+                telemetry.update();
+            }
+
+            // Stop all motion after Path is completed;
+            robot.motorLeftFront.setPower(0);
+            robot.motorLeftRear.setPower(0);
+
+            robot.motorRightFront.setPower(0);
+            robot.motorRightRear.setPower(0);
+            // Turn off RUN_TO_POSITION
+            robot.motorLeftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot.motorRightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+            robot.motorLeftRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot.motorRightRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
+    }
+
+    public void driveForwardorBackwards(double speed,
+                                               double distanceMM,
+                                               double timeoutS) {
+
+        // Ensure that the opmode is still active
+        if (opModeIsActive()) {
+            //We use Tank Drive in all 4 wheels, so make sure we sent the correct signals to both Left and Right wheels
+
+            robot.motorLeftFront.setTargetPosition(100);
+            robot.motorLeftRear.setTargetPosition(100);
+            robot.motorRightFront.setTargetPosition(100);
+            robot.motorRightRear.setTargetPosition(100);
+
+            // Turn On RUN_TO_POSITION
+            robot.motorLeftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.motorLeftRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.motorRightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.motorRightRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            // reset the timeout time and start motion.
+            runtime.reset();
+            robot.motorLeftFront.setPower(Math.abs(speed));
+            robot.motorRightFront.setPower(Math.abs(speed));
+
+            robot.motorLeftRear.setPower(Math.abs(speed));
+            robot.motorRightRear.setPower(Math.abs(speed));
+
+            // keep looping while we are still active, and there is time left, and both motors are running.
+            // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits, we should monitor ALL 4
+            //but assume for noe only 2 or monitor 2
+            // its target position, the motion will stop.  This is "safer" in the event that the robot will
+            // always end the motion as soon as possible.
+            // However, if you require that BOTH (actually all 4)  motors have finished their moves before the robot continues
+            // onto the next step, use (isBusy() || isBusy()) in the loop test.
+
+            while (opModeIsActive() &&
+                    (runtime.seconds() < timeoutS) &&
+                    (robot.motorLeftRear.isBusy() &&  robot.motorRightRear.isBusy()))
+            {
+
+                // Display it for the Debugging.
+                telemetry.addData("Robot Straight Path",  "Running for All 4 at %7d :%7d :%7d :%7d",
+                        robot.motorLeftFront.getCurrentPosition(),robot.motorRightFront.getCurrentPosition(),
+                        robot.motorLeftRear.getCurrentPosition(),robot.motorRightRear.getCurrentPosition());
                 telemetry.update();
             }
 
