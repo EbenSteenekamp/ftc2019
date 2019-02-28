@@ -71,7 +71,11 @@ public class TestA extends LinearOpMode {
     static final double     DRIVE_SPEED             = 0.6;
     static final double     TURN_SPEED              = 0.5;
 
-    //Test a Path
+    //TODO
+    //Test single Path
+    //Test a Path with turns
+    //Check direction of motors after  config changes are inspected
+    //Once all Tests passes, revert to the orginal runOpMode() code
     @Override
     public void runOpMode() {
 
@@ -120,6 +124,9 @@ public class TestA extends LinearOpMode {
         telemetry.update();
     }
 
+    //Note ******************************************************************************************
+    //  Uncomment this code for Comp if the aboth Test are prove that the Robot config are correct
+    //************************************************************************************************
 //    @Override
 //    public void runOpMode() throws InterruptedException {
 //
