@@ -41,8 +41,8 @@ public class Rev4wheel extends LinearOpMode {
         motorRightRear = hardwareMap.get(DcMotor.class, "motorRightRear");
         motorLeftFront.setDirection(DcMotor.Direction.REVERSE);
         motorLeftRear.setDirection(DcMotor.Direction.REVERSE);
-        motorRightRear.setDirection(DcMotor.Direction.REVERSE);
-        motorRightFront.setDirection(DcMotor.Direction.REVERSE);
+        //motorRightRear.setDirection(DcMotor.Direction.REVERSE);
+        //motorRightFront.setDirection(DcMotor.Direction.REVERSE);
         dropBeaconServo.setDirection(Servo.Direction.REVERSE);
         motorCollect = hardwareMap.get(DcMotor.class, "motorCollect");
         telemetry.addData("Status", "Initialized");

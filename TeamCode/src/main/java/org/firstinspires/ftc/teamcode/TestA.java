@@ -67,7 +67,7 @@ public class TestA extends LinearOpMode {
     static final double     DRIVE_GEAR_REDUCTION    = 40 ;     // This is < 1.0 if geared UP, 40 for a 40:1 reduce to 160 rpm
     static final double     WHEEL_DIAMETER_MM   = 100 ;     // For figuring circumference
     static final double     COUNTS_PER_MM         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-            (WHEEL_DIAMETER_MM * 3.1415); //3.56507 If you want to move 500mm the position that needs to be set is 3.5607*500= 1782.535
+                                                                (WHEEL_DIAMETER_MM * 3.1415); //3.56507 If you want to move 500mm the position that needs to be set is 3.5607*500= 1782.535
     static final double     DRIVE_SPEED             = 0.5;
     static final double     TURN_SPEED              = 0.5;
 
@@ -112,7 +112,7 @@ public class TestA extends LinearOpMode {
         telemetry.update();
 
         // Wait for the game to start (driver presses PLAY)
-  //      waitForStart();
+//        waitForStart();
 
         //NOTE From https://ftcforum.usfirst.org/forum/ftc-technology/android-studio/66556-encoders-not-reading-correctly
         //Add the following line to Test the encoders, getting values from them
@@ -133,7 +133,7 @@ public class TestA extends LinearOpMode {
         //encoderDrive(TURN_SPEED,   100, -100, 4.0);  // S2: Turn Right 100 mm with 4 Sec timeout
 //        encoderDrive(DRIVE_SPEED, -300, -300, 4.0);  // S3: Reverse 100 mm with 4 Sec timeout
 
-        //encoderDriveForwardorBackwards(DRIVE_SPEED,500,5);
+        encoderDriveForwardorBackwards(DRIVE_SPEED,500,5);
         //encoderDriveForwardorBackwards(DRIVE_SPEED,-500,5);
 //        driveForwardorBackwards(0.5,500,5);
 
