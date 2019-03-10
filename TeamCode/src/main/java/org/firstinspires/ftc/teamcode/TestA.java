@@ -112,18 +112,18 @@ public class TestA extends LinearOpMode {
         telemetry.update();
 
         // Wait for the game to start (driver presses PLAY)
-//        waitForStart();
+        waitForStart();
 
         //NOTE From https://ftcforum.usfirst.org/forum/ftc-technology/android-studio/66556-encoders-not-reading-correctly
         //Add the following line to Test the encoders, getting values from them
         //*****************************************************************************************************************
         //1:40 motor should do 28*40 = 1120 for full Rotation
-        while(!isStarted){
-            telemetry.addData("Test Counts for debugging",  "Running at %7d :%7d :%7d :%7d",
-                    robot.motorLeftFront.getCurrentPosition(),robot.motorRightFront.getCurrentPosition(),
-                    robot.motorLeftRear.getCurrentPosition(),robot.motorRightRear.getCurrentPosition());
-            telemetry.update();
-        }
+//        while(!isStarted){
+//            telemetry.addData("Test Counts for debugging",  "Running at %7d :%7d :%7d :%7d",
+//                    robot.motorLeftFront.getCurrentPosition(),robot.motorRightFront.getCurrentPosition(),
+//                    robot.motorLeftRear.getCurrentPosition(),robot.motorRightRear.getCurrentPosition());
+//            telemetry.update();
+//        }
         //*****************************************************************************************************************
 
 
