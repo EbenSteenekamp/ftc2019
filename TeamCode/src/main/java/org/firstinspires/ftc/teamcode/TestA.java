@@ -63,11 +63,11 @@ public class TestA extends LinearOpMode {
     private VuforiaLocalizer vuforia;
     private TFObjectDetector tfod;
 
-    static final double     COUNTS_PER_MOTOR_REV    = 6400 ;    // eg: TETRIX Motor Encoder
-    static final double     DRIVE_GEAR_REDUCTION    = 0.025 ;     // This is < 1.0 if geared UP 40:1 reduce to 160 rpm
+    static final double     COUNTS_PER_MOTOR_REV    = 28 ;   //Neverest motor // eg: TETRIX Motor Encoder
+    static final double     DRIVE_GEAR_REDUCTION    = 40 ;     // This is < 1.0 if geared UP, 40 for a 40:1 reduce to 160 rpm
     static final double     WHEEL_DIAMETER_MM   = 100 ;     // For figuring circumference
     static final double     COUNTS_PER_MM         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-            (WHEEL_DIAMETER_MM * 3.1415);
+                                                                (WHEEL_DIAMETER_MM * 3.1415); //3.56507 If you want to move 500mm the position that needs to be set is 3.5607*500= 1782.535
     static final double     DRIVE_SPEED             = 0.5;
     static final double     TURN_SPEED              = 0.5;
 
@@ -112,18 +112,18 @@ public class TestA extends LinearOpMode {
         telemetry.update();
 
         // Wait for the game to start (driver presses PLAY)
-  //      waitForStart();
+        waitForStart();
 
         //NOTE From https://ftcforum.usfirst.org/forum/ftc-technology/android-studio/66556-encoders-not-reading-correctly
         //Add the following line to Test the encoders, getting values from them
         //*****************************************************************************************************************
         //1:40 motor should do 28*40 = 1120 for full Rotation
-        while(!isStarted){
-            telemetry.addData("Test Counts for debugging",  "Running at %7d :%7d :%7d :%7d",
-                    robot.motorLeftFront.getCurrentPosition(),robot.motorRightFront.getCurrentPosition(),
-                    robot.motorLeftRear.getCurrentPosition(),robot.motorRightRear.getCurrentPosition());
-            telemetry.update();
-        }
+//        while(!isStarted){
+//            telemetry.addData("Test Counts for debugging",  "Running at %7d :%7d :%7d :%7d",
+//                    robot.motorLeftFront.getCurrentPosition(),robot.motorRightFront.getCurrentPosition(),
+//                    robot.motorLeftRear.getCurrentPosition(),robot.motorRightRear.getCurrentPosition());
+//            telemetry.update();
+//        }
         //*****************************************************************************************************************
 
 
@@ -133,7 +133,7 @@ public class TestA extends LinearOpMode {
         //encoderDrive(TURN_SPEED,   100, -100, 4.0);  // S2: Turn Right 100 mm with 4 Sec timeout
 //        encoderDrive(DRIVE_SPEED, -300, -300, 4.0);  // S3: Reverse 100 mm with 4 Sec timeout
 
-        //encoderDriveForwardorBackwards(DRIVE_SPEED,500,5);
+        encoderDriveForwardorBackwards(DRIVE_SPEED,500,5);
         //encoderDriveForwardorBackwards(DRIVE_SPEED,-500,5);
 //        driveForwardorBackwards(0.5,500,5);
 
@@ -516,11 +516,11 @@ public class TestA extends LinearOpMode {
                 // Display it for the Debugging.
                 //telemetry.addData("Path1",  "Running to Target LF,LR, RF, RR %7d :%7d", newLeftFrontTarget,  newRightFrontTarget);
                 //telemetry.addData("Path2",  "Running at %7d :%7d",robot.motorLeftFront.getCurrentPosition(),robot.motorRightFront.getCurrentPosition());
-//                telemetry.addData("Path1",  "Running to Target LF,LR, RF, RR %7d :%7d :%7d :%7d", newLeftFrontTarget,  newLeftRearTarget, newRightFrontTarget,newRightRearTarget);
+                telemetry.addData("Path1",  "Running to Target LF,LR, RF, RR %7d :%7d :%7d :%7d", newLeftFrontTarget,  newLeftRearTarget, newRightFrontTarget,newRightRearTarget);
 //                telemetry.addData("Path2",  "Running at %7d :%7d :%7d :%7d",
-                telemetry.addData("Path1",  "Running to Target LR, RR %7d :%7d", newLeftRearTarget, newRightRearTarget);
-                telemetry.addData("Path2",  "Running at %7d :%7d",
-                        robot.motorLeftRear.getCurrentPosition(),robot.motorRightRear.getCurrentPosition());
+//                telemetry.addData("Path1",  "Running to Target LR, RR %7d :%7d", newLeftRearTarget, newRightRearTarget);
+//                telemetry.addData("Path2",  "Running at %7d :%7d",
+//                        robot.motorLeftRear.getCurrentPosition(),robot.motorRightRear.getCurrentPosition());
                 telemetry.update();
             }
 
