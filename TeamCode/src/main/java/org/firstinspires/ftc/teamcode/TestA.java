@@ -68,7 +68,7 @@ public class TestA extends LinearOpMode {
     static final double     WHEEL_DIAMETER_MM   = 100 ;     // For figuring circumference
     static final double     COUNTS_PER_MM         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
                                                                 (WHEEL_DIAMETER_MM * 3.1415); //3.56507 If you want to move 500mm the position that needs to be set is 3.5607*500= 1782.535
-    static final double     DRIVE_SPEED             = 0.5;
+    static final double     DRIVE_SPEED             = 1;
     static final double     TURN_SPEED              = 0.5;
 
     //TODO
@@ -133,9 +133,18 @@ public class TestA extends LinearOpMode {
         //encoderDrive(TURN_SPEED,   100, -100, 4.0);  // S2: Turn Right 100 mm with 4 Sec timeout
 //        encoderDrive(DRIVE_SPEED, -300, -300, 4.0);  // S3: Reverse 100 mm with 4 Sec timeout
 
+        //Forward 500 mm
         encoderDriveForwardorBackwards(DRIVE_SPEED,500,5);
-        //encoderDriveForwardorBackwards(DRIVE_SPEED,-500,5);
-//        driveForwardorBackwards(0.5,500,5);
+        //Turn right
+        encoderTurn(TURN_SPEED,-150,150,5);
+        //Reverse 500 mm
+        encoderDriveForwardorBackwards(DRIVE_SPEED,-500,5);
+
+        //Turn Left
+        encoderTurn(TURN_SPEED,150,-+150,5);
+        //Forward 500 mm
+        encoderDriveForwardorBackwards(DRIVE_SPEED,250,5);
+
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
@@ -539,18 +548,25 @@ public class TestA extends LinearOpMode {
         }
     }
 
-    public void driveForwardorBackwards(double speed,
-                                               double distanceMM,
-                                               double timeoutS) {
+    public void encoderTurn(double speed, double leftMMdistance, double rightMMdistance, double timeoutS){
+        int newLeftFrontTarget;
+        int newLeftRearTarget;
+        int newRightFrontTarget;
+        int newRightRearTarget;
 
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
             //We use Tank Drive in all 4 wheels, so make sure we sent the correct signals to both Left and Right wheels
+            // Determine new target position, and pass to motor controller
+            newLeftFrontTarget = robot.motorLeftFront.getCurrentPosition() + (int)(leftMMdistance * COUNTS_PER_MM);
+            newLeftRearTarget = robot.motorLeftRear.getCurrentPosition() + (int)(leftMMdistance * COUNTS_PER_MM);
+            newRightFrontTarget = robot.motorRightFront.getCurrentPosition() + (int)(rightMMdistance * COUNTS_PER_MM);
+            newRightRearTarget = robot.motorRightRear.getCurrentPosition() + (int)(rightMMdistance * COUNTS_PER_MM);
 
-            robot.motorLeftFront.setTargetPosition(100);
-            robot.motorLeftRear.setTargetPosition(100);
-            robot.motorRightFront.setTargetPosition(100);
-            robot.motorRightRear.setTargetPosition(100);
+            robot.motorLeftFront.setTargetPosition(newLeftFrontTarget);
+            robot.motorLeftRear.setTargetPosition(newLeftRearTarget);
+            robot.motorRightFront.setTargetPosition(newRightFrontTarget);
+            robot.motorRightRear.setTargetPosition(newRightRearTarget);
 
             // Turn On RUN_TO_POSITION
             robot.motorLeftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -567,22 +583,14 @@ public class TestA extends LinearOpMode {
             robot.motorRightRear.setPower(Math.abs(speed));
 
             // keep looping while we are still active, and there is time left, and both motors are running.
-            // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits, we should monitor ALL 4
-            //but assume for noe only 2 or monitor 2
-            // its target position, the motion will stop.  This is "safer" in the event that the robot will
-            // always end the motion as soon as possible.
-            // However, if you require that BOTH (actually all 4)  motors have finished their moves before the robot continues
-            // onto the next step, use (isBusy() || isBusy()) in the loop test.
-
+            //Only monitor the Back wheels
             while (opModeIsActive() &&
                     (runtime.seconds() < timeoutS) &&
                     (robot.motorLeftRear.isBusy() &&  robot.motorRightRear.isBusy()))
             {
 
                 // Display it for the Debugging.
-                telemetry.addData("Robot Straight Path",  "Running for All 4 at %7d :%7d :%7d :%7d",
-                        robot.motorLeftFront.getCurrentPosition(),robot.motorRightFront.getCurrentPosition(),
-                        robot.motorLeftRear.getCurrentPosition(),robot.motorRightRear.getCurrentPosition());
+                telemetry.addData("Path1",  "Running to Target LF,LR, RF, RR %7d :%7d :%7d :%7d", newLeftFrontTarget,  newLeftRearTarget, newRightFrontTarget,newRightRearTarget);
                 telemetry.update();
             }
 
