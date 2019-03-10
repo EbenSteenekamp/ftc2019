@@ -5,6 +5,7 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
@@ -68,7 +69,7 @@ public class TestA extends LinearOpMode {
     static final double     WHEEL_DIAMETER_MM   = 100 ;     // For figuring circumference
     static final double     COUNTS_PER_MM         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
                                                                 (WHEEL_DIAMETER_MM * 3.1415); //3.56507 If you want to move 500mm the position that needs to be set is 3.5607*500= 1782.535
-    static final double     DRIVE_SPEED             = 1;
+    static final double     DRIVE_SPEED             = 0.5;
     static final double     TURN_SPEED              = 0.5;
 
     //TODO
@@ -125,26 +126,31 @@ public class TestA extends LinearOpMode {
 //            telemetry.update();
 //        }
         //*****************************************************************************************************************
-
-
-        // Step through each leg of the path,
-        // Note: Reverse movement is obtained by setting a negative distance (not speed)
-//        encoderDrive(DRIVE_SPEED,  500,  400, 5.0);  // S1: Forward 200 mm with 5 Sec timeout
-        //encoderDrive(TURN_SPEED,   100, -100, 4.0);  // S2: Turn Right 100 mm with 4 Sec timeout
-//        encoderDrive(DRIVE_SPEED, -300, -300, 4.0);  // S3: Reverse 100 mm with 4 Sec timeout
-
         //Forward 500 mm
         encoderDriveForwardorBackwards(DRIVE_SPEED,500,5);
-        //Turn right
+        //Turn left
         encoderTurn(TURN_SPEED,-150,150,5);
         //Reverse 500 mm
         encoderDriveForwardorBackwards(DRIVE_SPEED,-500,5);
 
-        //Turn Left
+        //Turn right
         encoderTurn(TURN_SPEED,150,-+150,5);
         //Forward 500 mm
         encoderDriveForwardorBackwards(DRIVE_SPEED,250,5);
 
+        //Drop the Beacon
+        dropBeacon(5);
+
+        //turn left again (90 Degrees Left)
+        encoderTurn(TURN_SPEED,-450,450,5);
+
+        encoderDriveForwardorBackwards(DRIVE_SPEED,250,5);
+
+        //Turn 90 Degrees Right
+        encoderTurn(TURN_SPEED,450,-450,5);
+
+        //Forward 500 mm
+        encoderDriveForwardorBackwards(DRIVE_SPEED,1000,5);
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
@@ -594,6 +600,8 @@ public class TestA extends LinearOpMode {
                 telemetry.update();
             }
 
+            telemetry.addData("Power Reset","Power set to 0");
+            telemetry.update();
             // Stop all motion after Path is completed;
             robot.motorLeftFront.setPower(0);
             robot.motorLeftRear.setPower(0);
@@ -607,5 +615,34 @@ public class TestA extends LinearOpMode {
             robot.motorLeftRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             robot.motorRightRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
+    }
+
+    public void dropBeacon(double timeoutS){
+
+        telemetry.addData("Beacon Drop", "Initialized");
+        telemetry.update();
+        runtime.reset();
+        //dropBeaconServo.setPosition(0);
+        telemetry.addData("Reset the Beacon",robot.dropBeaconServo.getPosition());
+
+        robot.dropBeaconServo.setDirection(Servo.Direction.REVERSE);
+        robot.dropBeaconServo.setPosition(0.5);
+
+        robot.dropBeaconServo.setPosition(0.90);
+        while (opModeIsActive()) {
+            //WE don't have servo feedback
+            telemetry.addData("Drop the Beacon and wait",robot.dropBeaconServo.getPosition());
+            sleep(1000);
+            telemetry.update();
+            //if(robot.dropBeaconServo.getPosition()>0.89)
+                break;
+
+        }
+
+        robot.dropBeaconServo.setPosition(0.5);
+        telemetry.addData("Drop the Beacon",robot.dropBeaconServo.getPosition());
+
+        telemetry.update();
+
     }
 }
