@@ -37,6 +37,8 @@ public class AutoOpDrive extends LinearOpMode {
         waitForStart();
         while (opModeIsActive()) {
             robot.lower();
+            telemetry.addLine("Lower");
+            telemetry.update();
             robot.MoveTillEnd();
 
             stop();

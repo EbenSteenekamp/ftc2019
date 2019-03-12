@@ -69,8 +69,9 @@ public class TestA extends LinearOpMode {
     static final double     WHEEL_DIAMETER_MM   = 100 ;     // For figuring circumference
     static final double     COUNTS_PER_MM         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
                                                                 (WHEEL_DIAMETER_MM * 3.1415); //3.56507 If you want to move 500mm the position that needs to be set is 3.5607*500= 1782.535
-    static final double     DRIVE_SPEED             = 0.5;
+    static final double     DRIVE_SPEED             = 1;
     static final double     TURN_SPEED              = 0.5;
+    static final double     STRAFE_SPEED            = 0.5;
 
     //TODO
     //Test single Path
@@ -153,6 +154,7 @@ public class TestA extends LinearOpMode {
         //Drop the Beacon
         dropBeacon(5);
 
+
         //turn left again (90 Degrees Left)
         encoderTurn(TURN_SPEED,-450,450,5);
 
@@ -171,6 +173,11 @@ public class TestA extends LinearOpMode {
         encoderMoveLift(2000,0.5,2);
 
         encoderExtender(2000,0.5,3);
+        //Sideways 500mm right
+        encoderStrafe(STRAFE_SPEED, 500, -500, 5);
+        //Sideways 1000mm left
+        encoderStrafe(STRAFE_SPEED, -1000, 1000, 5);
+
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
@@ -753,3 +760,62 @@ public class TestA extends LinearOpMode {
         }
     }
 }
+
+    public void encoderStrafe(double speed, double pair1, double pair2, double timeoutS){
+        int newLeftFrontTarget;
+        int newLeftRearTarget;
+        int newRightFrontTarget;
+        int newRightRearTarget;
+
+        newLeftFrontTarget = robot.motorLeftFront.getCurrentPosition() + (int)(pair1 * COUNTS_PER_MM);
+        newLeftRearTarget = robot.motorLeftRear.getCurrentPosition() + (int)(pair2 * COUNTS_PER_MM);
+        newRightFrontTarget = robot.motorRightFront.getCurrentPosition() + (int)(pair2 * COUNTS_PER_MM);
+        newRightRearTarget = robot.motorRightRear.getCurrentPosition() + (int)(pair1 * COUNTS_PER_MM);
+
+        robot.motorLeftFront.setTargetPosition(newLeftFrontTarget);
+        robot.motorLeftRear.setTargetPosition(newLeftRearTarget);
+        robot.motorRightFront.setTargetPosition(newRightFrontTarget);
+        robot.motorRightRear.setTargetPosition(newRightRearTarget);
+
+        // Turn On RUN_TO_POSITION
+        robot.motorLeftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.motorLeftRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.motorRightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.motorRightRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        // reset the timeout time and start motion.
+        runtime.reset();
+        robot.motorLeftFront.setPower(Math.abs(speed));
+        robot.motorRightFront.setPower(Math.abs(speed));
+
+        robot.motorLeftRear.setPower(Math.abs(speed));
+        robot.motorRightRear.setPower(Math.abs(speed));
+
+        // keep looping while we are still active, and there is time left, and both motors are running.
+        //Only monitor the Back wheels
+        while (opModeIsActive() &&
+                (runtime.seconds() < timeoutS) &&
+                (robot.motorLeftRear.isBusy() &&  robot.motorRightRear.isBusy()))
+        {
+
+            // Display it for the Debugging.
+            telemetry.addData("Path1",  "Running to Target LF,LR, RF, RR %7d :%7d :%7d :%7d", newLeftFrontTarget,  newLeftRearTarget, newRightFrontTarget,newRightRearTarget);
+            telemetry.update();
+        }
+
+        // Stop all motion after Path is completed;
+        robot.motorLeftFront.setPower(0);
+        robot.motorLeftRear.setPower(0);
+
+        robot.motorRightFront.setPower(0);
+        robot.motorRightRear.setPower(0);
+        // Turn off RUN_TO_POSITION
+        robot.motorLeftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.motorRightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        robot.motorLeftRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.motorRightRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+}
+
