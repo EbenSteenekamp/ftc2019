@@ -759,7 +759,7 @@ public class TestA extends LinearOpMode {
 
         }
     }
-}
+
 
     public void encoderStrafe(double speed, double pair1, double pair2, double timeoutS){
         int newLeftFrontTarget;
