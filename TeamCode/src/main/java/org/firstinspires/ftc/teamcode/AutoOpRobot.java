@@ -69,10 +69,15 @@ public class AutoOpRobot extends LinearOpMode {
         motorRightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorRightRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+        motorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorExtend.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         motorLeftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorLeftRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorRightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorRightRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorExtend.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         dropBeaconServo = masterConfig.servo.get("DropBeaconServo");
         dropBeaconServo.setPosition(0.5);
