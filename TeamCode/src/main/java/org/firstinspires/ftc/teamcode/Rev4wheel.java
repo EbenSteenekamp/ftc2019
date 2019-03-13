@@ -34,9 +34,15 @@ public class Rev4wheel extends LinearOpMode {
         //Declare all hardware
         hitchServo = hardwareMap.crservo.get("hitchServo");
         motorExtend = hardwareMap.get(DcMotor.class, "motorExtend");
+  //      motorExtend.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+  //      motorExtend.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         dropBeaconServo = hardwareMap.servo.get("DropBeaconServo");
         motorLift = hardwareMap.get(DcMotor.class, "motorLift");
+  //      motorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+  //      motorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorLeftFront = hardwareMap.get(DcMotor.class, "motorLeftFront");
+  //      motorLeftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+  //      motorLeftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorLeftRear = hardwareMap.get(DcMotor.class, "motorLeftRear");
         motorRightFront = hardwareMap.get(DcMotor.class, "motorRightFront");
         motorRightRear = hardwareMap.get(DcMotor.class, "motorRightRear");
@@ -81,18 +87,18 @@ public class Rev4wheel extends LinearOpMode {
                 telemetry.addData("Drop the Beacon",dropBeaconServo.getPosition());
             }
 
-            //Close the hitch
+            //Open or Close the hitch
             if (gamepad2.dpad_right && !gamepad2.dpad_left && gamepad2.left_bumper && moveServoClose == false) {
                 hitchServo.setPower(1);
                 telemetry.addData("Left Button", hitchServo.getPower());
-                sleep(2000);
+                sleep(1900);
                 moveServoClose = true;
                 moveServoOpen = false;
             }
             if (gamepad2.dpad_left && !gamepad2.dpad_right && gamepad2.left_bumper && moveServoOpen == false) {
                 hitchServo.setPower(-1);
                 telemetry.addData("Right Button", hitchServo.getPower());
-                sleep(2000);
+                sleep(1900);
                 moveServoClose = false;
                 moveServoOpen = true;
             }
@@ -104,29 +110,35 @@ public class Rev4wheel extends LinearOpMode {
             //Lift the arm
             if (gamepad2.left_stick_y <0 ){
                 motorLift.setPower(liftmotorUpPowerSetting);
-                telemetry.addData("Lifting Motor Up", motorLift.getPower());
+                //telemetry.addData("Lifting Motor Up", motorLift.getPower());
+                //Add Telemetry
+                telemetry.addData("Lift Up position", motorLift.getCurrentPosition());
             }
             if (gamepad2.left_stick_y >0){
                 motorLift.setPower(liftmotorDownPowerSetting);
-                telemetry.addData("Lifting Motor Down", motorLift.getPower());
+                //telemetry.addData("Lifting Motor Down", motorLift.getPower());
+                telemetry.addData("Lift Down position", motorLift.getCurrentPosition());
             }
             if (gamepad2.left_stick_y == 0){
                 motorLift.setPower(0);
-                telemetry.addData("Lifting Motor Off", motorLift.getPower());
+                //telemetry.addData("Lifting Motor Off", motorLift.getPower());
             }
 
             //Extend the arm
             if (gamepad2.right_stick_y >0){
                 motorExtend.setPower(extendingArmPowerSetting * gamepad2.right_stick_y);
-                telemetry.addData("Extending Motor, extending Arm", motorExtend.getPower());
+                //telemetry.addData("Extending Motor, extending Arm", motorExtend.getPower());
+                telemetry.addData("Extending Motor position,extending", motorExtend.getCurrentPosition());
             }
             if (gamepad2.right_stick_y <0){
                 motorExtend.setPower(extendingArmPowerSetting * gamepad2.right_stick_y);
-                telemetry.addData("Extending Motor, retracting Arm", motorExtend.getPower());
+                //telemetry.addData("Extending Motor, retracting Arm", motorExtend.getPower());
+                telemetry.addData("Extending Motor position,retracting", motorExtend.getCurrentPosition());
             }
             if (gamepad2.right_stick_y == 0){
                 motorExtend.setPower(0);
-                telemetry.addData("Extending Motor On", motorExtend.getPower());
+                //telemetry.addData("Extending Motor On", motorExtend.getPower());
+                telemetry.addData("Extending Motor position,retracting", motorExtend.getCurrentPosition());
             }
             telemetry.update();
 //            if (gamepad2.a && collecting == false){
@@ -140,16 +152,16 @@ public class Rev4wheel extends LinearOpMode {
             //Turn collector on
             if(gamepad2.a == true) {
                 motorCollect.setPower(0.6);
-                telemetry.addData("Collection Motor On", motorCollect.getPower());
+                //telemetry.addData("Collection Motor On", motorCollect.getPower());
             }
             if(gamepad2.b == true){
                 motorCollect.setPower(-0.6);
-                telemetry.addData("Collection Motor On", motorCollect.getPower());
+                //telemetry.addData("Collection Motor On", motorCollect.getPower());
 
             }
             if(gamepad2.b == false && gamepad2.a == false){
                 motorCollect.setPower(0);
-                telemetry.addData("Collection Motor On", motorCollect.getPower());
+                //telemetry.addData("Collection Motor On", motorCollect.getPower());
 
             }
 
@@ -171,20 +183,22 @@ public class Rev4wheel extends LinearOpMode {
                 motorLeftRear.setPower(gamepad1.left_stick_y * speedControlPowerSetting);
                 motorRightFront.setPower(gamepad1.right_stick_y * speedControlPowerSetting);
                 motorRightRear.setPower(gamepad1.right_stick_y * speedControlPowerSetting);
-                telemetry.addData("LF Target Power", leftFrontPowerSetting);
-                telemetry.addData("LF Motor Power", motorLeftFront.getPower());
+//                telemetry.addData("LF Motor position", motorLeftFront.getCurrentPosition());
 
-                telemetry.addData("LR Target Power", leftRearPowerSetting);
-                telemetry.addData("LR Motor Power", motorLeftRear.getPower());
+//                telemetry.addData("LF Target Power", leftFrontPowerSetting);
+//                telemetry.addData("LF Motor Power", motorLeftFront.getPower());
+//
+//                telemetry.addData("LR Target Power", leftRearPowerSetting);
+//                telemetry.addData("LR Motor Power", motorLeftRear.getPower());
+//
+//                telemetry.addData("RF Target Power", rightFrontPowerSetting);
+//                telemetry.addData("RF Motor Power", motorRightFront.getPower());
+//
+//                telemetry.addData("RR Target Power", rightRearPowerSetting);
+//                telemetry.addData("RR Motor Power", motorRightRear.getPower());
 
-                telemetry.addData("RF Target Power", rightFrontPowerSetting);
-                telemetry.addData("RF Motor Power", motorRightFront.getPower());
 
-                telemetry.addData("RR Target Power", rightRearPowerSetting);
-                telemetry.addData("RR Motor Power", motorRightRear.getPower());
-
-
-                telemetry.addData("Status", "Running");
+                //telemetry.addData("Status", "Running");
 //                telemetry.update();
 
             }
@@ -197,20 +211,20 @@ public class Rev4wheel extends LinearOpMode {
                 motorRightFront.setPower(+1);
                 motorRightRear.setPower(-1);
 
-                telemetry.addData("LF Target Power", leftFrontPowerSetting);
-                telemetry.addData("LF Motor Power", motorLeftFront.getPower());
+//                telemetry.addData("LF Target Power", leftFrontPowerSetting);
+//                telemetry.addData("LF Motor Power", motorLeftFront.getPower());
+//
+//                telemetry.addData("LR Target Power", leftRearPowerSetting);
+//                telemetry.addData("LR Motor Power", motorLeftRear.getPower());
+//
+//                telemetry.addData("RF Target Power", rightFrontPowerSetting);
+//                telemetry.addData("RF Motor Power", motorRightFront.getPower());
+//
+//                telemetry.addData("RR Target Power", rightRearPowerSetting);
+ //               telemetry.addData("RR Motor Power", motorRightRear.getPower());
 
-                telemetry.addData("LR Target Power", leftRearPowerSetting);
-                telemetry.addData("LR Motor Power", motorLeftRear.getPower());
 
-                telemetry.addData("RF Target Power", rightFrontPowerSetting);
-                telemetry.addData("RF Motor Power", motorRightFront.getPower());
-
-                telemetry.addData("RR Target Power", rightRearPowerSetting);
-                telemetry.addData("RR Motor Power", motorRightRear.getPower());
-
-
-                telemetry.addData("Status", "Running");
+//                telemetry.addData("Status", "Running");
                 //telemetry.update();
             }
 
@@ -220,20 +234,20 @@ public class Rev4wheel extends LinearOpMode {
                 motorRightFront.setPower(-1);
                 motorRightRear.setPower(+1);
 
-                telemetry.addData("LF Target Power", leftFrontPowerSetting);
-                telemetry.addData("LF Motor Power", motorLeftFront.getPower());
+//                telemetry.addData("LF Target Power", leftFrontPowerSetting);
+//                telemetry.addData("LF Motor Power", motorLeftFront.getPower());
+//
+//                telemetry.addData("LR Target Power", leftRearPowerSetting);
+//                telemetry.addData("LR Motor Power", motorLeftRear.getPower());
+//
+//                telemetry.addData("RF Target Power", rightFrontPowerSetting);
+//                telemetry.addData("RF Motor Power", motorRightFront.getPower());
+//
+//                telemetry.addData("RR Target Power", rightRearPowerSetting);
+//                telemetry.addData("RR Motor Power", motorRightRear.getPower());
 
-                telemetry.addData("LR Target Power", leftRearPowerSetting);
-                telemetry.addData("LR Motor Power", motorLeftRear.getPower());
 
-                telemetry.addData("RF Target Power", rightFrontPowerSetting);
-                telemetry.addData("RF Motor Power", motorRightFront.getPower());
-
-                telemetry.addData("RR Target Power", rightRearPowerSetting);
-                telemetry.addData("RR Motor Power", motorRightRear.getPower());
-
-
-                telemetry.addData("Status", "Running");
+//                telemetry.addData("Status", "Running");
                 //telemetry.update();
             }
             telemetry.update();

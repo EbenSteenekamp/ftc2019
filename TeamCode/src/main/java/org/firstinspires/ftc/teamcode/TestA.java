@@ -5,6 +5,7 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
@@ -97,19 +98,27 @@ public class TestA extends LinearOpMode {
         robot.motorRightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.motorRightRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+        robot.motorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.motorExtend.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         robot.motorLeftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.motorLeftRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         robot.motorRightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.motorRightRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+        robot.motorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.motorExtend.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
 //        // Send telemetry message to indicate successful Encoder reset
 //        telemetry.addData("Path0, before",  "Starting at %7d :%7d",
 //                robot.motorLeftFront.getCurrentPosition(),
 //                robot.motorRightFront.getCurrentPosition());
-        telemetry.addData("Path0, before",  "Starting at %7d :%7d: %7d :%7d",
+        telemetry.addData("Positions at Start, before, LF,LR,RF,RR,LIFT,EXT",  "Starting at %7d :%7d: %7d :%7d %7d :%7d",
                 robot.motorLeftFront.getCurrentPosition(),robot.motorLeftRear.getCurrentPosition(),
-                robot.motorRightFront.getCurrentPosition(),robot.motorRightRear.getCurrentPosition());
+                robot.motorRightFront.getCurrentPosition(),robot.motorRightRear.getCurrentPosition(),
+                robot.motorLift.getCurrentPosition(),
+                robot.motorExtend.getCurrentPosition());
         telemetry.update();
 
         // Wait for the game to start (driver presses PLAY)
@@ -120,35 +129,55 @@ public class TestA extends LinearOpMode {
         //*****************************************************************************************************************
         //1:40 motor should do 28*40 = 1120 for full Rotation
 //        while(!isStarted){
-//            telemetry.addData("Test Counts for debugging",  "Running at %7d :%7d :%7d :%7d",
-//                    robot.motorLeftFront.getCurrentPosition(),robot.motorRightFront.getCurrentPosition(),
-//                    robot.motorLeftRear.getCurrentPosition(),robot.motorRightRear.getCurrentPosition());
+//            telemetry.addData("Test Counts for debugging",  "Running at LF,LR,RF,RR,LIFT,EXT\",  \"Starting at %7d :%7d: %7d :%7d %7d :%7d\"",
+//                    robot.motorLeftFront.getCurrentPosition(),
+//                    robot.motorRightFront.getCurrentPosition(),
+//                    robot.motorLeftRear.getCurrentPosition(),
+//                    robot.motorRightRear.getCurrentPosition(),
+//                    robot.motorLift.getCurrentPosition(),
+//                    robot.motorExtend.getCurrentPosition());
 //            telemetry.update();
 //        }
         //*****************************************************************************************************************
-
-
-        // Step through each leg of the path,
-        // Note: Reverse movement is obtained by setting a negative distance (not speed)
-//        encoderDrive(DRIVE_SPEED,  500,  400, 5.0);  // S1: Forward 200 mm with 5 Sec timeout
-        //encoderDrive(TURN_SPEED,   100, -100, 4.0);  // S2: Turn Right 100 mm with 4 Sec timeout
-//        encoderDrive(DRIVE_SPEED, -300, -300, 4.0);  // S3: Reverse 100 mm with 4 Sec timeout
-
         //Forward 500 mm
         encoderDriveForwardorBackwards(DRIVE_SPEED,500,5);
-        //Turn right
+        //Turn left
         encoderTurn(TURN_SPEED,-150,150,5);
         //Reverse 500 mm
         encoderDriveForwardorBackwards(DRIVE_SPEED,-500,5);
 
-        //Turn Left
+        //Turn right
         encoderTurn(TURN_SPEED,150,-+150,5);
         //Forward 500 mm
         encoderDriveForwardorBackwards(DRIVE_SPEED,250,5);
+
+        //Drop the Beacon
+        dropBeacon(5);
+
+
+        //turn left again (90 Degrees Left)
+        encoderTurn(TURN_SPEED,-450,450,5);
+
+        encoderDriveForwardorBackwards(DRIVE_SPEED,250,5);
+
+        //Turn 90 Degrees Right
+        encoderTurn(TURN_SPEED,450,-450,5);
+
+        //Forward 500 mm
+        encoderDriveForwardorBackwards(DRIVE_SPEED,1000,5);
+
+        encoderMoveLift(-2000,0.5,2);
+
+        encoderExtender(-2000,0.5,3);
+
+        encoderMoveLift(2000,0.5,2);
+
+        encoderExtender(2000,0.5,3);
         //Sideways 500mm right
         encoderStrafe(STRAFE_SPEED, 500, -500, 5);
         //Sideways 1000mm left
         encoderStrafe(STRAFE_SPEED, -1000, 1000, 5);
+
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
@@ -598,6 +627,8 @@ public class TestA extends LinearOpMode {
                 telemetry.update();
             }
 
+            telemetry.addData("Power Reset","Power set to 0");
+            telemetry.update();
             // Stop all motion after Path is completed;
             robot.motorLeftFront.setPower(0);
             robot.motorLeftRear.setPower(0);
@@ -612,6 +643,123 @@ public class TestA extends LinearOpMode {
             robot.motorRightRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
+
+    public void dropBeacon(double timeoutS){
+
+        telemetry.addData("Beacon Drop", "Initialized");
+        telemetry.update();
+        runtime.reset();
+        //dropBeaconServo.setPosition(0);
+        telemetry.addData("Reset the Beacon",robot.dropBeaconServo.getPosition());
+
+        robot.dropBeaconServo.setDirection(Servo.Direction.REVERSE);
+        robot.dropBeaconServo.setPosition(0.5);
+
+        robot.dropBeaconServo.setPosition(0.90);
+        while (opModeIsActive()) {
+            //WE don't have servo feedback
+            telemetry.addData("Drop the Beacon and wait",robot.dropBeaconServo.getPosition());
+            sleep(1000);
+            telemetry.update();
+            //if(robot.dropBeaconServo.getPosition()>0.89)
+                break;
+
+        }
+
+        robot.dropBeaconServo.setPosition(0.5);
+        telemetry.addData("Drop the Beacon",robot.dropBeaconServo.getPosition());
+
+        telemetry.update();
+
+    }
+
+    public void encoderMoveLift(int position, double speed,double timeoutS)
+    {
+        int newLiftget;
+
+        // Ensure that the opmode is still active
+        if (opModeIsActive()) {
+
+            // Determine new target position, and pass to motor controller
+            newLiftget = robot.motorLift.getCurrentPosition() + position;//+ (int)(distanceMM * COUNTS_PER_MM);
+
+
+            robot.motorLift.setTargetPosition(newLiftget);
+            // Turn On RUN_TO_POSITION
+            robot.motorLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            // reset the timeout time and start motion.
+            runtime.reset();
+            robot.motorLift.setPower(Math.abs(speed));
+
+            // keep looping while we are still active, and there is time left, and both motors are running.
+            // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits, we should monitor ALL 4
+            //but assume for noe only 2 or monitor 2
+            // its target position, the motion will stop.  This is "safer" in the event that the robot will
+            // always end the motion as soon as possible.
+            // However, if you require that BOTH (actually all 4)  motors have finished their moves before the robot continues
+            // onto the next step, use (isBusy() || isBusy()) in the loop test.
+
+            while (opModeIsActive() &&
+                    (runtime.seconds() < timeoutS) &&
+                    (robot.motorLift.isBusy() ))
+            {
+
+                // Display it for the Debugging.
+                 telemetry.addData("Lift Path",  "Running to Target :%7d", newLiftget);
+                telemetry.update();
+            }
+
+            // Stop all motion after Path is completed;
+            robot.motorLift.setPower(0);
+            // Turn off RUN_TO_POSITION
+            robot.motorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        }
+    }
+    public void encoderExtender(int position,double speed, double timeoutS)
+    {
+        int newExtendget;
+
+        // Ensure that the opmode is still active
+        if (opModeIsActive()) {
+
+            // Determine new target position, and pass to motor controller
+            newExtendget = robot.motorExtend.getCurrentPosition() + position ;//+ (int)(distanceMM * COUNTS_PER_MM);
+
+
+            robot.motorExtend.setTargetPosition(newExtendget);
+            // Turn On RUN_TO_POSITION
+            robot.motorExtend.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            // reset the timeout time and start motion.
+            runtime.reset();
+            robot.motorExtend.setPower(Math.abs(speed));
+
+            // keep looping while we are still active, and there is time left, and both motors are running.
+            // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits, we should monitor ALL 4
+            //but assume for noe only 2 or monitor 2
+            // its target position, the motion will stop.  This is "safer" in the event that the robot will
+            // always end the motion as soon as possible.
+            // However, if you require that BOTH (actually all 4)  motors have finished their moves before the robot continues
+            // onto the next step, use (isBusy() || isBusy()) in the loop test.
+
+            while (opModeIsActive() &&
+                    (runtime.seconds() < timeoutS) &&
+                    (robot.motorExtend.isBusy() ))
+            {
+
+                // Display it for the Debugging.
+                telemetry.addData("Extender Path",  "Running to Target :%7d", newExtendget);
+                telemetry.update();
+            }
+
+            // Stop all motion after Path is completed;
+            robot.motorExtend.setPower(0);
+            // Turn off RUN_TO_POSITION
+            robot.motorExtend.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        }
+    }
+
 
     public void encoderStrafe(double speed, double pair1, double pair2, double timeoutS){
         int newLeftFrontTarget;
@@ -670,3 +818,4 @@ public class TestA extends LinearOpMode {
     }
 
 }
+
