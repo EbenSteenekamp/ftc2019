@@ -38,7 +38,7 @@ public class CloneAutoOpRobot extends LinearOpMode {
     static final double     COUNTS_PER_MM         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_MM * 3.1415);
 
-    static final double     DRIVE_SPEED             = 0.5;
+    static final double     DRIVE_SPEED             = 1;
     static final double     TURN_SPEED              = 0.5;
     static final double     STRAFE_SPEED            = 0.5;
 
@@ -74,10 +74,15 @@ public class CloneAutoOpRobot extends LinearOpMode {
         motorRightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorRightRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+        motorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorExtend.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         motorLeftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorLeftRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorRightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorRightRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorExtend.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         dropBeaconServo = masterConfig.servo.get("DropBeaconServo");
         dropBeaconServo.setPosition(0.5);
@@ -85,10 +90,10 @@ public class CloneAutoOpRobot extends LinearOpMode {
 
     public void lower() {
 
-        if (lower == false) {
+        encoderMoveLift(1000, 1, 5);
+        encoderExtender(1000, 1, 5);
+        if (!lower) {
 
-            encoderExtend(0.5, 7000, 5);
-            encoderLift(0.5, 1000, 5);
 //            motorLift.setPower(1);
 //            sleep(3500);
 //            motorLift.setPower(0);
@@ -102,62 +107,52 @@ public class CloneAutoOpRobot extends LinearOpMode {
         }
         lower = true;
     }
+
     public void MoveTillEnd() {
-//        motorRightRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        motorLeftRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        motorRightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        motorLeftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        motorLeftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        motorRightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        motorLeftRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        motorRightRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//
-//        double driveDistance1 = 200 * COUNTS_PER_MM;
-//        double startPos1 = motorRightFront.getCurrentPosition();
-//        while (motorRightFront.getCurrentPosition() < driveDistance1 + startPos1) {
+
+            encoderDriveForwardorBackwards(DRIVE_SPEED, 100, 5);
+            encoderExtender(200, 1, 5);
+
 //            motorLeftFront.setPower(+0.5);
 //            motorLeftRear.setPower(+0.5);
 //            motorRightFront.setPower(+0.5);
 //            motorRightRear.setPower(+0.5);
 //            telemetry.addLine("Forward");
-//        }
-
-            motorLeftFront.setPower(+0.5);
-            motorLeftRear.setPower(+0.5);
-            motorRightFront.setPower(+0.5);
-            motorRightRear.setPower(+0.5);
-            telemetry.addLine("Forward");
-            sleep(1550);
-            motorLeftFront.setPower(+0);
-            motorLeftRear.setPower(+0);
-            motorRightFront.setPower(+0);
-            motorRightRear.setPower(+0);
-            hitchServo.setPower(-1);
-            sleep(2000);
-            hitchServo.setPower(0);
-            motorLift.setPower(-1);
-            sleep(2050);
-            motorLift.setPower(0);
-            motorExtend.setPower(-1);
-            sleep(750);
-            motorExtend.setPower(0);
+//            sleep(1550);
+//            motorLeftFront.setPower(+0);
+//            motorLeftRear.setPower(+0);
+//            motorRightFront.setPower(+0);
+//            motorRightRear.setPower(+0);
+//            hitchServo.setPower(-1);
+//            sleep(2000);
+//            hitchServo.setPower(0);
+//            motorLift.setPower(-1);
+//            sleep(2050);
+//            motorLift.setPower(0);
+//            motorExtend.setPower(-1);
+//            sleep(750);
+//            motorExtend.setPower(0);
     }
 
     public void FVDrop(){
-        motorLeftFront.setPower(+0.5);
-        motorLeftRear.setPower(+0.5);
-        motorRightFront.setPower(+0.5);
-        motorRightRear.setPower(+0.5);
-        telemetry.addLine("Forward");
-        sleep(2600);
-        motorLeftFront.setPower(+1);
-        motorLeftRear.setPower(+1);
-        motorRightFront.setPower(-1);
-        motorRightRear.setPower(-1);
-        sleep(15);
-        DropBeacon();
-        hitchServo.setPower(-1);
-        sleep(2000);
+
+        encoderDriveForwardorBackwards(DRIVE_SPEED, 700, 7);
+        encoderTurn(TURN_SPEED, 500, -500, 5);
+
+//        motorLeftFront.setPower(+0.5);
+//        motorLeftRear.setPower(+0.5);
+//        motorRightFront.setPower(+0.5);
+//        motorRightRear.setPower(+0.5);
+//        telemetry.addLine("Forward");
+//        sleep(2600);
+//        motorLeftFront.setPower(+1);
+//        motorLeftRear.setPower(+1);
+//        motorRightFront.setPower(-1);
+//        motorRightRear.setPower(-1);
+//        sleep(15);
+//        DropBeacon();
+//        hitchServo.setPower(-1);
+//        sleep(2000);
 
     }
 
@@ -177,25 +172,7 @@ public class CloneAutoOpRobot extends LinearOpMode {
 
     public void MoveL(){
         encoderDriveForwardorBackwards(DRIVE_SPEED, 100, 5);
-//        telemetry.addData("Status", "Resetting Encoders");    //
-//        telemetry.update();
-//        motorRightRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        motorLeftRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        motorRightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        motorLeftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        motorLeftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        motorRightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        motorLeftRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        motorRightRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        double driveDistance = 100 * COUNTS_PER_MM;
-//        double startPos = motorRightFront.getCurrentPosition();
-//        while (motorRightFront.getCurrentPosition() < driveDistance + startPos) {
-//            motorLeftFront.setPower(+1);
-//            motorLeftRear.setPower(-1);
-//            motorRightFront.setPower(+1);
-//            motorRightRear.setPower(-1);
-//            telemetry.addLine("Move Left");
-//        }
+        encoderStrafe(DRIVE_SPEED, 100, -100, 5);
     }
 
     public void ResetLeft(){
@@ -230,23 +207,8 @@ public class CloneAutoOpRobot extends LinearOpMode {
     }
 
     public void MoveR(){
-        motorRightRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorLeftRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorRightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorLeftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorLeftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorRightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorLeftRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorRightRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        double driveDistance = 100 * COUNTS_PER_MM;
-        double startPos = motorRightFront.getCurrentPosition();
-        while (motorRightFront.getCurrentPosition() < driveDistance + startPos) {
-            motorLeftFront.setPower(-1);
-            motorLeftRear.setPower(+1);
-            motorRightFront.setPower(-1);
-            motorRightRear.setPower(+1);
-            telemetry.addLine("Move Right");
-        }
+        encoderDriveForwardorBackwards(DRIVE_SPEED, 100, 5);
+        encoderStrafe(DRIVE_SPEED, -100, 100, 5);
     }
 
     public void ResetRight(){
@@ -280,23 +242,10 @@ public class CloneAutoOpRobot extends LinearOpMode {
     }
 
     public void Sample(){
-        motorRightRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorLeftRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorRightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorLeftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorLeftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorRightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorLeftRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorRightRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        double driveDistance = 100 * COUNTS_PER_MM;
-        double startPos = motorRightFront.getCurrentPosition();
-        while (motorRightFront.getCurrentPosition() < driveDistance + startPos) {
-            motorLeftFront.setPower(+1);
-            motorLeftRear.setPower(+1);
-            motorRightFront.setPower(+1);
-            motorRightRear.setPower(+1);
-            telemetry.addLine("Sample");
-        }
+        encoderMoveLift(-1000, 1, 5);
+        encoderExtender(1, 100, 5);
+        motorCollect.setPower(1);
+        encoderMoveLift(1000, 1, 5);
     }
 
     public void ResetMid(){
@@ -433,9 +382,7 @@ public class CloneAutoOpRobot extends LinearOpMode {
         telemetry.addData("Drop the Beacon",dropBeaconServo.getPosition());
     }
 
-    public void encoderDriveForwardorBackwards(double speed,
-                                               double distanceMM,
-                                               double timeoutS) {
+    public void encoderDriveForwardorBackwards(double speed, double distanceMM, double timeoutS) {
         int newLeftFrontTarget;
         int newLeftRearTarget;
         int newRightFrontTarget;
@@ -561,6 +508,8 @@ public class CloneAutoOpRobot extends LinearOpMode {
                 telemetry.update();
             }
 
+            telemetry.addData("Power Reset","Power set to 0");
+            telemetry.update();
             // Stop all motion after Path is completed;
             motorLeftFront.setPower(0);
             motorLeftRear.setPower(0);
@@ -576,7 +525,127 @@ public class CloneAutoOpRobot extends LinearOpMode {
         }
     }
 
-    public void encoderStrafe(double speed, double pair1, double pair2, double timeoutS){
+    public void dropBeacon(double timeoutS){
+
+        telemetry.addData("Beacon Drop", "Initialized");
+        telemetry.update();
+        runtime.reset();
+        //dropBeaconServo.setPosition(0);
+        telemetry.addData("Reset the Beacon",dropBeaconServo.getPosition());
+
+        dropBeaconServo.setDirection(Servo.Direction.REVERSE);
+        dropBeaconServo.setPosition(0.5);
+
+        dropBeaconServo.setPosition(0.90);
+        while (opModeIsActive()) {
+            //WE don't have servo feedback
+            telemetry.addData("Drop the Beacon and wait",dropBeaconServo.getPosition());
+            sleep(1000);
+            telemetry.update();
+            //if(robot.dropBeaconServo.getPosition()>0.89)
+            break;
+
+        }
+
+        dropBeaconServo.setPosition(0.5);
+        telemetry.addData("Drop the Beacon",dropBeaconServo.getPosition());
+
+        telemetry.update();
+
+    }
+
+    //Use the Rev4wheel Telop to get the Values for various positions
+    public void encoderMoveLift(int position, double speed,double timeoutS)
+    {
+        int newLiftget;
+
+        // Ensure that the opmode is still active
+        if (opModeIsActive()) {
+
+            // Determine new target position, and pass to motor controller
+            newLiftget = motorLift.getCurrentPosition() + position;//+ (int)(distanceMM * COUNTS_PER_MM);
+
+
+            motorLift.setTargetPosition(newLiftget);
+            // Turn On RUN_TO_POSITION
+            motorLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            // reset the timeout time and start motion.
+            runtime.reset();
+            motorLift.setPower(Math.abs(speed));
+
+            // keep looping while we are still active, and there is time left, and both motors are running.
+            // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits, we should monitor ALL 4
+            //but assume for noe only 2 or monitor 2
+            // its target position, the motion will stop.  This is "safer" in the event that the robot will
+            // always end the motion as soon as possible.
+            // However, if you require that BOTH (actually all 4)  motors have finished their moves before the robot continues
+            // onto the next step, use (isBusy() || isBusy()) in the loop test.
+
+            while (opModeIsActive() &&
+                    (runtime.seconds() < timeoutS) &&
+                    (motorLift.isBusy() ))
+            {
+
+                // Display it for the Debugging.
+                telemetry.addData("Lift Path",  "Running to Target :%7d", newLiftget);
+                telemetry.update();
+            }
+
+            // Stop all motion after Path is completed;
+            motorLift.setPower(0);
+            // Turn off RUN_TO_POSITION
+            motorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        }
+    }
+
+    //Use the Rev4wheel Telop to get the Values for various positions
+    public void encoderExtender(int position,double speed, double timeoutS)
+    {
+        int newExtendget;
+
+        // Ensure that the opmode is still active
+        if (opModeIsActive()) {
+
+            // Determine new target position, and pass to motor controller
+            newExtendget = motorExtend.getCurrentPosition() + position ;//+ (int)(distanceMM * COUNTS_PER_MM);
+
+
+            motorExtend.setTargetPosition(newExtendget);
+            // Turn On RUN_TO_POSITION
+            motorExtend.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            // reset the timeout time and start motion.
+            runtime.reset();
+            motorExtend.setPower(Math.abs(speed));
+
+            // keep looping while we are still active, and there is time left, and both motors are running.
+            // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits, we should monitor ALL 4
+            //but assume for noe only 2 or monitor 2
+            // its target position, the motion will stop.  This is "safer" in the event that the robot will
+            // always end the motion as soon as possible.
+            // However, if you require that BOTH (actually all 4)  motors have finished their moves before the robot continues
+            // onto the next step, use (isBusy() || isBusy()) in the loop test.
+
+            while (opModeIsActive() &&
+                    (runtime.seconds() < timeoutS) &&
+                    (motorExtend.isBusy() ))
+            {
+
+                // Display it for the Debugging.
+                telemetry.addData("Extender Path",  "Running to Target :%7d", newExtendget);
+                telemetry.update();
+            }
+
+            // Stop all motion after Path is completed;
+            motorExtend.setPower(0);
+            // Turn off RUN_TO_POSITION
+            motorExtend.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        }
+    }
+
+    public void encoderStrafe(double speed, double pair1, double pair2, double timeoutS)
+    {
         int newLeftFrontTarget;
         int newLeftRearTarget;
         int newRightFrontTarget;
@@ -632,64 +701,4 @@ public class CloneAutoOpRobot extends LinearOpMode {
         motorRightRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
-    public void encoderLift(double speed, double LiftMM, double timeoutS){
-        int newLiftTarget;
-
-        newLiftTarget = motorLift.getCurrentPosition() + (int)(LiftMM * COUNTS_PER_MM);
-        motorLift.setTargetPosition(newLiftTarget);
-
-        // Turn On RUN_TO_POSITION
-        motorLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        // reset the timeout time and start motion.
-        runtime.reset();
-        motorLift.setPower(Math.abs(speed));
-
-        // keep looping while we are still active, and there is time left, and both motors are running.
-        //Only monitor the Back wheels
-        while (opModeIsActive() &&
-                (runtime.seconds() < timeoutS) &&
-                (motorLift.isBusy()))
-        {
-
-            // Display it for the Debugging.
-            telemetry.addData("Path1",  "Running to Target LI, :%7d", newLiftTarget);
-            telemetry.update();
-        }
-
-        motorLift.setPower(0);
-
-        // Turn off RUN_TO_POSITION
-        motorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    }
-
-    public void encoderExtend(double speed, double ExtendMM, double timeoutS){
-        int newExtendTarget;
-
-        newExtendTarget = motorExtend.getCurrentPosition() + (int)(ExtendMM * COUNTS_PER_MM);
-        motorExtend.setTargetPosition(newExtendTarget);
-
-        // Turn On RUN_TO_POSITION
-        motorExtend.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        // reset the timeout time and start motion.
-        runtime.reset();
-        motorExtend.setPower(Math.abs(speed));
-
-        while (opModeIsActive() &&
-                (runtime.seconds() < timeoutS) &&
-                (motorExtend.isBusy()))
-        {
-
-            // Display it for the Debugging.
-            telemetry.addData("Path1",  "Running to Target EX, %7d ", newExtendTarget);
-            telemetry.update();
-        }
-
-        // Stop all motion after Path is completed;
-        motorExtend.setPower(0);
-
-        // Turn off RUN_TO_POSITION
-        motorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    }
 }
