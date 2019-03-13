@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
@@ -34,14 +36,34 @@ public class AutoOpDrive extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
+        // Send telemetry message to signify robot waiting;
+        telemetry.addData("Status", "Resetting Encoders");    //
+        telemetry.update();
+
+        robot.motorLeftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.motorLeftRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        robot.motorRightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.motorRightRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        robot.motorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.motorExtend.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        robot.motorLeftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.motorLeftRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        robot.motorRightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.motorRightRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        robot.motorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.motorExtend.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         waitForStart();
-        while (opModeIsActive()) {
+//        while (opModeIsActive()) {
             robot.lower();
-            telemetry.addLine("Lower");
+            telemetry.addLine("Lower called ");
             telemetry.update();
             robot.MoveTillEnd();
-
-            stop();
-        }
+        //}
     }
 }

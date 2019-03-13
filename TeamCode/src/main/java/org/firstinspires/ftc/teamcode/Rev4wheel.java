@@ -70,7 +70,7 @@ public class Rev4wheel extends LinearOpMode {
         waitForStart();
 
         dropBeaconServo.setPosition(0.5);
-        double speedControlPowerSetting = 0.5;
+        double speedControlPowerSetting = 0.75;
         double leftFrontPowerSetting = 0;
         double leftRearPowerSetting = 0;
         double rightFrontPowerSetting = 0;
@@ -186,7 +186,7 @@ public class Rev4wheel extends LinearOpMode {
                 speedControlPowerSetting = 1;
             }
             if (gamepad1.left_bumper) {
-                speedControlPowerSetting = 0.50;
+                speedControlPowerSetting = 0.75;
             }
 
             //Set motor speeds for driving
