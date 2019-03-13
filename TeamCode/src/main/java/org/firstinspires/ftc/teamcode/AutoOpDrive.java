@@ -32,7 +32,11 @@ import java.util.List;
 
 @Autonomous(name = "AutoOpDrive", group = "AutoOp")
 public class AutoOpDrive extends LinearOpMode {
+
+    boolean lower = false;
+    private ElapsedTime runtime = new ElapsedTime();
     CloneAutoOpRobot robot = new CloneAutoOpRobot();
+
     @Override
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
@@ -59,11 +63,26 @@ public class AutoOpDrive extends LinearOpMode {
         robot.motorExtend.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         waitForStart();
+        //**************************************************************************************
+        //Start the Robot to set the OpMode !!!!!!!!!!!!!!!!
+        robot.start();
+        //**************************************************************************************
+        unhitchRobotMoveToCrater();
 //        while (opModeIsActive()) {
-            robot.lower();
-            telemetry.addLine("Lower called ");
-            telemetry.update();
-            robot.MoveTillEnd();
+
         //}
+    }
+
+    //One of many Auto Options, create as per Strategy
+    public void unhitchRobotMoveToCrater()
+    {
+        //Take xtra care of encoder settings, like RUN_TO_POSITION, if you need to keep track of positions in every step
+        //Lift and extend
+        robot.lower();
+        //Hitch servo code here
+        // code
+        //Drive to Crater
+        robot.MoveTillEnd();
+        telemetry.update();
     }
 }
