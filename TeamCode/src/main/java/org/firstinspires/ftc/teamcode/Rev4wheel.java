@@ -34,20 +34,32 @@ public class Rev4wheel extends LinearOpMode {
         //Declare all hardware
         hitchServo = hardwareMap.crservo.get("hitchServo");
         motorExtend = hardwareMap.get(DcMotor.class, "motorExtend");
-  //      motorExtend.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-  //      motorExtend.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorExtend.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorExtend.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         dropBeaconServo = hardwareMap.servo.get("DropBeaconServo");
         motorLift = hardwareMap.get(DcMotor.class, "motorLift");
-  //      motorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-  //      motorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //Front wheels
         motorLeftFront = hardwareMap.get(DcMotor.class, "motorLeftFront");
-  //      motorLeftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-  //      motorLeftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorLeftRear = hardwareMap.get(DcMotor.class, "motorLeftRear");
         motorRightFront = hardwareMap.get(DcMotor.class, "motorRightFront");
+        //Set Encoder Stuff
+        motorLeftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //Set Position to Zero
+        motorLeftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorRightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorRightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        //Rear wheels
+        motorLeftRear = hardwareMap.get(DcMotor.class, "motorLeftRear");
         motorRightRear = hardwareMap.get(DcMotor.class, "motorRightRear");
-        //motorLeftFront.setDirection(DcMotor.Direction.REVERSE);
-        //motorLeftRear.setDirection(DcMotor.Direction.REVERSE);
+
+        motorLeftRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorLeftRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        motorRightRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorRightRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        //Reverse wheels on the one side
         motorRightRear.setDirection(DcMotor.Direction.REVERSE);
         motorRightFront.setDirection(DcMotor.Direction.REVERSE);
         dropBeaconServo.setDirection(Servo.Direction.REVERSE);
@@ -121,6 +133,7 @@ public class Rev4wheel extends LinearOpMode {
             }
             if (gamepad2.left_stick_y == 0){
                 motorLift.setPower(0);
+                telemetry.addData("Lift Down position", motorLift.getCurrentPosition());
                 //telemetry.addData("Lifting Motor Off", motorLift.getPower());
             }
 
@@ -199,7 +212,12 @@ public class Rev4wheel extends LinearOpMode {
 
 
                 //telemetry.addData("Status", "Running");
-//                telemetry.update();
+                telemetry.addData("Path1",  "Running to Target LF,LR, RF, RR %7d :%7d :%7d :%7d",
+                        motorLeftFront.getCurrentPosition(),
+                        motorLeftRear.getCurrentPosition(),
+                        motorRightFront.getCurrentPosition(),
+                        motorRightRear.getCurrentPosition());
+                telemetry.update();
 
             }
 
@@ -225,7 +243,12 @@ public class Rev4wheel extends LinearOpMode {
 
 
 //                telemetry.addData("Status", "Running");
-                //telemetry.update();
+                telemetry.addData("Path1",  "Running to Target LF,LR, RF, RR %7d :%7d :%7d :%7d",
+                        motorLeftFront.getCurrentPosition(),
+                        motorLeftRear.getCurrentPosition(),
+                        motorRightFront.getCurrentPosition(),
+                        motorRightRear.getCurrentPosition());
+                telemetry.update();
             }
 
             while (gamepad1.left_trigger >0) {
@@ -248,7 +271,12 @@ public class Rev4wheel extends LinearOpMode {
 
 
 //                telemetry.addData("Status", "Running");
-                //telemetry.update();
+                telemetry.addData("Path1",  "Running to Target LF,LR, RF, RR %7d :%7d :%7d :%7d",
+                        motorLeftFront.getCurrentPosition(),
+                        motorLeftRear.getCurrentPosition(),
+                        motorRightFront.getCurrentPosition(),
+                        motorRightRear.getCurrentPosition());
+                telemetry.update();
             }
             telemetry.update();
         }
