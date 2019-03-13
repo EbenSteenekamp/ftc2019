@@ -166,8 +166,10 @@ public class TestA extends LinearOpMode {
         //Forward 500 mm
         encoderDriveForwardorBackwards(DRIVE_SPEED,1000,5);
 
+        //This moves it about a Third down, experiment to get the full extend
         encoderMoveLift(-2000,0.5,2);
 
+        //This moves it about a Third down, experiment to get the full extend
         encoderExtender(-2000,0.5,3);
 
         encoderMoveLift(2000,0.5,2);
@@ -673,6 +675,7 @@ public class TestA extends LinearOpMode {
 
     }
 
+    //Use the Rev4wheel Telop to get the Values for various positions
     public void encoderMoveLift(int position, double speed,double timeoutS)
     {
         int newLiftget;
@@ -716,6 +719,8 @@ public class TestA extends LinearOpMode {
 
         }
     }
+
+    //Use the Rev4wheel Telop to get the Values for various positions
     public void encoderExtender(int position,double speed, double timeoutS)
     {
         int newExtendget;
@@ -760,8 +765,8 @@ public class TestA extends LinearOpMode {
         }
     }
 
-
-    public void encoderStrafe(double speed, double pair1, double pair2, double timeoutS){
+    public void encoderStrafe(double speed, double pair1, double pair2, double timeoutS)
+    {
         int newLeftFrontTarget;
         int newLeftRearTarget;
         int newRightFrontTarget;
