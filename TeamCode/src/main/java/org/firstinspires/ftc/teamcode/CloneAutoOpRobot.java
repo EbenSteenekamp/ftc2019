@@ -93,15 +93,19 @@ public class CloneAutoOpRobot extends LinearOpMode {
 
         if (!lower) {
             //IMPORTANT remove encoder reset etc from lower methods or you will reset poistions every time in the methods and won't be able to keep track
-            //as an alternativ e keep a global variable for poistions for each motor
+            //as an alternative keep a global variable for poistions for each motor
 
+            telemetry.addData("Lift Current Position",  "Target :%7d", motorLift.getCurrentPosition());
             encoderMoveLift(9000, 1, 5);
+            telemetry.addData("Extender Position",  "Target :%7d", motorExtend.getCurrentPosition());
             encoderExtender(-1800, 1, 5);
             //Unhtch servo here
             //
             //Move lift to horizontal (make sure position is not Reset, if the case you have to set new values !!!!)
             encoderMoveLift(3000,1,5);
+            telemetry.addData("Lift Current Position",  "Target :%7d", motorLift.getCurrentPosition());
             encoderExtender(-100, 1, 5);
+            telemetry.addData("Extender Position",  "Target :%7d", motorExtend.getCurrentPosition());
             //Lower for drive
 
 //            motorLift.setPower(1);
@@ -121,9 +125,9 @@ public class CloneAutoOpRobot extends LinearOpMode {
     public void MoveTillEnd() {
 
         //encoderMoveLift(-2000,1,5);
-            encoderDriveForwardorBackwards(DRIVE_SPEED, 500, 5);
-            //Extend for crater
-            encoderExtender(-6000, 1, 5);
+        encoderDriveForwardorBackwards(DRIVE_SPEED, 500, 5);
+        //Extend for crater
+        encoderExtender(-6000, 1, 5);
 
 //            motorLeftFront.setPower(+0.5);
 //            motorLeftRear.setPower(+0.5);
@@ -569,13 +573,13 @@ public class CloneAutoOpRobot extends LinearOpMode {
     //Use the Rev4wheel Telop to get the Values for various positions
     private void encoderMoveLift(int position, double speed,double timeoutS)
     {
-        int newLiftget;
+        //int newLiftget;
 
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
 
             // Determine new target position, and pass to motor controller
-            newLiftget = motorLift.getCurrentPosition() + position;//+ (int)(distanceMM * COUNTS_PER_MM);
+            //newLiftget = motorLift.getCurrentPosition() + position;//+ (int)(distanceMM * COUNTS_PER_MM);
 
             motorLift.setTargetPosition(position);
             //// Turn On RUN_TO_POSITION
@@ -598,7 +602,7 @@ public class CloneAutoOpRobot extends LinearOpMode {
             {
 
                 // Display it for the Debugging.
-                telemetry.addData("Lift Path",  "Running to Target :%7d", newLiftget);
+                telemetry.addData("Lift Path",  "Running to Target :%7d", position);
                 //telemetry.update();
             }
 
@@ -613,13 +617,13 @@ public class CloneAutoOpRobot extends LinearOpMode {
     //Use the Rev4wheel Telop to get the Values for various positions
     private void encoderExtender(int position,double speed, double timeoutS)
     {
-        int newExtendget;
+        //int newExtendget;
 
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
 
             // Determine new target position, and pass to motor controller
-            newExtendget = motorExtend.getCurrentPosition() + position ;//+ (int)(distanceMM * COUNTS_PER_MM);
+            //newExtendget = motorExtend.getCurrentPosition() + position ;//+ (int)(distanceMM * COUNTS_PER_MM);
 
 
             motorExtend.setTargetPosition(position);
@@ -643,7 +647,7 @@ public class CloneAutoOpRobot extends LinearOpMode {
             {
 
                 // Display it for the Debugging.
-                telemetry.addData("Extender Path",  "Running to Target :%7d", newExtendget);
+                telemetry.addData("Extender Path",  "Running to Target :%7d", position);
                 //telemetry.update();
             }
 

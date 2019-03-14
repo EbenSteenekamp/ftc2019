@@ -65,15 +65,16 @@ public class AutoOpDrive extends LinearOpMode {
         waitForStart();
         //**************************************************************************************
         //Start the Robot to set the OpMode !!!!!!!!!!!!!!!!
+        //This will actually  Start in a different Thread !!!
         robot.start();
         //**************************************************************************************
         unhitchRobotMoveToCrater();
-//        while (opModeIsActive()) {
-
-        //}
     }
 
     //One of many Auto Options, create as per Strategy
+    //If you add the OpMode methods in the CloneAutoOpRobot class
+    //The Robot will run on a seperate thread and you won't have access to the Telemetry settings
+    //It might be better to do it in this class as is doen in the TestA Class Example
     public void unhitchRobotMoveToCrater()
     {
         //Take xtra care of encoder settings, like RUN_TO_POSITION, if you need to keep track of positions in every step
@@ -85,10 +86,12 @@ public class AutoOpDrive extends LinearOpMode {
         robot.motorRightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.motorRightRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         //Lift and extend
-        robot.lower();
+        telemetry.addLine("Start Lowering the Robot");
+        robot.lower(); // See the changes to keep track of position
         //Hitch servo code here
         // code
         //Drive to Crater
+        telemetry.addLine("Drive the Robotto the Crater");
         robot.MoveTillEnd();
         telemetry.update();
     }
