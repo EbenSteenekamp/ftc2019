@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
@@ -36,6 +37,8 @@ public class AutoOpDrive extends LinearOpMode {
     boolean lower = false;
     private ElapsedTime runtime = new ElapsedTime();
     CloneAutoOpRobot robot = new CloneAutoOpRobot();
+
+
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -66,7 +69,9 @@ public class AutoOpDrive extends LinearOpMode {
         //**************************************************************************************
         //Start the Robot to set the OpMode !!!!!!!!!!!!!!!!
         //This will actually  Start in a different Thread !!!
+        robot.setRobottelemetry(telemetry);
         robot.start();
+
         //**************************************************************************************
         unhitchRobotMoveToCrater();
     }
@@ -87,7 +92,9 @@ public class AutoOpDrive extends LinearOpMode {
         robot.motorRightRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         //Lift and extend
         telemetry.addLine("Start Lowering the Robot");
+        telemetry.update();
         robot.lower(); // See the changes to keep track of position
+        telemetry.update();
         //Hitch servo code here
         // code
         //Drive to Crater
