@@ -96,7 +96,7 @@ public class CloneAutoOpRobot extends LinearOpMode {
             //as an alternativ e keep a global variable for poistions for each motor
 
             encoderMoveLift(9000, 1, 5);
-            encoderExtender(-1200, 1, 5);
+            encoderExtender(-1800, 1, 5);
             //Unhtch servo here
             //
             //Move lift to horizontal (make sure position is not Reset, if the case you have to set new values !!!!)
@@ -123,7 +123,7 @@ public class CloneAutoOpRobot extends LinearOpMode {
         //encoderMoveLift(-2000,1,5);
             encoderDriveForwardorBackwards(DRIVE_SPEED, 500, 5);
             //Extend for crater
-            encoderExtender(-2000, 1, 5);
+            encoderExtender(-6000, 1, 5);
 
 //            motorLeftFront.setPower(+0.5);
 //            motorLeftRear.setPower(+0.5);
@@ -466,11 +466,11 @@ public class CloneAutoOpRobot extends LinearOpMode {
             motorRightFront.setPower(0);
             motorRightRear.setPower(0);
             // Turn off RUN_TO_POSITION
-//            motorLeftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//            motorRightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//
-//            motorLeftRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//            motorRightRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            motorLeftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            motorRightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+            motorLeftRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            motorRightRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
 
@@ -577,8 +577,7 @@ public class CloneAutoOpRobot extends LinearOpMode {
             // Determine new target position, and pass to motor controller
             newLiftget = motorLift.getCurrentPosition() + position;//+ (int)(distanceMM * COUNTS_PER_MM);
 
-
-            motorLift.setTargetPosition(newLiftget);
+            motorLift.setTargetPosition(position);
             //// Turn On RUN_TO_POSITION
             //motorLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             // reset the timeout time and start motion.
@@ -623,7 +622,7 @@ public class CloneAutoOpRobot extends LinearOpMode {
             newExtendget = motorExtend.getCurrentPosition() + position ;//+ (int)(distanceMM * COUNTS_PER_MM);
 
 
-            motorExtend.setTargetPosition(newExtendget);
+            motorExtend.setTargetPosition(position);
             // Turn On RUN_TO_POSITION
 //            motorExtend.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             // reset the timeout time and start motion.

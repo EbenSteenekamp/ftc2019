@@ -77,6 +77,13 @@ public class AutoOpDrive extends LinearOpMode {
     public void unhitchRobotMoveToCrater()
     {
         //Take xtra care of encoder settings, like RUN_TO_POSITION, if you need to keep track of positions in every step
+        robot.motorLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.motorExtend.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        robot.motorLeftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.motorLeftRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.motorRightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.motorRightRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         //Lift and extend
         robot.lower();
         //Hitch servo code here
