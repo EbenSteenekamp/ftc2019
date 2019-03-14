@@ -32,7 +32,11 @@ import java.util.List;
 
 @Autonomous(name = "AutoOpDrive", group = "AutoOp")
 public class AutoOpDrive extends LinearOpMode {
+
+    boolean lower = false;
+    private ElapsedTime runtime = new ElapsedTime();
     CloneAutoOpRobot robot = new CloneAutoOpRobot();
+
     @Override
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
@@ -59,11 +63,36 @@ public class AutoOpDrive extends LinearOpMode {
         robot.motorExtend.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         waitForStart();
-//        while (opModeIsActive()) {
-            robot.lower();
-            telemetry.addLine("Lower called ");
-            telemetry.update();
-            robot.MoveTillEnd();
-        //}
+        //**************************************************************************************
+        //Start the Robot to set the OpMode !!!!!!!!!!!!!!!!
+        //This will actually  Start in a different Thread !!!
+        robot.start();
+        //**************************************************************************************
+        unhitchRobotMoveToCrater();
+    }
+
+    //One of many Auto Options, create as per Strategy
+    //If you add the OpMode methods in the CloneAutoOpRobot class
+    //The Robot will run on a seperate thread and you won't have access to the Telemetry settings
+    //It might be better to do it in this class as is doen in the TestA Class Example
+    public void unhitchRobotMoveToCrater()
+    {
+        //Take xtra care of encoder settings, like RUN_TO_POSITION, if you need to keep track of positions in every step
+        robot.motorLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.motorExtend.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        robot.motorLeftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.motorLeftRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.motorRightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.motorRightRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //Lift and extend
+        telemetry.addLine("Start Lowering the Robot");
+        robot.lower(); // See the changes to keep track of position
+        //Hitch servo code here
+        // code
+        //Drive to Crater
+        telemetry.addLine("Drive the Robotto the Crater");
+        robot.MoveTillEnd();
+        telemetry.update();
     }
 }

@@ -501,9 +501,7 @@ public class TestA extends LinearOpMode {
      *  2) Move runs out of time
      *  3) Driver stops the opmode running.
      */
-    public void encoderDriveForwardorBackwards(double speed,
-                             double distanceMM,
-                             double timeoutS) {
+    public void encoderDriveForwardorBackwards(double speed, double distanceMM, double timeoutS) {
         int newLeftFrontTarget;
         int newLeftRearTarget;
         int newRightFrontTarget;

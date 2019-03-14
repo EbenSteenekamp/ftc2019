@@ -119,6 +119,7 @@ public class AutoOpRobot extends LinearOpMode {
         }
         lower = true;
     }
+
     public void MoveTillEnd(){
         motorRightRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorLeftRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
