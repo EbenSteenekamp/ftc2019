@@ -10,6 +10,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.sun.tools.javac.comp.Lower;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 import java.util.Locale;
 
 import java.lang.annotation.Target;
@@ -41,6 +43,8 @@ public class CloneAutoOpRobot extends LinearOpMode {
     static final double     DRIVE_SPEED             = 1;
     static final double     TURN_SPEED              = 0.5;
     static final double     STRAFE_SPEED            = 0.5;
+
+    private Telemetry robottelemetry;
 
     public CloneAutoOpRobot() {
 
@@ -95,19 +99,20 @@ public class CloneAutoOpRobot extends LinearOpMode {
             //IMPORTANT remove encoder reset etc from lower methods or you will reset poistions every time in the methods and won't be able to keep track
             //as an alternative keep a global variable for poistions for each motor
 
-            telemetry.addData("Lift Current Position",  "Target :%7d", motorLift.getCurrentPosition());
-            encoderMoveLift(9000, 1, 5);
-            telemetry.addData("Extender Position",  "Target :%7d", motorExtend.getCurrentPosition());
+            robottelemetry.addData("Lift Current Position",  "Target :%7d", motorLift.getCurrentPosition());
+            encoderMoveLift(9200, 1, 5);
+            robottelemetry.update();
+            robottelemetry.addData("Extender Position",  "Target :%7d", motorExtend.getCurrentPosition());
             encoderExtender(-1800, 1, 5);
             //Unhtch servo here
             //
             //Move lift to horizontal (make sure position is not Reset, if the case you have to set new values !!!!)
             encoderMoveLift(3000,1,5);
-            telemetry.addData("Lift Current Position",  "Target :%7d", motorLift.getCurrentPosition());
+            robottelemetry.addData("Lift Current Position",  "Target :%7d", motorLift.getCurrentPosition());
             encoderExtender(-100, 1, 5);
-            telemetry.addData("Extender Position",  "Target :%7d", motorExtend.getCurrentPosition());
+            robottelemetry.addData("Extender Position",  "Target :%7d", motorExtend.getCurrentPosition());
             //Lower for drive
-
+            robottelemetry.update();
 //            motorLift.setPower(1);
 //            sleep(3500);
 //            motorLift.setPower(0);
@@ -455,12 +460,12 @@ public class CloneAutoOpRobot extends LinearOpMode {
                 // Display it for the Debugging.
                 //telemetry.addData("Path1",  "Running to Target LF,LR, RF, RR %7d :%7d", newLeftFrontTarget,  newRightFrontTarget);
                 //telemetry.addData("Path2",  "Running at %7d :%7d",robot.motorLeftFront.getCurrentPosition(),robot.motorRightFront.getCurrentPosition());
-                telemetry.addData("Path1",  "Running to Target LF,LR, RF, RR %7d :%7d :%7d :%7d", newLeftFrontTarget,  newLeftRearTarget, newRightFrontTarget,newRightRearTarget);
+                robottelemetry.addData("Path1",  "Running to Target LF,LR, RF, RR %7d :%7d :%7d :%7d", newLeftFrontTarget,  newLeftRearTarget, newRightFrontTarget,newRightRearTarget);
 //                telemetry.addData("Path2",  "Running at %7d :%7d :%7d :%7d",
 //                telemetry.addData("Path1",  "Running to Target LR, RR %7d :%7d", newLeftRearTarget, newRightRearTarget);
 //                telemetry.addData("Path2",  "Running at %7d :%7d",
 //                        robot.motorLeftRear.getCurrentPosition(),robot.motorRightRear.getCurrentPosition());
-                //telemetry.update();
+                robottelemetry.update();
             }
 
             // Stop all motion after Path is completed;
@@ -602,8 +607,8 @@ public class CloneAutoOpRobot extends LinearOpMode {
             {
 
                 // Display it for the Debugging.
-                telemetry.addData("Lift Path",  "Running to Target :%7d", position);
-                //telemetry.update();
+                robottelemetry.addData("Lift Path",  "Running to Target :%7d", position);
+                robottelemetry.update();
             }
 
             // Stop all motion after Path is completed;
@@ -647,8 +652,8 @@ public class CloneAutoOpRobot extends LinearOpMode {
             {
 
                 // Display it for the Debugging.
-                telemetry.addData("Extender Path",  "Running to Target :%7d", position);
-                //telemetry.update();
+                robottelemetry.addData("Extender Path",  "Running to Target :%7d", position);
+                robottelemetry.update();
             }
 
             // Stop all motion after Path is completed;
@@ -716,4 +721,11 @@ public class CloneAutoOpRobot extends LinearOpMode {
         motorRightRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
+    public Telemetry getRobottelemetry() {
+        return robottelemetry;
+    }
+
+    public void setRobottelemetry(Telemetry robottelemetry) {
+        this.robottelemetry = robottelemetry;
+    }
 }
