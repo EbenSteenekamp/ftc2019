@@ -257,7 +257,7 @@ public class CloneAutoOpRobot extends LinearOpMode {
             motorLeftRear.setPower(-1);
             motorRightFront.setPower(-1);
             motorRightRear.setPower(-1);
-            telemetry.addLine("Repo");
+            robottelemetry.addLine("Repo");
         }
 
         double driveDistance2 = 100 * COUNTS_PER_MM;
@@ -267,7 +267,7 @@ public class CloneAutoOpRobot extends LinearOpMode {
             motorLeftRear.setPower(-1);
             motorRightFront.setPower(+1);
             motorRightRear.setPower(-1);
-            telemetry.addLine("Move Right");
+            robottelemetry.addLine("Move Right");
         }
     }
 
@@ -294,7 +294,7 @@ public class CloneAutoOpRobot extends LinearOpMode {
             motorLeftRear.setPower(-1);
             motorRightFront.setPower(-1);
             motorRightRear.setPower(1);
-            telemetry.addLine("Reset");
+            robottelemetry.addLine("Reset");
         }
     }
 
@@ -315,7 +315,7 @@ public class CloneAutoOpRobot extends LinearOpMode {
             motorLeftRear.setPower(+1);
             motorRightFront.setPower(+1);
             motorRightRear.setPower(+1);
-            telemetry.addLine("Forward");
+            robottelemetry.addLine("Forward");
         }
 
         double driveDistance2 = 100 * COUNTS_PER_MM;
@@ -325,7 +325,7 @@ public class CloneAutoOpRobot extends LinearOpMode {
             motorLeftRear.setPower(-1);
             motorRightFront.setPower(+1);
             motorRightRear.setPower(+1);
-            telemetry.addLine("Turn");
+            robottelemetry.addLine("Turn");
         }
 
         double driveDistance3 = 1200 * COUNTS_PER_MM;
@@ -335,7 +335,7 @@ public class CloneAutoOpRobot extends LinearOpMode {
             motorLeftRear.setPower(+1);
             motorRightFront.setPower(+1);
             motorRightRear.setPower(+1);
-            telemetry.addLine("Forward");
+            robottelemetry.addLine("Forward");
         }
 
         double driveDistance4 = 100 * COUNTS_PER_MM;
@@ -345,7 +345,7 @@ public class CloneAutoOpRobot extends LinearOpMode {
             motorLeftRear.setPower(+1);
             motorRightFront.setPower(-1);
             motorRightRear.setPower(-1);
-            telemetry.addLine("Turn");
+            robottelemetry.addLine("Turn");
         }
 
         DropBeacon(5);
@@ -357,7 +357,7 @@ public class CloneAutoOpRobot extends LinearOpMode {
             motorLeftRear.setPower(+1);
             motorRightFront.setPower(+1);
             motorRightRear.setPower(+1);
-            telemetry.addLine("Turn");
+            robottelemetry.addLine("Turn");
         }
     }
 
@@ -378,7 +378,7 @@ public class CloneAutoOpRobot extends LinearOpMode {
             motorLeftRear.setPower(+1);
             motorRightFront.setPower(+1);
             motorRightRear.setPower(+1);
-            telemetry.addLine("Forward");
+            robottelemetry.addLine("Forward");
         }
 
         double driveDistance4 = 100 * COUNTS_PER_MM;
@@ -388,7 +388,7 @@ public class CloneAutoOpRobot extends LinearOpMode {
             motorLeftRear.setPower(+1);
             motorRightFront.setPower(-1);
             motorRightRear.setPower(-1);
-            telemetry.addLine("Turn");
+            robottelemetry.addLine("Turn");
         }
 
         DropBeacon(5);
@@ -400,7 +400,7 @@ public class CloneAutoOpRobot extends LinearOpMode {
             motorLeftRear.setPower(+1);
             motorRightFront.setPower(+1);
             motorRightRear.setPower(+1);
-            telemetry.addLine("Turn");
+            robottelemetry.addLine("Turn");
         }
     }
 
@@ -429,7 +429,7 @@ public class CloneAutoOpRobot extends LinearOpMode {
         dropBeaconServo.setPosition(0.5);
         robottelemetry.addData("Drop the Beacon",dropBeaconServo.getPosition());
 
-        telemetry.update();
+        robottelemetry.update();
 
     }
 
@@ -556,11 +556,11 @@ public class CloneAutoOpRobot extends LinearOpMode {
 
                 // Display it for the Debugging.
                 robottelemetry.addData("Path1",  "Running to Target LF,LR, RF, RR %7d :%7d :%7d :%7d", newLeftFrontTarget,  newLeftRearTarget, newRightFrontTarget,newRightRearTarget);
-                telemetry.update();
+                robottelemetry.update();
             }
 
             robottelemetry.addData("Power Reset","Power set to 0");
-            telemetry.update();
+            robottelemetry.update();
             // Stop all motion after Path is completed;
             motorLeftFront.setPower(0);
             motorLeftRear.setPower(0);
@@ -578,11 +578,11 @@ public class CloneAutoOpRobot extends LinearOpMode {
 
     public void dropBeacon(double timeoutS){
 
-        telemetry.addData("Beacon Drop", "Initialized");
-        telemetry.update();
+        robottelemetry.addData("Beacon Drop", "Initialized");
+        robottelemetry.update();
         runtime.reset();
         //dropBeaconServo.setPosition(0);
-        telemetry.addData("Reset the Beacon",dropBeaconServo.getPosition());
+        robottelemetry.addData("Reset the Beacon",dropBeaconServo.getPosition());
 
         dropBeaconServo.setDirection(Servo.Direction.REVERSE);
         dropBeaconServo.setPosition(0.5);
@@ -590,18 +590,18 @@ public class CloneAutoOpRobot extends LinearOpMode {
         dropBeaconServo.setPosition(0.90);
         while (opModeIsActive()) {
             //WE don't have servo feedback
-            telemetry.addData("Drop the Beacon and wait",dropBeaconServo.getPosition());
+            robottelemetry.addData("Drop the Beacon and wait",dropBeaconServo.getPosition());
             sleep(1000);
-            telemetry.update();
+            robottelemetry.update();
             //if(robot.dropBeaconServo.getPosition()>0.89)
             break;
 
         }
 
         dropBeaconServo.setPosition(0.5);
-        telemetry.addData("Drop the Beacon",dropBeaconServo.getPosition());
+        robottelemetry.addData("Drop the Beacon",dropBeaconServo.getPosition());
 
-        telemetry.update();
+        robottelemetry.update();
 
     }
 
@@ -733,8 +733,8 @@ public class CloneAutoOpRobot extends LinearOpMode {
         {
 
             // Display it for the Debugging.
-            telemetry.addData("Path1",  "Running to Target LF,LR, RF, RR %7d :%7d :%7d :%7d", newLeftFrontTarget,  newLeftRearTarget, newRightFrontTarget,newRightRearTarget);
-            telemetry.update();
+            robottelemetry.addData("Path1",  "Running to Target LF,LR, RF, RR %7d :%7d :%7d :%7d", newLeftFrontTarget,  newLeftRearTarget, newRightFrontTarget,newRightRearTarget);
+            robottelemetry.update();
         }
 
         // Stop all motion after Path is completed;
