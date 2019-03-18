@@ -132,7 +132,7 @@ public class CloneAutoOpRobot extends LinearOpMode {
     public void MoveTillEnd() {
 
         //encoderMoveLift(-2000,1,5);
-        encoderDriveForwardorBackwards(DRIVE_SPEED, 500, 5);
+        encoderDriveForwardorBackwards(DRIVE_SPEED, 700, 5);
         //Extend for crater
         encoderExtender(-4000, 1, 5);
 
@@ -157,10 +157,11 @@ public class CloneAutoOpRobot extends LinearOpMode {
 //            motorExtend.setPower(0);
     }
 
-    public void FVDrop(){
+    public void CORdrop(){
 
-        encoderDriveForwardorBackwards(DRIVE_SPEED, 700, 7);
-        encoderTurn(TURN_SPEED, 500, -500, 5);
+        encoderDriveForwardorBackwards(DRIVE_SPEED, 950, 7);
+        encoderTurn(TURN_SPEED, -600, 600, 5);
+        DropBeacon(5);
 
 //        motorLeftFront.setPower(+0.5);
 //        motorLeftRear.setPower(+0.5);
@@ -177,6 +178,12 @@ public class CloneAutoOpRobot extends LinearOpMode {
 //        hitchServo.setPower(-1);
 //        sleep(2000);
 
+    }
+
+    public void CORDrive(){
+        encoderTurn(TURN_SPEED, -750, 750, 5);
+        encoderDriveForwardorBackwards(DRIVE_SPEED, 2000, 5);
+        encoderExtender(-4000, 1, 5);
     }
 
     public void stopRobot(){
@@ -341,7 +348,7 @@ public class CloneAutoOpRobot extends LinearOpMode {
             telemetry.addLine("Turn");
         }
 
-        DropBeacon();
+        DropBeacon(5);
 
         double driveDistance5 = 1880 * COUNTS_PER_MM;
         double startPos5 = motorRightFront.getCurrentPosition();
@@ -384,7 +391,7 @@ public class CloneAutoOpRobot extends LinearOpMode {
             telemetry.addLine("Turn");
         }
 
-        DropBeacon();
+        DropBeacon(5);
 
         double driveDistance5 = 1880 * COUNTS_PER_MM;
         double startPos5 = motorRightFront.getCurrentPosition();
@@ -397,12 +404,33 @@ public class CloneAutoOpRobot extends LinearOpMode {
         }
     }
 
-    public void DropBeacon(){
+    public void DropBeacon(double timeoutS){
+
+        robottelemetry.addData("Beacon Drop", "Initialized");
+        robottelemetry.update();
+        runtime.reset();
+        //dropBeaconServo.setPosition(0);
+        robottelemetry.addData("Reset the Beacon",dropBeaconServo.getPosition());
+
+        dropBeaconServo.setDirection(Servo.Direction.REVERSE);
+        dropBeaconServo.setPosition(0.5);
+
         dropBeaconServo.setPosition(0.90);
-        telemetry.addData("Drop the Beacon",dropBeaconServo.getPosition());
+        while (opModeIsActive()) {
+            //WE don't have servo feedback
+            robottelemetry.addData("Drop the Beacon and wait",dropBeaconServo.getPosition());
+            sleep(1000);
+            robottelemetry.update();
+            //if(robot.dropBeaconServo.getPosition()>0.89)
+            break;
+
+        }
 
         dropBeaconServo.setPosition(0.5);
-        telemetry.addData("Drop the Beacon",dropBeaconServo.getPosition());
+        robottelemetry.addData("Drop the Beacon",dropBeaconServo.getPosition());
+
+        telemetry.update();
+
     }
 
     public void encoderDriveForwardorBackwards(double speed, double distanceMM, double timeoutS) {
@@ -527,11 +555,11 @@ public class CloneAutoOpRobot extends LinearOpMode {
             {
 
                 // Display it for the Debugging.
-                telemetry.addData("Path1",  "Running to Target LF,LR, RF, RR %7d :%7d :%7d :%7d", newLeftFrontTarget,  newLeftRearTarget, newRightFrontTarget,newRightRearTarget);
+                robottelemetry.addData("Path1",  "Running to Target LF,LR, RF, RR %7d :%7d :%7d :%7d", newLeftFrontTarget,  newLeftRearTarget, newRightFrontTarget,newRightRearTarget);
                 telemetry.update();
             }
 
-            telemetry.addData("Power Reset","Power set to 0");
+            robottelemetry.addData("Power Reset","Power set to 0");
             telemetry.update();
             // Stop all motion after Path is completed;
             motorLeftFront.setPower(0);

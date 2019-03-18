@@ -1,15 +1,11 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
-
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
@@ -19,6 +15,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefau
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
+import org.firstinspires.ftc.teamcode.CloneAutoOpRobot;
 
 import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
@@ -31,56 +28,19 @@ import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.List;
 
-@Autonomous(name = "AutoOpDrive", group = "AutoOp")
-public class AutoOpDrive extends LinearOpMode {
-
-    boolean lower = false;
-    private ElapsedTime runtime = new ElapsedTime();
+@Autonomous(name = "AOcorLE", group = "AutoOp")
+public class AOcorLE extends LinearOpMode {
     CloneAutoOpRobot robot = new CloneAutoOpRobot();
-
-
-
     @Override
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
-        // Send telemetry message to signify robot waiting;
-        telemetry.addData("Status", "Resetting Encoders");    //
-        telemetry.update();
-
-        robot.motorLeftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.motorLeftRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        robot.motorRightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.motorRightRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        robot.motorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.motorExtend.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        robot.motorLeftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.motorLeftRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        robot.motorRightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.motorRightRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        robot.motorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.motorExtend.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
         waitForStart();
-        //**************************************************************************************
-        //Start the Robot to set the OpMode !!!!!!!!!!!!!!!!
-        //This will actually  Start in a different Thread !!!
-        robot.setRobottelemetry(telemetry);
-        robot.start();
-
-        //**************************************************************************************
-        unhitchRobotMoveToCrater();
+            robot.setRobottelemetry(telemetry);
+            robot.start();
+        //    unhitchRobotMoveToCorner();
+            MoveToCrater();
     }
-
-    //One of many Auto Options, create as per Strategy
-    //If you add the OpMode methods in the CloneAutoOpRobot class
-    //The Robot will run on a seperate thread and you won't have access to the Telemetry settings
-    //It might be better to do it in this class as is doen in the TestA Class Example
-    public void unhitchRobotMoveToCrater()
+    public void unhitchRobotMoveToCorner()
     {
         //Take xtra care of encoder settings, like RUN_TO_POSITION, if you need to keep track of positions in every step
         robot.motorLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -97,9 +57,28 @@ public class AutoOpDrive extends LinearOpMode {
         telemetry.update();
         //Hitch servo code here
         // code
-        //Drive to Crater
-        telemetry.addLine("Drive the Robotto the Crater");
-        robot.MoveTillEnd();
+        //Drive to Corner
+        telemetry.addLine("Drive the Robot to the Corner");
+        robot.CORdrop();
+        telemetry.update();
+
+        telemetry.addLine("Drive to crator");
+        robot.CORDrive();
+        telemetry.update();
+    }
+    public void MoveToCrater()
+    {
+        //Take xtra care of encoder settings, like RUN_TO_POSITION, if you need to keep track of positions in every step
+        robot.motorLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.motorExtend.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        robot.motorLeftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.motorLeftRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.motorRightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.motorRightRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        telemetry.addLine("Drive to crator");
+        robot.CORDrive();
         telemetry.update();
     }
 }
