@@ -52,7 +52,7 @@ public class AOcorLEC extends LinearOpMode {
         waitForStart();
         robot.setRobottelemetry(telemetry);
         robot.start();
-        unhitchRobot();
+        //unhitchRobot();
         if (opModeIsActive()) {
             /** Activate Tensor Flow Object Detection. */
             if (tfod != null) {
@@ -82,8 +82,10 @@ public class AOcorLEC extends LinearOpMode {
                             if (goldMineralX != -1 && silverMineral1X != -1 && silverMineral2X != -1) {
                                 if (goldMineralX < silverMineral1X && goldMineralX < silverMineral2X) {
                                     telemetry.addData("Gold Mineral Position", "Left");
+                                    moveLeft();
                                 } else if (goldMineralX > silverMineral1X && goldMineralX > silverMineral2X) {
                                     telemetry.addData("Gold Mineral Position", "Right");
+                                    moveRight();
                                 } else {
                                     telemetry.addData("Gold Mineral Position", "Center");
                                 }
@@ -94,7 +96,7 @@ public class AOcorLEC extends LinearOpMode {
                 }
             }
         }
-        MoveToCrater();
+        moveToCrater();
     }
     public void unhitchRobot()
     {
@@ -112,7 +114,7 @@ public class AOcorLEC extends LinearOpMode {
         robot.lower(); // See the changes to keep track of position
         telemetry.update();
     }
-    public void MoveToCrater()
+    public void moveToCrater()
     {
         //Take xtra care of encoder settings, like RUN_TO_POSITION, if you need to keep track of positions in every step
         robot.motorLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -123,8 +125,38 @@ public class AOcorLEC extends LinearOpMode {
         robot.motorRightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.motorRightRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        telemetry.addLine("Drive to crator");
-        robot.CORDrive();
+        telemetry.addLine("Drive to corner");
+        //robot.CORdrop();
+        telemetry.update();
+
+        telemetry.addLine("Drive to Crator");
+       // robot.CORDrive();
+        telemetry.update();
+    }
+    public void moveLeft(){
+        robot.motorLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.motorExtend.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        robot.motorLeftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.motorLeftRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.motorRightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.motorRightRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        telemetry.addLine("Move left");
+        robot.MoveL();
+        telemetry.update();
+    }
+    public void moveRight(){
+        robot.motorLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.motorExtend.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        robot.motorLeftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.motorLeftRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.motorRightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.motorRightRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        telemetry.addLine("Move Right");
+        robot.MoveR();
         telemetry.update();
     }
     private void initVuforia() {

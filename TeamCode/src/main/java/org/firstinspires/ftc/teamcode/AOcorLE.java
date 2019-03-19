@@ -37,8 +37,8 @@ public class AOcorLE extends LinearOpMode {
         waitForStart();
             robot.setRobottelemetry(telemetry);
             robot.start();
-        //    unhitchRobotMoveToCorner();
-            MoveToCrater();
+            //unhitchRobotMoveToCorner();
+            moveToCrater();
     }
     public void unhitchRobotMoveToCorner()
     {
@@ -62,11 +62,11 @@ public class AOcorLE extends LinearOpMode {
         robot.CORdrop();
         telemetry.update();
 
-        telemetry.addLine("Drive to crator");
-        robot.CORDrive();
-        telemetry.update();
+//        telemetry.addLine("Drive to crator");
+//        robot.CORDrive();
+//        telemetry.update();
     }
-    public void MoveToCrater()
+    public void moveToCrater()
     {
         //Take xtra care of encoder settings, like RUN_TO_POSITION, if you need to keep track of positions in every step
         robot.motorLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
