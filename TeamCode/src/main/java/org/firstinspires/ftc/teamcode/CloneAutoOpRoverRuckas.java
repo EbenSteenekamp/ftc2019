@@ -122,18 +122,18 @@ public class CloneAutoOpRoverRuckas extends LinearOpMode {
                                         telemetry.addData("Gold Mineral Position", "Left");
                                         robot.MoveL();
                                         robot.Sample();
-                                        robot.ResetLeft();
+                                        //robot.ResetLeft();
                                         blockMove = true;
                                     } else if (goldMineralX > silverMineral1X && goldMineralX > silverMineral2X) {
                                         telemetry.addData("Gold Mineral Position", "Right");
                                         robot.MoveR();
                                         robot.Sample();
-                                        robot.ResetRight();
+                                        //robot.ResetRight();
                                         blockMove = true;
                                     } else {
                                         telemetry.addData("Gold Mineral Position", "Center");
                                         robot.Sample();
-                                        robot.ResetMid();
+                                      //  robot.ResetMid();
                                         blockMove = true;
                                     }
                                 }
@@ -316,13 +316,13 @@ public class CloneAutoOpRoverRuckas extends LinearOpMode {
                         robot.stopRobot();
                         telemetry.addLine("Stop Blue or Red");
                         telemetry.update();
-                        robot.MoveFromCrator();
+                       // robot.MoveFromCrator();
                     }
                     if (BackSpaceV || FrontCratersV) {
                         robot.stopRobot();
                         telemetry.addLine("Stop Back Space or Front Crater");
                         telemetry.update();
-                        robot.MoveFromCorner();
+                       // robot.MoveFromCorner();
                     }
                 }
                 telemetry.update();
