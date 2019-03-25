@@ -37,7 +37,7 @@ public class AOcorLE extends LinearOpMode {
         waitForStart();
             robot.setRobottelemetry(telemetry);
             robot.start();
-            //unhitchRobotMoveToCorner();
+            unhitchRobotMoveToCorner();
             moveToCrater();
     }
     public void unhitchRobotMoveToCorner()
