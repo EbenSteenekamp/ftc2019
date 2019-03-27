@@ -13,11 +13,11 @@ public class Rev4wheel extends LinearOpMode {
     DcMotor motorLeftRear;
     DcMotor motorRightFront;
     DcMotor motorRightRear;
-    CRServo hitchServo;
     DcMotor motorCollect;
     DcMotor motorLift;
     DcMotor motorExtend;
     Servo dropBeaconServo;
+    Servo hitchServo;
 
     //Declare values/constants for Static Power settings, Change for Tuning default Values
     double liftmotorUpPowerSetting = 1; //We need all the Power to Lift
@@ -32,7 +32,7 @@ public class Rev4wheel extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         //Declare all hardware
-        hitchServo = hardwareMap.crservo.get("hitchServo");
+        hitchServo = hardwareMap.servo.get("hitchServo");
         motorExtend = hardwareMap.get(DcMotor.class, "motorExtend");
         motorExtend.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorExtend.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -101,22 +101,16 @@ public class Rev4wheel extends LinearOpMode {
 
             //Open or Close the hitch
             if (gamepad2.dpad_right && !gamepad2.dpad_left && gamepad2.left_bumper && moveServoClose == false) {
-                hitchServo.setPower(1);
-                telemetry.addData("Left Button", hitchServo.getPower());
-                sleep(1900);
+                hitchServo.setPosition(1);
+                telemetry.addData("Left Button", hitchServo.getPosition());
                 moveServoClose = true;
                 moveServoOpen = false;
             }
             if (gamepad2.dpad_left && !gamepad2.dpad_right && gamepad2.left_bumper && moveServoOpen == false) {
-                hitchServo.setPower(-1);
-                telemetry.addData("Right Button", hitchServo.getPower());
-                sleep(1900);
+                hitchServo.setPosition(0);
+                telemetry.addData("Right Button", hitchServo.getPosition());
                 moveServoClose = false;
                 moveServoOpen = true;
-            }
-            if (gamepad2.dpad_right == false && gamepad2.dpad_left == false) {
-                hitchServo.setPower(0);
-                telemetry.addData("Button Center", hitchServo.getPower());
             }
 
             //Lift the arm
