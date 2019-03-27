@@ -35,10 +35,10 @@ public class AOcorLE extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
         waitForStart();
-            robot.setRobottelemetry(telemetry);
-            robot.start();
-            unhitchRobotMoveToCorner();
-            moveToCrater();
+        robot.setRobottelemetry(telemetry);
+        robot.start();
+        unhitchRobotMoveToCorner();
+        moveToCrater();
     }
     public void unhitchRobotMoveToCorner()
     {
