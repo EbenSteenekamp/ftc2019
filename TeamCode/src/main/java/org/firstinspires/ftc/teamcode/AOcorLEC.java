@@ -52,7 +52,7 @@ public class AOcorLEC extends LinearOpMode {
         waitForStart();
         robot.setRobottelemetry(telemetry);
         robot.start();
-        //unhitchRobot();
+        unhitchRobot();
         if (opModeIsActive()) {
             /** Activate Tensor Flow Object Detection. */
             if (tfod != null) {
@@ -88,6 +88,7 @@ public class AOcorLEC extends LinearOpMode {
                                     moveRight();
                                 } else {
                                     telemetry.addData("Gold Mineral Position", "Center");
+                                    moveMid();
                                 }
                             }
                         }
@@ -157,6 +158,19 @@ public class AOcorLEC extends LinearOpMode {
 
         telemetry.addLine("Move Right");
         robot.MoveR();
+        telemetry.update();
+    }
+    public void moveMid(){
+        robot.motorLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.motorExtend.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        robot.motorLeftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.motorLeftRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.motorRightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.motorRightRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        telemetry.addLine("Move Right");
+        robot.MoveM();
         telemetry.update();
     }
     private void initVuforia() {
