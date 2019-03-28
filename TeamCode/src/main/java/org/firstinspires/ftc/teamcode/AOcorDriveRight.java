@@ -3,14 +3,12 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 
-@Autonomous(name = "DriveLeft", group = "AutoOp")
-public class DriveLeft extends LinearOpMode{
+@Autonomous(name = "AOcorDriveRight", group = "AutoOp")
+public class AOcorDriveRight extends LinearOpMode{
     CloneAutoOpRobot robot = new CloneAutoOpRobot();
 
     private static final String VUFORIA_KEY = "Adt99vT/////AAABmQfaL1Gc6k6YpSV4p0gyJUg3w2FZlS8RqVrXnweJXsLcl6JrGb5Age+Cv4I9IS+9XG2ZMhWR19WkeOkWkrTXMzKjblOZGI0FC/WUj9CXpGB7wTS8qQuNHut0NT3aZzPjx3aNnjfUCmBvwrCcVHgvLBLU460n9TE9Yug17HApyE+ix9xcJ2J5QtVejR9PNm8SNmpFAEyGmSasukJHF0Em7cNrHAsR5MxPSCBAnQA3B2pL5onCRotpWAu0rcOCYfXWrHeVtYAEHzm3GdFRj73cQ3eGFgOCHJSyMC0AhHH0M8cFlltdKc0f08FHioKrXu8OpvLGCTtYMSZ6Jq2we4+keaVEPBZY6U4YBffLK7jQnP1p";
@@ -25,7 +23,6 @@ public class DriveLeft extends LinearOpMode{
     @Override
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
-
         telemetry.addData(">", "Press Play to start tracking");
         telemetry.update();
         waitForStart();
@@ -33,7 +30,7 @@ public class DriveLeft extends LinearOpMode{
         robot.start();
         while (opModeIsActive()) {
             unhitchRobot();
-            moveLeft();
+            moveRight();
             stop();
         }
     }

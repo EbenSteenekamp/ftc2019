@@ -217,7 +217,7 @@ public class CloneAutoOpRobot extends LinearOpMode {
     }
 
     public void MoveR(){
-        encoderTurn(TURN_SPEED, 620, 140, 5);
+        encoderTurn(TURN_SPEED, 640, 160, 5);
         Sample();
     }
 
@@ -241,9 +241,8 @@ public class CloneAutoOpRobot extends LinearOpMode {
     }
 
     public void CorFromR(){
-        encoderTurn(DRIVE_SPEED, 200, 200, 5);
-        encoderTurn(TURN_SPEED, 600, 1000, 5);
-        encoderTurn(TURN_SPEED, -400, 400, 5);
+        encoderTurn(DRIVE_SPEED, 150, 800, 5);
+        encoderTurn(TURN_SPEED, 600, 50, 5);
         DropBeacon(5);
         encoderTurn(TURN_SPEED, -580, 580, 5);
         encoderTurn(DRIVE_SPEED,1750, 1750, 5);
@@ -267,6 +266,21 @@ public class CloneAutoOpRobot extends LinearOpMode {
 //        encoderTurn(DRIVE_SPEED, -1500, 1500, 5);
 //        encoderTurn(DRIVE_SPEED, 500, 500, 5);
 //        encoderExtender(1000, 1, 5);
+    }
+
+    public void CraFromL(){
+        encoderTurn(DRIVE_SPEED, 200, 200, 5);
+        Sample();
+    }
+
+    public void CraFromR(){
+        encoderTurn(DRIVE_SPEED, 200, 200, 5);
+        Sample();
+    }
+
+    public void CraFromM(){
+        encoderTurn(DRIVE_SPEED, 100, 100, 5);
+        Sample();
     }
 
     public void Sample(){

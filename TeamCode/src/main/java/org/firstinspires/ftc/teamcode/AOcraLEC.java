@@ -28,8 +28,8 @@ import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.List;
 
-@Autonomous(name = "AOcorLEC", group = "AutoOp")
-public class AOcorLEC extends LinearOpMode {
+@Autonomous(name = "AOcraLEC", group = "AutoOp")
+public class AOcraLEC extends LinearOpMode {
     CloneAutoOpRobot robot = new CloneAutoOpRobot();
 
     private static final String VUFORIA_KEY = "Adt99vT/////AAABmQfaL1Gc6k6YpSV4p0gyJUg3w2FZlS8RqVrXnweJXsLcl6JrGb5Age+Cv4I9IS+9XG2ZMhWR19WkeOkWkrTXMzKjblOZGI0FC/WUj9CXpGB7wTS8qQuNHut0NT3aZzPjx3aNnjfUCmBvwrCcVHgvLBLU460n9TE9Yug17HApyE+ix9xcJ2J5QtVejR9PNm8SNmpFAEyGmSasukJHF0Em7cNrHAsR5MxPSCBAnQA3B2pL5onCRotpWAu0rcOCYfXWrHeVtYAEHzm3GdFRj73cQ3eGFgOCHJSyMC0AhHH0M8cFlltdKc0f08FHioKrXu8OpvLGCTtYMSZ6Jq2we4+keaVEPBZY6U4YBffLK7jQnP1p";
@@ -98,8 +98,8 @@ public class AOcorLEC extends LinearOpMode {
             }
         }
     }
-    public void unhitchRobot()
-    {
+
+    public void unhitchRobot() {
         //Take xtra care of encoder settings, like RUN_TO_POSITION, if you need to keep track of positions in every step
         robot.motorLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.motorExtend.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -114,7 +114,9 @@ public class AOcorLEC extends LinearOpMode {
         robot.lower(); // See the changes to keep track of position
         telemetry.update();
     }
-    public void moveLeft(){
+
+
+    public void moveLeft() {
         robot.motorLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.motorExtend.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
@@ -128,10 +130,11 @@ public class AOcorLEC extends LinearOpMode {
         telemetry.update();
 
         telemetry.addLine("Move from left");
-        robot.CorFromL();
+        robot.CraFromL();
         telemetry.update();
     }
-    public void moveRight(){
+
+    public void moveRight() {
         robot.motorLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.motorExtend.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
@@ -145,10 +148,11 @@ public class AOcorLEC extends LinearOpMode {
         telemetry.update();
 
         telemetry.addLine("Move from Right");
-        robot.CorFromR();
+        robot.CraFromR();
         telemetry.update();
     }
-    public void moveMid(){
+
+    public void moveMid() {
         robot.motorLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.motorExtend.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
@@ -162,9 +166,10 @@ public class AOcorLEC extends LinearOpMode {
         telemetry.update();
 
         telemetry.addLine("Move From Mid");
-        robot.CorFromM();
+        robot.CraFromM();
         telemetry.update();
     }
+
     private void initVuforia() {
         /*
          * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
