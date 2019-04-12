@@ -38,7 +38,6 @@ public class AOcraDriveMid extends LinearOpMode{
         robot.lower(); // See the changes to keep track of position
         telemetry.update();
     }
-
     public void moveMid(){
         robot.motorLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.motorExtend.setMode(DcMotor.RunMode.RUN_TO_POSITION);

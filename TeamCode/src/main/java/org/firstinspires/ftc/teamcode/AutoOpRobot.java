@@ -31,18 +31,18 @@ public class AutoOpRobot extends LinearOpMode {
     HardwareMap masterConfig = null;
     private ElapsedTime period = new ElapsedTime();
 
-    static final double     COUNTS_PER_MOTOR_REV    = 28 ;    // eg: TETRIX Motor Encoder
-    static final double     DRIVE_GEAR_REDUCTION    = 40 ;     // This is < 1.0 if geared UP 40:1 reduce to 160 rpm
-    static final double     WHEEL_DIAMETER_MM   = 100 ;     // For figuring circumference
-    static final double     COUNTS_PER_MM         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-                                                    (WHEEL_DIAMETER_MM * 3.1415);
+    static final double COUNTS_PER_MOTOR_REV = 28;    // eg: TETRIX Motor Encoder
+    static final double DRIVE_GEAR_REDUCTION = 40;     // This is < 1.0 if geared UP 40:1 reduce to 160 rpm
+    static final double WHEEL_DIAMETER_MM = 100;     // For figuring circumference
+    static final double COUNTS_PER_MM = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
+            (WHEEL_DIAMETER_MM * 3.1415);
 
     public AutoOpRobot() {
 
     }
 
     @Override
-    public void runOpMode(){
+    public void runOpMode() {
 
     }
 
@@ -120,7 +120,7 @@ public class AutoOpRobot extends LinearOpMode {
         lower = true;
     }
 
-    public void MoveTillEnd(){
+    public void MoveTillEnd() {
         motorRightRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorLeftRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorRightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -145,7 +145,7 @@ public class AutoOpRobot extends LinearOpMode {
         motorLift.setPower(0);
     }
 
-    public void stopRobot(){
+    public void stopRobot() {
         motorRightFront.setPower(0);
         motorRightRear.setPower(0);
         motorLeftFront.setPower(0);
@@ -159,7 +159,7 @@ public class AutoOpRobot extends LinearOpMode {
         motorLeftRear.setPower(-0.2);
     }
 
-    public void MoveL(){
+    public void MoveL() {
         motorRightRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorLeftRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorRightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -179,7 +179,7 @@ public class AutoOpRobot extends LinearOpMode {
         }
     }
 
-    public void ResetLeft(){
+    public void ResetLeft() {
         motorRightRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorLeftRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorRightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -209,7 +209,7 @@ public class AutoOpRobot extends LinearOpMode {
         }
     }
 
-    public void MoveR(){
+    public void MoveR() {
         motorRightRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorLeftRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorRightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -229,7 +229,7 @@ public class AutoOpRobot extends LinearOpMode {
         }
     }
 
-    public void ResetRight(){
+    public void ResetRight() {
         motorRightRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorLeftRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorRightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -259,7 +259,7 @@ public class AutoOpRobot extends LinearOpMode {
         }
     }
 
-    public void Sample(){
+    public void Sample() {
         motorRightRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorLeftRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorRightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -279,7 +279,7 @@ public class AutoOpRobot extends LinearOpMode {
         }
     }
 
-    public void ResetMid(){
+    public void ResetMid() {
         motorRightRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorLeftRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorRightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -299,7 +299,7 @@ public class AutoOpRobot extends LinearOpMode {
         }
     }
 
-    public void MoveFromCrator(){
+    public void MoveFromCrator() {
         motorRightRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorLeftRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorRightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -349,7 +349,7 @@ public class AutoOpRobot extends LinearOpMode {
             telemetry.addLine("Turn");
         }
 
-       DropBeacon();
+        DropBeacon();
 
         double driveDistance5 = 1880 * COUNTS_PER_MM;
         double startPos5 = motorRightFront.getCurrentPosition();
@@ -362,7 +362,7 @@ public class AutoOpRobot extends LinearOpMode {
         }
     }
 
-    public void MoveFromCorner(){
+    public void MoveFromCorner() {
         motorRightRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorLeftRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorRightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -405,11 +405,11 @@ public class AutoOpRobot extends LinearOpMode {
         }
     }
 
-    public void DropBeacon(){
+    public void DropBeacon() {
         dropBeaconServo.setPosition(0.90);
-        telemetry.addData("Drop the Beacon",dropBeaconServo.getPosition());
+        telemetry.addData("Drop the Beacon", dropBeaconServo.getPosition());
 
         dropBeaconServo.setPosition(0.5);
-        telemetry.addData("Drop the Beacon",dropBeaconServo.getPosition());
+        telemetry.addData("Drop the Beacon", dropBeaconServo.getPosition());
     }
 }

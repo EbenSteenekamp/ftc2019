@@ -98,7 +98,6 @@ public class AOcraLEC extends LinearOpMode {
             }
         }
     }
-
     public void unhitchRobot() {
         //Take xtra care of encoder settings, like RUN_TO_POSITION, if you need to keep track of positions in every step
         robot.motorLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -114,8 +113,6 @@ public class AOcraLEC extends LinearOpMode {
         robot.lower(); // See the changes to keep track of position
         telemetry.update();
     }
-
-
     public void moveLeft() {
         robot.motorLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.motorExtend.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -133,7 +130,6 @@ public class AOcraLEC extends LinearOpMode {
         robot.CraFromL();
         telemetry.update();
     }
-
     public void moveRight() {
         robot.motorLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.motorExtend.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -151,7 +147,6 @@ public class AOcraLEC extends LinearOpMode {
         robot.CraFromR();
         telemetry.update();
     }
-
     public void moveMid() {
         robot.motorLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.motorExtend.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -169,7 +164,6 @@ public class AOcraLEC extends LinearOpMode {
         robot.CraFromM();
         telemetry.update();
     }
-
     private void initVuforia() {
         /*
          * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
@@ -184,7 +178,6 @@ public class AOcraLEC extends LinearOpMode {
 
         // Loading trackables is not necessary for the Tensor Flow Object Detection engine.
     }
-
     /**
      * Initialize the Tensor Flow Object Detection engine.
      */
