@@ -304,7 +304,7 @@ public class AutoOpRoverRuckas extends LinearOpMode {
                     } else {
                         telemetry.addData("Visible Target", "none");
                         //if (FindTarget == false) {
-                       // robot.turnAroundUntilFound();
+                        // robot.turnAroundUntilFound();
                         robot.MoveTillEnd();
                         telemetry.addLine("Turn around");
                         telemetry.update();
@@ -362,4 +362,3 @@ public class AutoOpRoverRuckas extends LinearOpMode {
         telemetry.update();
     }
 }
-

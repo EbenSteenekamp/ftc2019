@@ -68,6 +68,7 @@ public class CloneAutoOpRobot extends LinearOpMode {
         //Set the Direction of the Motors on the right side AFTER THOROUGH INSPECTION of electrics
         motorLeftFront.setDirection(DcMotorSimple.Direction.REVERSE);
         motorLeftRear.setDirection(DcMotorSimple.Direction.REVERSE);
+        motorExtend.setDirection(DcMotorSimple.Direction.REVERSE);
         //motorRightFront.setDirection(DcMotorSimple.Direction.REVERSE);
         //motorRightRear.setDirection(DcMotorSimple.Direction.REVERSE);
         //motorCollect = masterConfig.get(DcMotor.class, "motorCollect");
@@ -101,23 +102,25 @@ public class CloneAutoOpRobot extends LinearOpMode {
             //as an alternative keep a global variable for positions for each motor
 
             robottelemetry.addData("Lift Current Position",  "Target :%7d", motorLift.getCurrentPosition());
-            encoderMoveLift(10200, 1, 5);
+            encoderMoveLift(10500, 1, 5);
             robottelemetry.update();
             robottelemetry.addData("Extender Position",  "Target :%7d", motorExtend.getCurrentPosition());
             encoderExtender(-2100, 1, 5);
             //Unhtch servo here
-            while (hitchServo.getPosition() != 1) {
-                hitchServo.setPosition(1);
-            }
+            do {
+                hitchServo.setPosition(0);
+            } while (hitchServo.getPosition() != 1);
+            sleep(1000);
             //Move lift to horizontal (make sure position is not Reset, this is a differential from current position (9200) relative to where we started at 0
-            encoderMoveLift(-7200,1,5);
+            encoderMoveLift(-7600,1,5);
             robottelemetry.addData("Lift Current Position",  "Target :%7d", motorLift.getCurrentPosition());
             //encoderExtender(700, 1, 5);
             robottelemetry.addData("Extender Position",  "Target :%7d", motorExtend.getCurrentPosition());
             //Lower for drive
             robottelemetry.update();
             lower = true;
-            encoderTurn(DRIVE_SPEED, 110, 90, 5);
+            encoderTurn(DRIVE_SPEED, 170, 110, 5);
+
 //            motorLift.setPower(1);
 //            sleep(3500);
 //            motorLift.setPower(0);
@@ -210,56 +213,132 @@ public class CloneAutoOpRobot extends LinearOpMode {
     }
 
     public void MoveL(){
-        encoderTurn(TURN_SPEED, 140, 607, 5);
+        encoderTurn(TURN_SPEED, 160, 640, 5);
         Sample();
     }
 
     public void MoveR(){
-        encoderTurn(TURN_SPEED, 607, 140, 5);
+        encoderTurn(TURN_SPEED, 90, 0, 2);
+        encoderTurn(TURN_SPEED, 610, 170, 5);
         Sample();
     }
 
     public void MoveM(){
-        encoderTurn(DRIVE_SPEED, 250, 250, 5);
+        encoderTurn(DRIVE_SPEED, 300, 300, 5);
         Sample();
     }
 
     public void CorFromL(){
-        encoderTurn(TURN_SPEED, -150, -100, 5);
-        encoderStrafe(DRIVE_SPEED, 200, 200, 5);
-        encoderTurn(TURN_SPEED, 600, 200, 5);
-        encoderTurn(DRIVE_SPEED, 400, 400, 5);
-        encoderTurn(TURN_SPEED, 400, -400, 5);
-        encoderTurn(DRIVE_SPEED, 500, 500, 5);
-        encoderTurn(TURN_SPEED, -600, 600, 5);
+        encoderTurn(DRIVE_SPEED, 900, 150, 5);
+        encoderTurn(DRIVE_SPEED, 550, 550, 5);
+        encoderTurn(TURN_SPEED, 600, -600, 5);
         DropBeacon(5);
-        encoderTurn(TURN_SPEED, 1500, -1500, 5);
-        encoderTurn(DRIVE_SPEED, 800, 800, 5);
-        encoderTurn(TURN_SPEED, 400, -400, 5);
-        encoderTurn(DRIVE_SPEED, 1500, 1500, 5);
-        encoderExtender(1000, 1, 5);
+        encoderTurn(DRIVE_SPEED,1720, 1720, 5);
+        Sample();
     }
 
     public void CorFromR(){
-        encoderTurn(TURN_SPEED, -100, -150, 5);
-        encoderDriveForwardorBackwards(DRIVE_SPEED, 200, 5);
-        encoderTurn(TURN_SPEED, 200, 600, 5);
-        encoderTurn(DRIVE_SPEED, 400, 400, 5);
-        encoderTurn(TURN_SPEED, -400, 400, 5);
-        encoderTurn(DRIVE_SPEED, 500, 500, 5);
+        encoderTurn(DRIVE_SPEED, 150, 800, 5);
+        encoderTurn(TURN_SPEED, 700, 150, 5);
         DropBeacon(5);
-        encoderTurn(DRIVE_SPEED, -1000, -1000, 5);
-        encoderTurn(DRIVE_SPEED, -1500, 1500, 5);
-        encoderTurn(DRIVE_SPEED, 500, 500, 5);
-        encoderExtender(1000, 1, 5);
+        encoderTurn(TURN_SPEED, 600, -600, 5);
+        encoderTurn(DRIVE_SPEED,1650, 1800, 5);
+        Sample();
+    }
+
+    public void CorFromM(){
+        encoderTurn(DRIVE_SPEED, 200, 100, 5);
+        encoderTurn(DRIVE_SPEED, 1050, 750, 5);
+        DropBeacon(5);
+        encoderTurn(TURN_SPEED, 600, -600, 5);
+        encoderTurn(DRIVE_SPEED,1650, 1800, 5);
+        Sample();
+    }
+
+    public void CraFromL(){
+        encoderTurn(DRIVE_SPEED, -370, -100, 5);
+        encoderTurn(DRIVE_SPEED, 900,900,5);
+        encoderTurn(TURN_SPEED, -300, 300, 5);
+        encoderTurn(DRIVE_SPEED, 1300,1300,5);
+    }
+
+    public void CraFromR(){
+        encoderTurn(DRIVE_SPEED, -250, -100, 5);
+        encoderTurn(DRIVE_SPEED, 1300,1300,5);
+        encoderTurn(TURN_SPEED, -200, 200, 5);
+        encoderTurn(DRIVE_SPEED, 1300,1300,5);
+    }
+
+    public void CraFromM(){
+        encoderTurn(DRIVE_SPEED, -250, -100, 5);
+        encoderTurn(DRIVE_SPEED, 1100,1100,5);
+        encoderTurn(TURN_SPEED, -200, 200, 5);
+        encoderTurn(DRIVE_SPEED, 1300,1300,5);
     }
 
     public void Sample(){
-        encoderMoveLift(-2300, 1, 5);
-        encoderExtender(-2500, 1, 5);
-        motorCollect.setPower(1);
-        encoderMoveLift(3000, 1, 5);
+        encoderMoveLift(-2350, 1, 5);
+        encoderExtender(-2600, 1, 5);
+        motorCollect.setPower(0.8);
+        encoderMoveLift(3100, 1, 5);
         motorCollect.setPower(0);
+    }
+
+    public void CorFromLEndEnimy(){
+        encoderTurn(DRIVE_SPEED, 800, 150, 5);
+        encoderTurn(DRIVE_SPEED, 50, 600, 5);
+        DropBeacon(5);
+        encoderTurn(TURN_SPEED, -580, 580, 5);
+        encoderTurn(DRIVE_SPEED,1500, 1420, 5);
+        Sample();
+//        encoderTurn(TURN_SPEED, 1500, -1500, 5);
+//        encoderTurn(DRIVE_SPEED, 800, 800, 5);
+//        encoderTurn(TURN_SPEED, 400, -400, 5);
+//        encoderTurn(DRIVE_SPEED, 1500, 1500, 5);
+//        encoderExtender(1000, 1, 5);
+    }
+
+    public void CorFromREndEnimy(){
+        encoderTurn(DRIVE_SPEED, 150, 800, 5);
+        encoderTurn(TURN_SPEED, 600, 50, 5);
+        DropBeacon(5);
+        encoderTurn(TURN_SPEED, -580, 580, 5);
+        encoderTurn(DRIVE_SPEED,1750, 1750, 5);
+        Sample();
+//        encoderTurn(DRIVE_SPEED, -1000, -1000, 5);
+//        encoderTurn(DRIVE_SPEED, -1500, 1500, 5);
+//        encoderTurn(DRIVE_SPEED, 500, 500, 5);
+//        encoderExtender(1000, 1, 5);
+    }
+
+    public void CorFromMEndEnimy(){
+        encoderTurn(DRIVE_SPEED, 100, 200, 5);
+        encoderTurn(DRIVE_SPEED, 750, 1050, 5);
+        DropBeacon(5);
+        encoderTurn(TURN_SPEED, -580, 580, 5);
+        encoderTurn(DRIVE_SPEED,1750, 1750, 5);
+        Sample();
+//        encoderTurn(DRIVE_SPEED, -600, -450, 5);
+//        encoderTurn(DRIVE_SPEED, 0, -150, 5);
+//        encoderTurn(DRIVE_SPEED, -1000, -1000, 5);
+//        encoderTurn(DRIVE_SPEED, -1500, 1500, 5);
+//        encoderTurn(DRIVE_SPEED, 500, 500, 5);
+//        encoderExtender(1000, 1, 5);
+    }
+
+    public void CraFromLStraight(){
+        encoderTurn(DRIVE_SPEED, 200, 200, 5);
+        Sample();
+    }
+
+    public void CraFromRStraight(){
+        encoderTurn(DRIVE_SPEED, 200, 200, 5);
+        Sample();
+    }
+
+    public void CraFromMStraight(){
+        encoderTurn(DRIVE_SPEED, 100, 100, 5);
+        Sample();
     }
 
     public void DropBeacon(double timeoutS){
@@ -273,7 +352,7 @@ public class CloneAutoOpRobot extends LinearOpMode {
         dropBeaconServo.setDirection(Servo.Direction.REVERSE);
         dropBeaconServo.setPosition(0.5);
 
-        dropBeaconServo.setPosition(0.90);
+        dropBeaconServo.setPosition(0);
         while (opModeIsActive()) {
             //WE don't have servo feedback
             robottelemetry.addData("Drop the Beacon and wait",dropBeaconServo.getPosition());
@@ -281,7 +360,6 @@ public class CloneAutoOpRobot extends LinearOpMode {
             robottelemetry.update();
             //if(robot.dropBeaconServo.getPosition()>0.89)
             break;
-
         }
 
         dropBeaconServo.setPosition(0.5);
