@@ -81,11 +81,15 @@ public class AOcraLEC extends LinearOpMode {
                             }
                             if (goldMineralX != -1 && silverMineral1X != -1 && silverMineral2X != -1) {
                                 if (goldMineralX < silverMineral1X && goldMineralX < silverMineral2X) {
-                                    telemetry.addData("Gold Mineral Position", "Left");
-                                    moveLeft();
-                                } else if (goldMineralX > silverMineral1X && goldMineralX > silverMineral2X) {
+//                                    telemetry.addData("Gold Mineral Position", "Left");
+//                                    moveLeft();
                                     telemetry.addData("Gold Mineral Position", "Right");
                                     moveRight();
+                                } else if (goldMineralX > silverMineral1X && goldMineralX > silverMineral2X) {
+//                                    telemetry.addData("Gold Mineral Position", "Right");
+//                                    moveRight();
+                                    telemetry.addData("Gold Mineral Position", "Left");
+                                    moveLeft();
                                 } else {
                                     telemetry.addData("Gold Mineral Position", "Center");
                                     moveMid();
@@ -172,7 +176,7 @@ public class AOcraLEC extends LinearOpMode {
 
         parameters.vuforiaLicenseKey = VUFORIA_KEY;
         parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
-
+        parameters.useExtendedTracking = true;
         //  Instantiate the Vuforia engine
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
 

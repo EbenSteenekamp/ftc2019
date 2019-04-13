@@ -108,7 +108,7 @@ public class CloneAutoOpRobot extends LinearOpMode {
             encoderExtender(-2100, 1, 5);
             //Unhtch servo here
             do {
-                hitchServo.setPosition(1);
+                hitchServo.setPosition(0);
             } while (hitchServo.getPosition() != 1);
             sleep(1000);
             //Move lift to horizontal (make sure position is not Reset, this is a differential from current position (9200) relative to where we started at 0
@@ -119,7 +119,7 @@ public class CloneAutoOpRobot extends LinearOpMode {
             //Lower for drive
             robottelemetry.update();
             lower = true;
-           // encoderTurn(DRIVE_SPEED, 170, 110, 5);
+            encoderTurn(DRIVE_SPEED, 170, 110, 5);
 
 //            motorLift.setPower(1);
 //            sleep(3500);
