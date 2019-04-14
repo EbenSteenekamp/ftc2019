@@ -19,6 +19,9 @@ public class Rev4wheel extends LinearOpMode {
     DcMotor motorExtend;
     Servo dropBeaconServo;
     Servo hitchServo;
+    Servo latchLockServo;
+    //Servo collectorStop;
+
 
     //Declare values/constants for Static Power settings, Change for Tuning default Values
     double liftmotorUpPowerSetting = 1; //We need all the Power to Lift
@@ -38,6 +41,8 @@ public class Rev4wheel extends LinearOpMode {
         motorExtend.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorExtend.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         dropBeaconServo = hardwareMap.servo.get("DropBeaconServo");
+        latchLockServo = hardwareMap.servo.get("LatchLockServo");
+       // collectorStop = hardwareMap.servo.get("CollectorStopServo");
         motorLift = hardwareMap.get(DcMotor.class, "motorLift");
         motorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -82,6 +87,15 @@ public class Rev4wheel extends LinearOpMode {
 
         while (opModeIsActive()) {
 
+//            //Set max Extender positions
+//            if(motorLift.getCurrentPosition()>=11430)
+//            {
+//                motorLift.setTargetPosition(11425);
+//            }
+//            if(motorLift.getCurrentPosition()>3600)
+//            {
+//                motorExtend.setTargetPosition(-5160);
+//            }
             //*************************************************************************************
             //                                  GamePad 2 Settings
 
@@ -176,6 +190,32 @@ public class Rev4wheel extends LinearOpMode {
 
             //*************************************************************************************
             //                                  GamePad 1 Settings
+            //Lock and Collector Stop settings
+
+//            if(gamepad1.left_trigger>0)
+//            {
+//                collectorStop.setPosition(1);
+//                telemetry.addData("Collector Stop Engaged", hitchServo.getPosition());
+//            }
+
+            if(gamepad1.right_trigger>0){
+                //To Lock
+                if(latchLockServo.getPosition()<1){
+                    latchLockServo.setPosition(1);
+                    telemetry.addData("Locking Lift Lock", hitchServo.getPosition());
+
+                }else//To unlock
+                {
+                    latchLockServo.setPosition(0);
+                    telemetry.addData("Un-Locking Lift Lock", hitchServo.getPosition());
+                }
+            }
+
+//            //Set the Lift and Extender positions for Latching on Lander
+//            if (gamepad1.right_trigger>0 ){
+//                motorLift.setTargetPosition(11425);
+//                motorExtend.setTargetPosition(-2431);
+//            }
 
             //Set speed control
             if (gamepad1.right_bumper) {
@@ -277,6 +317,8 @@ public class Rev4wheel extends LinearOpMode {
             telemetry.update();
         }
     }
+    void setHitchPosition(){}
+
 }
 
 
