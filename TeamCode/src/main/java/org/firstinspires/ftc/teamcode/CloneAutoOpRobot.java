@@ -41,7 +41,7 @@ public class CloneAutoOpRobot extends LinearOpMode {
             (WHEEL_DIAMETER_MM * 3.1415);
 
     static final double     DRIVE_SPEED             = 1;
-    static final double     TURN_SPEED              = 0.5;
+    static final double     TURN_SPEED              = 0.65;
     static final double     STRAFE_SPEED            = 0.5;
 
     private Telemetry robottelemetry;
@@ -107,9 +107,9 @@ public class CloneAutoOpRobot extends LinearOpMode {
             robottelemetry.addData("Extender Position",  "Target :%7d", motorExtend.getCurrentPosition());
             encoderExtender(-2100, 1, 5);
             //Unhtch servo here
-            do {
+            //do {
                 hitchServo.setPosition(0);
-            } while (hitchServo.getPosition() != 1);
+            //} while (hitchServo.getPosition() != 0);
             sleep(1000);
             //Move lift to horizontal (make sure position is not Reset, this is a differential from current position (9200) relative to where we started at 0
             encoderMoveLift(-7600,1,5);
@@ -119,8 +119,7 @@ public class CloneAutoOpRobot extends LinearOpMode {
             //Lower for drive
             robottelemetry.update();
             lower = true;
-            encoderTurn(DRIVE_SPEED, 170, 110, 5);
-
+            hitchServo.setPosition(1);
 //            motorLift.setPower(1);
 //            sleep(3500);
 //            motorLift.setPower(0);
@@ -213,33 +212,36 @@ public class CloneAutoOpRobot extends LinearOpMode {
     }
 
     public void MoveL(){
-        encoderTurn(TURN_SPEED, 160, 640, 5);
+        encoderTurn(DRIVE_SPEED, 170, 110, 5);
+        encoderTurn(TURN_SPEED, 160, 645, 5);
         Sample();
     }
 
     public void MoveR(){
-        encoderTurn(TURN_SPEED, 90, 0, 2);
+        encoderTurn(DRIVE_SPEED, 170, 110, 5);
+        encoderTurn(DRIVE_SPEED, 90, -40, 5);
         encoderTurn(TURN_SPEED, 610, 170, 5);
         Sample();
     }
 
     public void MoveM(){
+        encoderTurn(DRIVE_SPEED, 170, 110, 5);
         encoderTurn(DRIVE_SPEED, 300, 300, 5);
         Sample();
     }
 
     public void CorFromL(){
         encoderTurn(DRIVE_SPEED, 900, 150, 5);
-        encoderTurn(DRIVE_SPEED, 550, 550, 5);
-        encoderTurn(TURN_SPEED, 600, -600, 5);
+        encoderTurn(DRIVE_SPEED, 650, 550, 5);
+        encoderTurn(TURN_SPEED, 575, -575, 5);
         DropBeacon(5);
-        encoderTurn(DRIVE_SPEED,1720, 1720, 5);
+        encoderTurn(DRIVE_SPEED,1840, 1840, 5);
         Sample();
     }
 
     public void CorFromR(){
         encoderTurn(DRIVE_SPEED, 150, 800, 5);
-        encoderTurn(TURN_SPEED, 700, 150, 5);
+        encoderTurn(TURN_SPEED, 750, 200, 5);
         DropBeacon(5);
         encoderTurn(TURN_SPEED, 600, -600, 5);
         encoderTurn(DRIVE_SPEED,1650, 1800, 5);
@@ -248,7 +250,7 @@ public class CloneAutoOpRobot extends LinearOpMode {
 
     public void CorFromM(){
         encoderTurn(DRIVE_SPEED, 200, 100, 5);
-        encoderTurn(DRIVE_SPEED, 1050, 750, 5);
+        encoderTurn(DRIVE_SPEED, 1100, 800, 5);
         DropBeacon(5);
         encoderTurn(TURN_SPEED, 600, -600, 5);
         encoderTurn(DRIVE_SPEED,1650, 1800, 5);
@@ -277,7 +279,7 @@ public class CloneAutoOpRobot extends LinearOpMode {
     }
 
     public void Sample(){
-        encoderMoveLift(-2350, 1, 5);
+        encoderMoveLift(-2000, 1, 5);
         encoderExtender(-2600, 1, 5);
         motorCollect.setPower(0.8);
         encoderMoveLift(3100, 1, 5);
