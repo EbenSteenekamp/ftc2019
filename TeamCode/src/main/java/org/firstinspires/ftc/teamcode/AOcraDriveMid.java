@@ -52,7 +52,7 @@ public class AOcraDriveMid extends LinearOpMode{
         telemetry.update();
 
         telemetry.addLine("Move From Mid");
-        robot.CraFromM();
+        robot.CraFromMStraight();
         telemetry.update();
     }
 }

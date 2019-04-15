@@ -54,7 +54,7 @@ public class AOcraDriveRight extends LinearOpMode{
         telemetry.update();
 
         telemetry.addLine("Move from Right");
-        robot.CraFromR();
+        robot.CraFromRStraight();
         telemetry.update();
     }
 }
