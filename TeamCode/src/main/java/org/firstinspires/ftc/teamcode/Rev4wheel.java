@@ -140,14 +140,15 @@ public class Rev4wheel extends LinearOpMode {
                 telemetry.addData("Drop the Beacon",dropBeaconServo.getPosition());
             }
 
-            //Open or Close the hitch
-            if (gamepad2.dpad_left && !gamepad2.dpad_right && gamepad2.left_bumper && moveServoClose == false) {
+            //Open or Close the hitch && gamepad2.left_bumper
+            if (gamepad2.dpad_left && !gamepad2.dpad_right && moveServoClose == false) {
                 hitchServo.setPosition(1);
                 telemetry.addData("Left Button", hitchServo.getPosition());
                 moveServoClose = true;
                 moveServoOpen = false;
             }
-            if (gamepad2.dpad_right && !gamepad2.dpad_left && gamepad2.left_bumper && moveServoOpen == false) {
+            //&& gamepad2.left_bumper
+            if (gamepad2.dpad_right && !gamepad2.dpad_left  && moveServoOpen == false) {
                 hitchServo.setPosition(0);
                 telemetry.addData("Right Button", hitchServo.getPosition());
                 moveServoClose = false;
