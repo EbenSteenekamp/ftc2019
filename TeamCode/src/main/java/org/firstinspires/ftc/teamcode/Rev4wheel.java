@@ -29,6 +29,10 @@ public class Rev4wheel extends LinearOpMode {
     double collectorMotorPowerSetting = 0.7 ; //We don't need full Power at the Collector, Run one direction
     double extendingArmPowerSetting = 1; //We only need half power, retracting and extending use same value, only sign change for motor direction
 
+    int extendValue;
+    int liftValue;
+
+
     boolean moveServoOpen = false;
     boolean moveServoClose = false;
 
@@ -41,7 +45,7 @@ public class Rev4wheel extends LinearOpMode {
         motorExtend.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorExtend.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         dropBeaconServo = hardwareMap.servo.get("DropBeaconServo");
-        latchLockServo = hardwareMap.servo.get("LatchLockServo");
+        latchLockServo = hardwareMap.servo.get("latchLockServo");
        // collectorStop = hardwareMap.servo.get("CollectorStopServo");
         motorLift = hardwareMap.get(DcMotor.class, "motorLift");
         motorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -76,6 +80,7 @@ public class Rev4wheel extends LinearOpMode {
 
         waitForStart();
 
+        latchLockServo.setPosition(1);
         dropBeaconServo.setPosition(0.5);
         double speedControlPowerSetting = 0.75;
         double leftFrontPowerSetting = 0;
@@ -198,14 +203,48 @@ public class Rev4wheel extends LinearOpMode {
 //                telemetry.addData("Collector Stop Engaged", hitchServo.getPosition());
 //            }
 
-            if(gamepad1.right_trigger>0){
+            if (gamepad1.dpad_up == true && gamepad1.y == false){
+                liftValue = (500 - motorLift.getCurrentPosition());
+                extendValue = -(2100 - motorExtend.getCurrentPosition());
+                motorLift.setTargetPosition(liftValue);
+                motorExtend.setTargetPosition(extendValue);
+                motorLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                motorExtend.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                motorLift.setPower(1);
+                while (opModeIsActive() &&
+                        (motorLift.isBusy()) && !gamepad1.y)
+                {
+
+                    // Display it for the Debugging.
+                    telemetry.addData("Running to Target", liftValue);
+                    telemetry.update();
+                }
+                // Stop all motion after Path is completed;
+                motorLift.setPower(0);
+                motorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                motorExtend.setPower(1);
+                while (opModeIsActive() &&
+                        (motorExtend.isBusy()) && !gamepad1.y)
+                {
+
+                    // Display it for the Debugging.
+                    telemetry.addData("Running to Target", extendValue);
+                    telemetry.update();
+                }
+                motorExtend.setPower(0);
+                motorExtend.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            }
+
+            if(gamepad1.b == true) {
                 //To Lock
-                if(latchLockServo.getPosition()<1){
+                if (latchLockServo.getPosition() < 1) {
                     latchLockServo.setPosition(1);
                     telemetry.addData("Locking Lift Lock", hitchServo.getPosition());
-
-                }else//To unlock
-                {
+                }
+            }
+                //To unlock
+            if (gamepad1.x == true) {
+                if(latchLockServo.getPosition()>0) {
                     latchLockServo.setPosition(0);
                     telemetry.addData("Un-Locking Lift Lock", hitchServo.getPosition());
                 }
