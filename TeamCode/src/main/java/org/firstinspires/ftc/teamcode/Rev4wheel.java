@@ -20,7 +20,7 @@ public class Rev4wheel extends LinearOpMode {
     Servo dropBeaconServo;
     Servo hitchServo;
     Servo latchLockServo;
-    //Servo collectorStop;
+    Servo collectorStop;
 
 
     //Declare values/constants for Static Power settings, Change for Tuning default Values
@@ -46,7 +46,7 @@ public class Rev4wheel extends LinearOpMode {
         motorExtend.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         dropBeaconServo = hardwareMap.servo.get("DropBeaconServo");
         latchLockServo = hardwareMap.servo.get("latchLockServo");
-       // collectorStop = hardwareMap.servo.get("CollectorStopServo");
+        collectorStop = hardwareMap.servo.get("CollectorStopServo");
         motorLift = hardwareMap.get(DcMotor.class, "motorLift");
         motorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -79,9 +79,11 @@ public class Rev4wheel extends LinearOpMode {
         telemetry.update();
 
         waitForStart();
-
+//Make sure the Lock is Open
         latchLockServo.setPosition(1);
         dropBeaconServo.setPosition(0.5);
+        //Make sure the collectorStop is Close
+        collectorStop.setPosition(0);
         double speedControlPowerSetting = 0.75;
         double leftFrontPowerSetting = 0;
         double leftRearPowerSetting = 0;
@@ -110,6 +112,24 @@ public class Rev4wheel extends LinearOpMode {
 //            servoClass runServo1 = new servoClass();
 //            servoClass runCollector = new servoClass();
 
+            //Collector Stop settings
+            //Right Bumper close the Jaws, Left opens it
+
+            if(gamepad2.right_bumper == true) {
+                //To Close
+                if (collectorStop.getPosition() < 1) {
+                    collectorStop.setPosition(0.5);
+                    telemetry.addData("Close Collectot Stop", collectorStop.getPosition());
+                }
+            }
+            //To Open
+            if (gamepad2.left_bumper == true) {
+                if(collectorStop.getPosition()>0) {
+                    collectorStop.setPosition(0);
+                    telemetry.addData("Open Collector Stop", collectorStop.getPosition());
+                }
+            }
+
             //Drop the beacon
             if(gamepad2.right_trigger >0){
                 dropBeaconServo.setPosition(0);
@@ -120,14 +140,15 @@ public class Rev4wheel extends LinearOpMode {
                 telemetry.addData("Drop the Beacon",dropBeaconServo.getPosition());
             }
 
-            //Open or Close the hitch
-            if (gamepad2.dpad_left && !gamepad2.dpad_right && gamepad2.left_bumper && moveServoClose == false) {
+            //Open or Close the hitch && gamepad2.left_bumper
+            if (gamepad2.dpad_left && !gamepad2.dpad_right && moveServoClose == false) {
                 hitchServo.setPosition(1);
                 telemetry.addData("Left Button", hitchServo.getPosition());
                 moveServoClose = true;
                 moveServoOpen = false;
             }
-            if (gamepad2.dpad_right && !gamepad2.dpad_left && gamepad2.left_bumper && moveServoOpen == false) {
+            //&& gamepad2.left_bumper
+            if (gamepad2.dpad_right && !gamepad2.dpad_left  && moveServoOpen == false) {
                 hitchServo.setPosition(0);
                 telemetry.addData("Right Button", hitchServo.getPosition());
                 moveServoClose = false;
