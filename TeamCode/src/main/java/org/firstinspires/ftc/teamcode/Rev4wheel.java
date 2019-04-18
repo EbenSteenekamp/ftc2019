@@ -118,7 +118,7 @@ public class Rev4wheel extends LinearOpMode {
             if(gamepad2.right_bumper == true) {
                 //To Close
                 if (collectorStop.getPosition() < 1) {
-                    collectorStop.setPosition(0.5);
+                    collectorStop.setPosition(0.3);
                     telemetry.addData("Close Collectot Stop", collectorStop.getPosition());
                 }
             }
