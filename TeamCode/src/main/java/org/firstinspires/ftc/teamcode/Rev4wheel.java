@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp(name="Rev4wheel", group="Linear Opmode")
 
@@ -28,6 +29,14 @@ public class Rev4wheel extends LinearOpMode {
     double liftmotorDownPowerSetting = -1; //We can make the motot slower when the are goes down
     double collectorMotorPowerSetting = 0.7 ; //We don't need full Power at the Collector, Run one direction
     double extendingArmPowerSetting = 1; //We only need half power, retracting and extending use same value, only sign change for motor direction
+
+    static final double     COUNTS_PER_MOTOR_REV    = 28 ;    // eg: TETRIX Motor Encoder
+    static final double     DRIVE_GEAR_REDUCTION    = 40 ;     // This is < 1.0 if geared UP 40:1 reduce to 160 rpm
+    static final double     WHEEL_DIAMETER_MM   = 100 ;     // For figuring circumference
+    static final double     COUNTS_PER_MM         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
+            (WHEEL_DIAMETER_MM * 3.1415);
+
+    private ElapsedTime runtime = new ElapsedTime();
 
     int extendValue;
     int liftValue;
@@ -68,6 +77,13 @@ public class Rev4wheel extends LinearOpMode {
 
         motorRightRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorRightRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        motorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorExtend.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        motorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorExtend.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
 
         //Reverse wheels on the one side
         motorRightRear.setDirection(DcMotor.Direction.REVERSE);
@@ -214,26 +230,18 @@ public class Rev4wheel extends LinearOpMode {
 
             }
 
-            //*************************************************************************************
-            //                                  GamePad 1 Settings
-            //Lock and Collector Stop settings
+            if (gamepad2.dpad_up == true && gamepad1.y == false){
 
-//            if(gamepad1.left_trigger>0)
-//            {
-//                collectorStop.setPosition(1);
-//                telemetry.addData("Collector Stop Engaged", hitchServo.getPosition());
-//            }
-
-            if (gamepad1.dpad_up == true && gamepad1.y == false){
-                liftValue = (500 - motorLift.getCurrentPosition());
-                extendValue = -(2100 - motorExtend.getCurrentPosition());
-                motorLift.setTargetPosition(liftValue);
-                motorExtend.setTargetPosition(extendValue);
                 motorLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                motorExtend.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                liftValue = (10500 - motorLift.getCurrentPosition());
+
+                motorLift.setTargetPosition(liftValue);
+
+                runtime.reset();
                 motorLift.setPower(1);
                 while (opModeIsActive() &&
-                        (motorLift.isBusy()) && !gamepad1.y)
+                        (motorLift.isBusy()) && !gamepad1.y && (runtime.seconds() < 5))
                 {
 
                     // Display it for the Debugging.
@@ -243,9 +251,20 @@ public class Rev4wheel extends LinearOpMode {
                 // Stop all motion after Path is completed;
                 motorLift.setPower(0);
                 motorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            }
+
+            if (gamepad2.dpad_down == true && gamepad1.y == false){
+                motorExtend.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                extendValue = -(2100 - motorExtend.getCurrentPosition());
+
+                motorExtend.setTargetPosition(extendValue);
+
+                runtime.reset();
+
                 motorExtend.setPower(1);
                 while (opModeIsActive() &&
-                        (motorExtend.isBusy()) && !gamepad1.y)
+                        (motorExtend.isBusy()) && !gamepad1.y && (runtime.seconds() < 5))
                 {
 
                     // Display it for the Debugging.
@@ -255,6 +274,16 @@ public class Rev4wheel extends LinearOpMode {
                 motorExtend.setPower(0);
                 motorExtend.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             }
+
+            //*************************************************************************************
+            //                                  GamePad 1 Settings
+            //Lock and Collector Stop settings
+
+//            if(gamepad1.left_trigger>0)
+//            {
+//                collectorStop.setPosition(1);
+//                telemetry.addData("Collector Stop Engaged", hitchServo.getPosition());
+//            }
 
             if(gamepad1.b == true) {
                 //To Lock

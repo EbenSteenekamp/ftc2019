@@ -102,6 +102,7 @@ public class AOcorLEC extends LinearOpMode {
             }
         }
     }
+//    Lowers robot onto the ground
     public void unhitchRobot()
     {
         //Take xtra care of encoder settings, like RUN_TO_POSITION, if you need to keep track of positions in every step
@@ -118,6 +119,9 @@ public class AOcorLEC extends LinearOpMode {
         robot.lower(); // See the changes to keep track of position
         telemetry.update();
     }
+//  After the minerals have been identified one of the following 3 programs will be executed depending
+//  on the position of the minerals
+
     public void moveLeft(){
         robot.motorLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.motorExtend.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -169,6 +173,8 @@ public class AOcorLEC extends LinearOpMode {
         robot.CorFromM();
         telemetry.update();
     }
+
+
     private void initVuforia() {
         /*
          * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.

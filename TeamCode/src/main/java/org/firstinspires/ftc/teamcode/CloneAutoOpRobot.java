@@ -95,6 +95,7 @@ public class CloneAutoOpRobot extends LinearOpMode {
         dropBeaconServo.setPosition(0.5);
     }
 
+//  For landing at the beginning of the match
     public void lower() {
 
         while (!lower) {
@@ -134,6 +135,7 @@ public class CloneAutoOpRobot extends LinearOpMode {
        // lower = true;
     }
 
+//  Simply drives forward without sampling
     public void MoveTillEnd() {
 
         //encoderMoveLift(-2000,1,5);
@@ -162,41 +164,7 @@ public class CloneAutoOpRobot extends LinearOpMode {
 //            motorExtend.setPower(0);
     }
 
-    public void CORdrop(){
-
-        encoderDriveForwardorBackwards(DRIVE_SPEED, 950, 7);
-        encoderTurn(TURN_SPEED, -600, 600, 5);
-        DropBeacon(5);
-
-//        motorLeftFront.setPower(+0.5);
-//        motorLeftRear.setPower(+0.5);
-//        motorRightFront.setPower(+0.5);
-//        motorRightRear.setPower(+0.5);
-//        telemetry.addLine("Forward");
-//        sleep(2600);
-//        motorLeftFront.setPower(+1);
-//        motorLeftRear.setPower(+1);
-//        motorRightFront.setPower(-1);
-//        motorRightRear.setPower(-1);
-//        sleep(15);
-//        DropBeacon();
-//        hitchServo.setPower(-1);
-//        sleep(2000);
-
-    }
-
-    public void CORDrive(){
-        encoderTurn(TURN_SPEED, -750, 750, 5);
-        encoderTurn(DRIVE_SPEED, 1800, 1800, 5);
-//        motorLeftFront.setPower(1);
-//        motorLeftRear.setPower(1);
-//        motorRightFront.setPower(1);
-//        motorRightRear.setPower(1);
-//        sleep(2300);
-//        stop();
-        encoderExtender(-4000, 1, 5);
-    }
-
+//  Completely stops robot
     public void stopRobot(){
         motorRightFront.setPower(0);
         motorRightRear.setPower(0);
@@ -204,19 +172,14 @@ public class CloneAutoOpRobot extends LinearOpMode {
         motorLeftRear.setPower(0);
     }
 
-    public void turnAroundUntilFound() {
-        motorRightFront.setPower(0.2);
-        motorRightRear.setPower(0.2);
-        motorLeftFront.setPower(-0.2);
-        motorLeftRear.setPower(-0.2);
-    }
-
+//  Samples on the left hand side
     public void MoveL(){
         encoderTurn(DRIVE_SPEED, 170, 110, 5);
         encoderTurn(TURN_SPEED, 160, 645, 5);
         Sample();
     }
 
+//  Samples on the right hand side
     public void MoveR(){
         encoderTurn(DRIVE_SPEED, 170, 110, 5);
         encoderTurn(DRIVE_SPEED, 90, -40, 5);
@@ -224,12 +187,14 @@ public class CloneAutoOpRobot extends LinearOpMode {
         Sample();
     }
 
+//  Samples in the middle
     public void MoveM(){
         encoderTurn(DRIVE_SPEED, 170, 110, 5);
         encoderTurn(DRIVE_SPEED, 300, 300, 5);
         Sample();
     }
 
+//  Moves to the corner after sampling left
     public void CorFromL(){
         encoderTurn(DRIVE_SPEED, 900, 150, 5);
         encoderTurn(DRIVE_SPEED, 650, 550, 5);
@@ -239,6 +204,7 @@ public class CloneAutoOpRobot extends LinearOpMode {
         Sample();
     }
 
+//  Moves to the corner after sampling right
     public void CorFromR(){
         encoderTurn(DRIVE_SPEED, 150, 800, 5);
         encoderTurn(TURN_SPEED, 750, 200, 5);
@@ -248,6 +214,7 @@ public class CloneAutoOpRobot extends LinearOpMode {
         Sample();
     }
 
+//  Moves to the corner after sampling in the middle
     public void CorFromM(){
         encoderTurn(DRIVE_SPEED, 200, 100, 5);
         encoderTurn(DRIVE_SPEED, 1100, 800, 5);
@@ -257,6 +224,7 @@ public class CloneAutoOpRobot extends LinearOpMode {
         Sample();
     }
 
+//  Moves from the crater to the corner after sampling left
     public void CraFromL(){
         encoderTurn(DRIVE_SPEED, -370, -100, 5);
         encoderTurn(DRIVE_SPEED, 900,900,5);
@@ -264,6 +232,7 @@ public class CloneAutoOpRobot extends LinearOpMode {
         encoderTurn(DRIVE_SPEED, 1300,1300,5);
     }
 
+//  Moves from the crater to the corner after sampling right
     public void CraFromR(){
         encoderTurn(DRIVE_SPEED, -250, -100, 5);
         encoderTurn(DRIVE_SPEED, 1300,1300,5);
@@ -271,6 +240,7 @@ public class CloneAutoOpRobot extends LinearOpMode {
         encoderTurn(DRIVE_SPEED, 1300,1300,5);
     }
 
+//  Moves from the crater to the corner after sampling in the middle
     public void CraFromM(){
         encoderTurn(DRIVE_SPEED, -250, -100, 5);
         encoderTurn(DRIVE_SPEED, 1100,1100,5);
@@ -278,6 +248,7 @@ public class CloneAutoOpRobot extends LinearOpMode {
         encoderTurn(DRIVE_SPEED, 1300,1300,5);
     }
 
+//  Picks up the mineral after already being aligned
     public void Sample(){
         encoderMoveLift(-2000, 1, 5);
         encoderExtender(-2600, 1, 5);
@@ -286,6 +257,7 @@ public class CloneAutoOpRobot extends LinearOpMode {
         motorCollect.setPower(0);
     }
 
+//   Ends in the opponent team crater after sampling left
     public void CorFromLEndEnimy(){
         encoderTurn(DRIVE_SPEED, 800, 150, 5);
         encoderTurn(DRIVE_SPEED, 50, 600, 5);
@@ -300,6 +272,7 @@ public class CloneAutoOpRobot extends LinearOpMode {
 //        encoderExtender(1000, 1, 5);
     }
 
+//   Ends in the opponent team crater after sampling right
     public void CorFromREndEnimy(){
         encoderTurn(DRIVE_SPEED, 150, 800, 5);
         encoderTurn(TURN_SPEED, 600, 50, 5);
@@ -313,6 +286,7 @@ public class CloneAutoOpRobot extends LinearOpMode {
 //        encoderExtender(1000, 1, 5);
     }
 
+//   Ends in the opponent team crater after sampling mid
     public void CorFromMEndEnimy(){
         encoderTurn(DRIVE_SPEED, 100, 200, 5);
         encoderTurn(DRIVE_SPEED, 750, 1050, 5);
@@ -328,21 +302,25 @@ public class CloneAutoOpRobot extends LinearOpMode {
 //        encoderExtender(1000, 1, 5);
     }
 
+//   Drives straight into crater
     public void CraFromLStraight(){
         encoderTurn(DRIVE_SPEED, 200, 200, 5);
         Sample();
     }
 
+//   Drives straight into crater
     public void CraFromRStraight(){
         encoderTurn(DRIVE_SPEED, 200, 200, 5);
         Sample();
     }
 
+//   Drives straight into crater
     public void CraFromMStraight(){
         encoderTurn(DRIVE_SPEED, 100, 100, 5);
         Sample();
     }
 
+//   Drives straight into crater
     public void DropBeacon(double timeoutS){
 
         robottelemetry.addData("Beacon Drop", "Initialized");

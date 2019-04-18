@@ -207,6 +207,11 @@ public class GyroStrafe extends LinearOpMode {
                     telemetry.update();
                 }
             }
+
+            motorRightFront.setPower(0);
+            motorLeftFront.setPower(0);
+            motorRightRear.setPower(0);
+            motorLeftRear.setPower(0);
             telemetry.update();
         }
 
