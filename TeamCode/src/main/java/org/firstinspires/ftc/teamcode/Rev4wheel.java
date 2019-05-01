@@ -84,6 +84,12 @@ public class Rev4wheel extends LinearOpMode {
         motorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorExtend.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+        motorLeftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorRightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorLeftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorRightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorExtend.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         //Reverse wheels on the one side
         motorRightRear.setDirection(DcMotor.Direction.REVERSE);
@@ -134,7 +140,7 @@ public class Rev4wheel extends LinearOpMode {
             if(gamepad2.right_bumper == true) {
                 //To Close
                 if (collectorStop.getPosition() < 1) {
-                    collectorStop.setPosition(0.3);
+                    collectorStop.setPosition(0.15);
                     telemetry.addData("Close Collectot Stop", collectorStop.getPosition());
                 }
             }
@@ -216,11 +222,11 @@ public class Rev4wheel extends LinearOpMode {
 
             //Turn collector on
             if(gamepad2.a == true) {
-                motorCollect.setPower(0.6);
+                motorCollect.setPower(0.7);
                 //telemetry.addData("Collection Motor On", motorCollect.getPower());
             }
             if(gamepad2.b == true){
-                motorCollect.setPower(-0.6);
+                motorCollect.setPower(-0.7);
                 //telemetry.addData("Collection Motor On", motorCollect.getPower());
 
             }
@@ -230,50 +236,50 @@ public class Rev4wheel extends LinearOpMode {
 
             }
 
-            if (gamepad2.dpad_up == true && gamepad1.y == false){
-
-                motorLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-                liftValue = (10500 - motorLift.getCurrentPosition());
-
-                motorLift.setTargetPosition(liftValue);
-
-                runtime.reset();
-                motorLift.setPower(1);
-                while (opModeIsActive() &&
-                        (motorLift.isBusy()) && !gamepad1.y && (runtime.seconds() < 5))
-                {
-
-                    // Display it for the Debugging.
-                    telemetry.addData("Running to Target", liftValue);
-                    telemetry.update();
-                }
-                // Stop all motion after Path is completed;
-                motorLift.setPower(0);
-                motorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            }
-
-            if (gamepad2.dpad_down == true && gamepad1.y == false){
-                motorExtend.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-                extendValue = -(2100 - motorExtend.getCurrentPosition());
-
-                motorExtend.setTargetPosition(extendValue);
-
-                runtime.reset();
-
-                motorExtend.setPower(1);
-                while (opModeIsActive() &&
-                        (motorExtend.isBusy()) && !gamepad1.y && (runtime.seconds() < 5))
-                {
-
-                    // Display it for the Debugging.
-                    telemetry.addData("Running to Target", extendValue);
-                    telemetry.update();
-                }
-                motorExtend.setPower(0);
-                motorExtend.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            }
+//            if (gamepad2.dpad_up == true && gamepad2.x == true && gamepad2.y == false){
+//
+//                motorLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//
+//                liftValue = (9500 - motorLift.getCurrentPosition());
+//
+//                motorLift.setTargetPosition(liftValue);
+//
+//                runtime.reset();
+//                motorLift.setPower(1);
+//                while (opModeIsActive() &&
+//                        (motorLift.isBusy()) && gamepad2.y == false && (runtime.seconds() < 5))
+//                {
+//
+//                    // Display it for the Debugging.
+//                    telemetry.addData("Running to Target", liftValue);
+//                    telemetry.update();
+//                }
+//                // Stop all motion after Path is completed;
+//                motorLift.setPower(0);
+//                motorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//            }
+//
+//            if (gamepad2.dpad_down == true && gamepad2.x == true && gamepad2.y == false){
+//                motorExtend.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//
+//                extendValue = -(2400 - motorExtend.getCurrentPosition());
+//
+//                motorExtend.setTargetPosition(extendValue);
+//
+//                runtime.reset();
+//
+//                motorExtend.setPower(1);
+//                while (opModeIsActive() &&
+//                        (motorExtend.isBusy()) && gamepad2.y == false && (runtime.seconds() < 5))
+//                {
+//
+//                    // Display it for the Debugging.
+//                    telemetry.addData("Running to Target", extendValue);
+//                    telemetry.update();
+//                }
+//                motorExtend.setPower(0);
+//                motorExtend.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//            }
 
             //*************************************************************************************
             //                                  GamePad 1 Settings
@@ -315,7 +321,7 @@ public class Rev4wheel extends LinearOpMode {
             }
 
             //Set motor speeds for driving
-            if ((gamepad1.dpad_right == false && gamepad1.dpad_left == false)){
+            if ((gamepad1.left_trigger == 0 && gamepad1.right_trigger == 0)){
 
                 motorLeftFront.setPower(gamepad1.left_stick_y * speedControlPowerSetting);
                 motorLeftRear.setPower(gamepad1.left_stick_y * speedControlPowerSetting);
